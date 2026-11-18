@@ -24,6 +24,7 @@ export default {
       console.error("Unhandled error", err?.stack || err);
       res = url.pathname.startsWith("/api/") ? apiError(500, "Something went wrong on the server.") : text("Something went wrong on the server.", 500);
     }
+    if (request.method === "HEAD" && res.body) res = new Response(null, res);
     return secure(res, site, { turnstile: site.kind === "public" && !!turnstileSiteKey(site, env) });
   },
 };
