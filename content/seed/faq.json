@@ -1,0 +1,118 @@
+{
+  "id": "faq",
+  "title": "FAQ · CLIP at Santa Clara University",
+  "description": "Still stuck after this? Ask CLIP in the corner, or email the board.",
+  "sections": [
+    {
+      "id": "sphfq01",
+      "bg": "none",
+      "h": 275.3,
+      "mh": 360.2,
+      "els": [
+        {
+          "id": "ephfq01ent",
+          "type": "entry",
+          "d": [0, 64, 1180, 30],
+          "m": [0, 40, 326, 30],
+          "z": 1,
+          "num": "Entry 008",
+          "label": "FAQ",
+          "page": "p. 08",
+          "href": ""
+        },
+        {
+          "id": "ephfq01ttl",
+          "type": "text",
+          "d": [0, 118, 986.4, 73],
+          "m": [0, 94, 326, 53],
+          "z": 2,
+          "tag": "h1",
+          "kind": "page",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 74,
+          "mfs": 54,
+          "text": "Questions we get"
+        },
+        {
+          "id": "ephfq01led",
+          "type": "text",
+          "d": [0, 207, 690.8, 32],
+          "m": [0, 163, 326, 58],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "Still stuck after this? Ask CLIP in the corner, or email the board."
+        },
+        {
+          "id": "ephfq01fig",
+          "type": "figure",
+          "d": [1013, 151.3, 167, 87],
+          "m": [0, 245.1, 167, 87],
+          "z": 4,
+          "r": -2,
+          "art": "sn2",
+          "alt": "SN2 mechanism: hydroxide attacks methyl bromide and bromide leaves",
+          "caption": "fig. 9 · S<sub>N</sub>2, one step",
+          "k": 1
+        }
+      ]
+    },
+    {
+      "id": "sfaqs01",
+      "bg": "none",
+      "h": 611.7,
+      "mh": 1175.2,
+      "els": [
+        {
+          "id": "efaqs01lst",
+          "type": "list",
+          "d": [0, 36.4, 1180, 390],
+          "m": [0, 28, 326, 965],
+          "z": 1,
+          "kind": "faq",
+          "items": [
+            {
+              "q": "Who can join?",
+              "a": "Any SCU undergraduate, graduate student, faculty or staff member."
+            },
+            {
+              "q": "Do I need to be a bio or pharma major?",
+              "a": "No. CLIP is for every major, from bioengineering and chemistry to computer science and business."
+            },
+            {
+              "q": "What makes someone an active member?",
+              "a": "Coming to at least two CLIP events a quarter. Meetings, seminars and off-campus visits all count."
+            },
+            {
+              "q": "When do you meet?",
+              "a": "General meetings are weekly: [day, time, room]."
+            },
+            {
+              "q": "How do I join the board?",
+              "a": "Officers are picked by application each spring, in week 4 of spring quarter."
+            },
+            {
+              "q": "Can I suggest a speaker or event?",
+              "a": "Yes. Email connectingleaders@scu.edu or tell a board member at a meeting."
+            }
+          ]
+        },
+        {
+          "id": "efaqs01cnt",
+          "type": "contact",
+          "d": [0, 458.8, 1180, 36],
+          "m": [0, 1025.5, 326, 64],
+          "z": 2,
+          "text": "Email the board:"
+        }
+      ]
+    }
+  ]
+}

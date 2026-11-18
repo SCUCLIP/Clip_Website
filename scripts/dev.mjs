@@ -31,7 +31,6 @@ const DEV_ARGS = [
 const env = { ...process.env, WRANGLER_SEND_METRICS: "false", X_LOCAL_EXPLORER: "false", X_LOCAL_OBSERVABILITY: "false" };
 for (const k of Object.keys(env)) if (/^(CLOUDFLARE|CF)_/i.test(k)) delete env[k];
 
-if (fs.existsSync(path.join(root, "migrations"))) {
 console.log("Applying local database migrations…");
 /* stdin isn't a terminal here, so wrangler applies them without asking. --local: never the real database. */
 const mig = spawnSync(process.execPath, [wrangler, "d1", "migrations", "apply", "DB", "--local"], {
@@ -40,7 +39,6 @@ const mig = spawnSync(process.execPath, [wrangler, "d1", "migrations", "apply", 
 if (mig.status !== 0) {
   console.error("\nCouldn't apply the local migrations. If the database is in a bad state, run `npm run db:reset:local`.");
   process.exit(mig.status ?? 1);
-}
 }
 
 console.log("\nPublic site: http://localhost:8787\nEditor:      http://admin.localhost:8787\n");

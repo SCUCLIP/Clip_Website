@@ -1,0 +1,209 @@
+{
+  "id": "board",
+  "title": "Board · CLIP at Santa Clara University",
+  "description": "Five officers, chosen by application each spring, and our faculty advisor.",
+  "sections": [
+    {
+      "id": "sphbd01",
+      "bg": "none",
+      "h": 275.3,
+      "mh": 368.2,
+      "els": [
+        {
+          "id": "ephbd01ent",
+          "type": "entry",
+          "d": [0, 64, 1180, 30],
+          "m": [0, 40, 326, 30],
+          "z": 1,
+          "num": "Entry 006",
+          "label": "Board",
+          "page": "p. 06",
+          "href": ""
+        },
+        {
+          "id": "ephbd01ttl",
+          "type": "text",
+          "d": [0, 118, 929.5, 73],
+          "m": [0, 94, 326, 53],
+          "z": 2,
+          "tag": "h1",
+          "kind": "page",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 74,
+          "mfs": 54,
+          "text": "Meet the board"
+        },
+        {
+          "id": "ephbd01led",
+          "type": "text",
+          "d": [0, 207, 690.8, 32],
+          "m": [0, 163, 326, 58],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "Five officers, chosen by application each spring, and our faculty advisor."
+        },
+        {
+          "id": "ephbd01fig",
+          "type": "figure",
+          "d": [957.1, 143.3, 223, 95],
+          "m": [-0.1, 245.1, 223, 95],
+          "z": 4,
+          "r": -2,
+          "art": "ballstick",
+          "alt": "Ball-and-stick molecule model",
+          "caption": "fig. 7 · ball-and-stick model",
+          "k": 1
+        }
+      ]
+    },
+    {
+      "id": "smemb02",
+      "bg": "none",
+      "h": 425.4,
+      "mh": 901,
+      "els": [
+        {
+          "id": "ememb02lst",
+          "type": "list",
+          "d": [0, 36.4, 1180, 291],
+          "m": [0, 28, 326, 784],
+          "z": 1,
+          "kind": "members",
+          "items": [
+            {
+              "name": "Cindia Qi",
+              "role": "President",
+              "photo": ""
+            },
+            {
+              "name": "Gordon Yang",
+              "role": "Treasurer",
+              "photo": ""
+            },
+            {
+              "name": "Violetta Yousefpor",
+              "role": "Secretary",
+              "photo": ""
+            },
+            {
+              "name": "Agatha Zhao",
+              "role": "[Role]",
+              "photo": ""
+            },
+            {
+              "name": "Lulu Schollaert",
+              "role": "[Role]",
+              "photo": ""
+            }
+          ]
+        },
+        {
+          "id": "ememb02avl",
+          "type": "text",
+          "d": [0, 369.8, 127, 19],
+          "m": [0, 854, 127, 19],
+          "z": 2,
+          "tag": "p",
+          "kind": "eyebrow",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 12,
+          "mfs": 12,
+          "text": "Faculty advisor"
+        },
+        {
+          "id": "ememb02avn",
+          "type": "text",
+          "d": [136.4, 359.8, 106.7, 29],
+          "m": [136.4, 844, 106.7, 29],
+          "z": 3,
+          "tag": "p",
+          "kind": "hand",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 28,
+          "mfs": 28,
+          "text": "Dr. Zhang"
+        }
+      ]
+    },
+    {
+      "id": "sroles1",
+      "bg": "none",
+      "h": 725.3,
+      "mh": 1175.5,
+      "els": [
+        {
+          "id": "eroles1ttl",
+          "type": "text",
+          "d": [0, 36.4, 1180, 57],
+          "m": [0, 28, 326, 51],
+          "z": 1,
+          "tag": "h2",
+          "kind": "sub",
+          "color": "",
+          "align": "",
+          "rule": true,
+          "fs": 42,
+          "mfs": 36,
+          "text": "What each officer does"
+        },
+        {
+          "id": "eroles1lst",
+          "type": "list",
+          "d": [0, 125.8, 1180, 424],
+          "m": [0, 111, 326, 864],
+          "z": 2,
+          "kind": "roles",
+          "items": [
+            {
+              "title": "President",
+              "text": "Represents CLIP on campus and off, oversees events and projects, keeps in touch with industry leaders and builds partnerships with Bay Area organizations."
+            },
+            {
+              "title": "Vice President",
+              "text": "Represents CLIP, works with industry leaders and other SCU groups, and keeps budgets, registration forms, event posts and emails on time."
+            },
+            {
+              "title": "Secretary",
+              "text": "Takes meeting notes, books rooms, keeps the club calendar and agendas, and tracks attendance."
+            },
+            {
+              "title": "Treasurer",
+              "text": "Files funding requests, keeps the club's financial records, finds new funding and handles budget and reimbursement forms."
+            },
+            {
+              "title": "Marketing and Outreach",
+              "text": "Designs posters, sends the weekly email, runs promotion and sets up events with other clubs and departments."
+            }
+          ]
+        },
+        {
+          "id": "eroles1nte",
+          "type": "text",
+          "d": [0, 581.8, 1180, 27],
+          "m": [0, 1007.4, 326, 82],
+          "z": 3,
+          "tag": "p",
+          "kind": "small",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 17,
+          "mfs": 17,
+          "text": "Want to run for the board? Applications open each spring, and officers are picked in week 4 of spring quarter."
+        }
+      ]
+    }
+  ]
+}

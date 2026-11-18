@@ -1,0 +1,252 @@
+{
+  "id": "about",
+  "title": "About · CLIP at Santa Clara University",
+  "description": "CLIP is a student-led club at Santa Clara University, founded in 2025.",
+  "sections": [
+    {
+      "id": "sphab01",
+      "bg": "none",
+      "h": 275.3,
+      "mh": 356.2,
+      "els": [
+        {
+          "id": "ephab01ent",
+          "type": "entry",
+          "d": [0, 64, 1180, 30],
+          "m": [0, 40, 326, 30],
+          "z": 1,
+          "num": "Entry 002",
+          "label": "About",
+          "page": "p. 02",
+          "href": ""
+        },
+        {
+          "id": "ephab01ttl",
+          "type": "text",
+          "d": [0, 118, 945.2, 73],
+          "m": [0, 94, 326, 53],
+          "z": 2,
+          "tag": "h1",
+          "kind": "page",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 74,
+          "mfs": 54,
+          "text": "What CLIP does"
+        },
+        {
+          "id": "ephab01led",
+          "type": "text",
+          "d": [0, 207, 690.8, 32],
+          "m": [0, 163, 326, 58],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "CLIP is a student-led club at Santa Clara University, founded in 2025."
+        },
+        {
+          "id": "ephab01fig",
+          "type": "figure",
+          "d": [972.8, 155.3, 207, 83],
+          "m": [0.2, 245.1, 207, 83],
+          "z": 4,
+          "r": -2,
+          "art": "chair",
+          "alt": "Cyclohexane drawn in its chair conformation",
+          "caption": "fig. 3 · cyclohexane, chair",
+          "k": 1
+        }
+      ]
+    },
+    {
+      "id": "smiss01",
+      "bg": "none",
+      "h": 426.8,
+      "mh": 1013.3,
+      "els": [
+        {
+          "id": "emiss01ttl",
+          "type": "text",
+          "d": [0, 36.4, 229, 56],
+          "m": [0, 28, 181.6, 44],
+          "z": 1,
+          "tag": "h2",
+          "kind": "section",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 56,
+          "mfs": 44,
+          "text": "Our mission"
+        },
+        {
+          "id": "emiss01bdy",
+          "type": "text",
+          "d": [0, 112.4, 590.5, 119],
+          "m": [0, 92, 326, 178],
+          "z": 2,
+          "tag": "p",
+          "kind": "body",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 18,
+          "mfs": 18,
+          "text": "We connect SCU students with industry leaders, build skills you don't get in class, and show how coursework turns into real drug discovery, molecular engineering, biotechnology and AI for healthcare and life sciences."
+        },
+        {
+          "id": "emiss01chl",
+          "type": "text",
+          "d": [0, 251.4, 590.5, 19],
+          "m": [0, 290.1, 326, 19],
+          "z": 3,
+          "tag": "p",
+          "kind": "eyebrow",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 12,
+          "mfs": 12,
+          "text": "Open to every major"
+        },
+        {
+          "id": "emiss01chp",
+          "type": "list",
+          "d": [0, 280.6, 577, 81],
+          "m": [0, 319.3, 326, 170],
+          "z": 4,
+          "kind": "chips",
+          "items": [
+            {
+              "text": "Bioengineering",
+              "more": false
+            },
+            {
+              "text": "Biology",
+              "more": false
+            },
+            {
+              "text": "Chemistry",
+              "more": false
+            },
+            {
+              "text": "Pharmaceutical sciences",
+              "more": false
+            },
+            {
+              "text": "Computer science",
+              "more": false
+            },
+            {
+              "text": "Business",
+              "more": false
+            },
+            {
+              "text": "and beyond",
+              "more": true
+            }
+          ]
+        },
+        {
+          "id": "emiss01lst",
+          "type": "list",
+          "d": [643.1, 36.4, 537, 354],
+          "m": [0, 529.3, 326, 456],
+          "z": 5,
+          "kind": "highlights",
+          "items": [
+            {
+              "title": "Talks with industry leaders",
+              "text": "Meet people working in biotech, pharma and medical devices, on campus and off."
+            },
+            {
+              "title": "Skill-building",
+              "text": "Build skills for drug discovery, molecular engineering, biotech and AI in healthcare."
+            },
+            {
+              "title": "Connections across the Bay Area",
+              "text": "Work with Bay Area organizations and other SCU clubs on events and projects."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "smemb01",
+      "bg": "none",
+      "h": 516.3,
+      "mh": 814.8,
+      "els": [
+        {
+          "id": "ememb01ttl",
+          "type": "text",
+          "d": [0, 36.4, 1180, 57],
+          "m": [0, 28, 326, 51],
+          "z": 1,
+          "tag": "h2",
+          "kind": "sub",
+          "color": "",
+          "align": "",
+          "rule": true,
+          "fs": 42,
+          "mfs": 36,
+          "text": "How membership works"
+        },
+        {
+          "id": "ememb01lst",
+          "type": "list",
+          "d": [0, 125.8, 1180, 184],
+          "m": [0, 111, 326, 528],
+          "z": 2,
+          "kind": "cards",
+          "items": [
+            {
+              "title": "Who can join",
+              "text": "Any SCU undergraduate, graduate student, faculty or staff member.",
+              "linkLabel": "",
+              "linkHref": ""
+            },
+            {
+              "title": "Active members",
+              "text": "Come to at least two CLIP events a quarter. Meetings, seminars and off-campus visits all count.",
+              "linkLabel": "",
+              "linkHref": ""
+            },
+            {
+              "title": "How we meet",
+              "text": "General meetings every week. The board meets every two weeks.",
+              "linkLabel": "",
+              "linkHref": ""
+            }
+          ]
+        },
+        {
+          "id": "ememb01btn1",
+          "type": "button",
+          "d": [0, 347.8, 135.9, 52],
+          "m": [0, 677, 135.9, 52],
+          "z": 3,
+          "label": "Join CLIP",
+          "href": "#join",
+          "style": "primary"
+        },
+        {
+          "id": "ememb01btn2",
+          "type": "button",
+          "d": [149.8, 347.8, 170.5, 52],
+          "m": [149.8, 677, 170.5, 52],
+          "z": 4,
+          "label": "Read the FAQ",
+          "href": "#faq",
+          "style": "secondary"
+        }
+      ]
+    }
+  ]
+}

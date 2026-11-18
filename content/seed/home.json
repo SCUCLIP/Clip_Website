@@ -1,0 +1,463 @@
+{
+  "id": "home",
+  "title": "CLIP · Connecting Leaders in Innovation and Pharma at Santa Clara University",
+  "description": "CLIP connects Santa Clara students in bioengineering, biology, chemistry, computer science and business with people working in biotech, pharma and medical devices.",
+  "sections": [
+    {
+      "id": "shero01",
+      "bg": "none",
+      "h": 613.7,
+      "mh": 1172.3,
+      "els": [
+        {
+          "id": "ehero01eyb",
+          "type": "text",
+          "d": [0, 75.5, 416.8, 21],
+          "m": [0, 40, 326, 42],
+          "z": 1,
+          "tag": "p",
+          "kind": "eyebrow",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 13,
+          "mfs": 13,
+          "text": "Entry 001 · Santa Clara University · Est. 2025"
+        },
+        {
+          "id": "ehero01ttl",
+          "type": "text",
+          "d": [0, 118.5, 661.9, 162],
+          "m": [0, 104, 326, 160],
+          "z": 2,
+          "tag": "h1",
+          "kind": "hero",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 85,
+          "mfs": 56,
+          "text": "Meet the people who <span class=\"hl\">make medicines.</span>"
+        },
+        {
+          "id": "ehero01led",
+          "type": "text",
+          "d": [0, 302.5, 661.9, 96],
+          "m": [0, 286, 326, 144],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "CLIP connects Santa Clara students in bioengineering, biology, chemistry, computer science and business with people working in biotech, pharma and medical devices."
+        },
+        {
+          "id": "ehero01btn1",
+          "type": "button",
+          "d": [0, 426.5, 135.9, 52],
+          "m": [0, 457.9, 135.9, 52],
+          "z": 4,
+          "label": "Join CLIP",
+          "href": "#join",
+          "style": "primary"
+        },
+        {
+          "id": "ehero01btn2",
+          "type": "button",
+          "d": [149.8, 426.5, 238.6, 52],
+          "m": [0, 523.9, 238.6, 52],
+          "z": 5,
+          "label": "See upcoming events",
+          "href": "#events",
+          "style": "secondary"
+        },
+        {
+          "id": "ehero01pen",
+          "type": "text",
+          "d": [78, 516.2, 347, 28],
+          "m": [78, 597.9, 248, 57],
+          "z": 7,
+          "tag": "p",
+          "kind": "hand",
+          "color": "pen",
+          "align": "",
+          "rule": false,
+          "fs": 27,
+          "mfs": 27,
+          "text": "weekly meetings, every major welcome"
+        },
+        {
+          "id": "ehero01logo",
+          "type": "image",
+          "d": [781.5, 98.1, 330, 360],
+          "m": [29.5, 737.1, 267, 295],
+          "z": 8,
+          "r": 2,
+          "asset": "clip-logo.png",
+          "photo": "",
+          "alt": "CLIP logo, Connecting Leaders in Innovation and Pharma",
+          "caption": "Fig. 1 · our logo",
+          "frame": "card",
+          "tape": "blue",
+          "logo": true,
+          "ar": 0.9677,
+          "iw": 359,
+          "ih": 371
+        },
+        {
+          "id": "ehero01mlb",
+          "type": "text",
+          "d": [811.1, 475.6, 64.3, 53],
+          "m": [98, 1049.8, 64.3, 53],
+          "z": 10,
+          "tag": "p",
+          "kind": "hand",
+          "color": "teal",
+          "align": "",
+          "rule": false,
+          "fs": 25,
+          "mfs": 25,
+          "text": "our lab<br>mascot"
+        },
+        {
+          "id": "ehero01arw",
+          "type": "doodle",
+          "d": [18, 500.5, 56, 44],
+          "m": [18, 610.6, 56, 44],
+          "z": 6,
+          "art": "arrow"
+        },
+        {
+          "id": "ehero01msc",
+          "type": "doodle",
+          "d": [713.1, 446.1, 96, 108],
+          "m": [0, 1020.3, 96, 108],
+          "z": 9,
+          "art": "flask"
+        },
+        {
+          "id": "kbenz01",
+          "type": "doodle",
+          "d": [1066.7, 69.9, 103.9, 104],
+          "m": null,
+          "z": 11,
+          "art": "benzene",
+          "mHide": true,
+          "faint": true
+        },
+        {
+          "id": "kcaps01",
+          "type": "doodle",
+          "d": [734.7, 63.8, 48, 24],
+          "m": null,
+          "z": 12,
+          "r": -10,
+          "art": "capsule",
+          "mHide": true
+        },
+        {
+          "id": "ktabl01",
+          "type": "doodle",
+          "d": [1117.5, 494.3, 26, 26],
+          "m": null,
+          "z": 13,
+          "art": "tablet",
+          "mHide": true
+        }
+      ]
+    },
+    {
+      "id": "sintr01",
+      "bg": "none",
+      "h": 605.2,
+      "mh": 1147.2,
+      "els": [
+        {
+          "id": "eintr01ent",
+          "type": "entry",
+          "d": [0, 59.6, 1180, 30],
+          "m": [0, 44, 326, 30],
+          "z": 1,
+          "num": "Entry 002",
+          "label": "About",
+          "page": "See p. 02",
+          "href": "#about"
+        },
+        {
+          "id": "eintr01ttl",
+          "type": "text",
+          "d": [0, 121.6, 326.8, 56],
+          "m": [0, 106, 259, 44],
+          "z": 2,
+          "tag": "h2",
+          "kind": "section",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 56,
+          "mfs": 44,
+          "text": "What CLIP does"
+        },
+        {
+          "id": "eintr01bdy",
+          "type": "text",
+          "d": [0, 197.6, 590.5, 119],
+          "m": [0, 170, 326, 208],
+          "z": 3,
+          "tag": "p",
+          "kind": "body",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 18,
+          "mfs": 18,
+          "text": "CLIP is a student-led club at Santa Clara University. We connect students with industry leaders, build skills you don't get in class, and show how coursework turns into real drug discovery, molecular engineering, biotech and AI for healthcare."
+        },
+        {
+          "id": "eintr01lnk",
+          "type": "link",
+          "d": [0, 336.5, 182, 44],
+          "m": [0, 398, 182, 44],
+          "z": 4,
+          "label": "Read the full entry",
+          "href": "#about"
+        },
+        {
+          "id": "eintr01fig",
+          "type": "figure",
+          "d": [0.1, 400.6, 178, 145],
+          "m": [0.1, 462.1, 178, 145],
+          "z": 5,
+          "r": -1.5,
+          "art": "aspirin",
+          "alt": "Skeletal structure of aspirin",
+          "caption": "fig. 2 · aspirin, C<sub>9</sub>H<sub>8</sub>O<sub>4</sub>",
+          "k": 1
+        },
+        {
+          "id": "eintr01lst",
+          "type": "list",
+          "d": [643.1, 121.6, 537, 354],
+          "m": [0, 647.2, 326, 456],
+          "z": 6,
+          "kind": "highlights",
+          "items": [
+            {
+              "title": "Talks with industry leaders",
+              "text": "Meet people working in biotech, pharma and medical devices, on campus and off."
+            },
+            {
+              "title": "Skill-building",
+              "text": "Build skills for drug discovery, molecular engineering, biotech and AI in healthcare."
+            },
+            {
+              "title": "Connections across the Bay Area",
+              "text": "Work with Bay Area organizations and other SCU clubs on events and projects."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sevnt01",
+      "bg": "none",
+      "h": 519.2,
+      "mh": 1029.2,
+      "els": [
+        {
+          "id": "eevnt01ent",
+          "type": "entry",
+          "d": [0, 59.6, 1180, 30],
+          "m": [0, 44, 326, 30],
+          "z": 1,
+          "num": "Entry 003",
+          "label": "Upcoming events",
+          "page": "See p. 03",
+          "href": "#events"
+        },
+        {
+          "id": "eevnt01ttl",
+          "type": "text",
+          "d": [0, 121.6, 315.5, 56],
+          "m": [0, 106, 250.2, 44],
+          "z": 2,
+          "tag": "h2",
+          "kind": "section",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 56,
+          "mfs": 44,
+          "text": "On the calendar"
+        },
+        {
+          "id": "eevnt01int",
+          "type": "text",
+          "d": [732, 126, 448, 51],
+          "m": [0, 162, 326, 77],
+          "z": 3,
+          "tag": "p",
+          "kind": "small",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 16,
+          "mfs": 16,
+          "text": "General meetings every week, plus talks and skill-building sessions through the quarter."
+        },
+        {
+          "id": "eevnt01lst",
+          "type": "list",
+          "d": [0, 209.6, 1180, 174],
+          "m": [0, 271, 326, 638],
+          "z": 4,
+          "kind": "events",
+          "items": [
+            {
+              "month": "Every",
+              "day": "week",
+              "name": "General meeting",
+              "time": "[Day] · [Time]",
+              "location": "[Room, building]",
+              "desc": "The easiest way to meet the club. Come once, no sign-up needed.",
+              "linkLabel": "",
+              "linkHref": ""
+            },
+            {
+              "month": "[Mon]",
+              "day": "[00]",
+              "name": "[Event name]",
+              "time": "[Time]",
+              "location": "[Location]",
+              "desc": "[One line on what happens and who's speaking]",
+              "linkLabel": "",
+              "linkHref": ""
+            },
+            {
+              "month": "[Mon]",
+              "day": "[00]",
+              "name": "[Event name]",
+              "time": "[Time]",
+              "location": "[Location]",
+              "desc": "[One line on what happens and who's speaking]",
+              "linkLabel": "",
+              "linkHref": ""
+            }
+          ]
+        },
+        {
+          "id": "eevnt01lnk",
+          "type": "link",
+          "d": [0, 415.6, 145, 44],
+          "m": [0, 941.2, 145, 44],
+          "z": 5,
+          "label": "See all events",
+          "href": "#events"
+        }
+      ]
+    },
+    {
+      "id": "sspkr01",
+      "bg": "none",
+      "h": 739.1,
+      "mh": 1450,
+      "els": [
+        {
+          "id": "espkr01ent",
+          "type": "entry",
+          "d": [0, 59.6, 1180, 30],
+          "m": [0, 44, 326, 30],
+          "z": 1,
+          "num": "Entry 005",
+          "label": "Past speakers",
+          "page": "See p. 05",
+          "href": "#speakers"
+        },
+        {
+          "id": "espkr01ttl",
+          "type": "text",
+          "d": [0, 121.6, 1180, 56],
+          "m": [0, 106, 326, 44],
+          "z": 2,
+          "tag": "h2",
+          "kind": "section",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 56,
+          "mfs": 44,
+          "text": "Who's visited"
+        },
+        {
+          "id": "espkr01lst",
+          "type": "list",
+          "d": [0, 209.6, 1180, 394],
+          "m": [0, 182, 326, 1148],
+          "z": 3,
+          "kind": "speakers",
+          "items": [
+            {
+              "name": "Dr. Alice Tang",
+              "when": "Sept 2026",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            },
+            {
+              "name": "[Speaker name]",
+              "when": "[Month year]",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            },
+            {
+              "name": "[Speaker name]",
+              "when": "[Month year]",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            }
+          ]
+        },
+        {
+          "id": "espkr01lnk",
+          "type": "link",
+          "d": [0, 635.6, 164, 44],
+          "m": [0, 1362, 164, 44],
+          "z": 4,
+          "label": "See all speakers",
+          "href": "#speakers"
+        }
+      ]
+    },
+    {
+      "id": "ssign01",
+      "bg": "none",
+      "h": 585.6,
+      "mh": 726.6,
+      "els": [
+        {
+          "id": "esign01sgn",
+          "type": "signup",
+          "d": [180, 59.7, 820, 408],
+          "m": [0, 44, 326, 595],
+          "z": 1,
+          "r": -1,
+          "eyebrow": "Sign-up sheet · Newsletter",
+          "title": "Get the weekly email",
+          "body": "Event announcements, industry talks and research spotlights, once a week.",
+          "label": "SCU email",
+          "placeholder": "you@scu.edu",
+          "button": "Sign up",
+          "list": "weekly",
+          "ok": "You're on the list. Watch for the weekly email.",
+          "contact": "Or come to a weekly general meeting. Questions?",
+          "anchor": "join"
+        }
+      ]
+    }
+  ]
+}

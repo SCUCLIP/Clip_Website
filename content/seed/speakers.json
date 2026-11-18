@@ -1,0 +1,125 @@
+{
+  "id": "speakers",
+  "title": "Speakers · CLIP at Santa Clara University",
+  "description": "People from biotech, pharma and medical devices who have spoken to CLIP members.",
+  "sections": [
+    {
+      "id": "sphsp01",
+      "bg": "none",
+      "h": 307.4,
+      "mh": 402.6,
+      "els": [
+        {
+          "id": "ephsp01ent",
+          "type": "entry",
+          "d": [0, 64, 1180, 30],
+          "m": [0, 40, 326, 30],
+          "z": 1,
+          "num": "Entry 005",
+          "label": "Speakers",
+          "page": "p. 05",
+          "href": ""
+        },
+        {
+          "id": "ephsp01ttl",
+          "type": "text",
+          "d": [0, 118, 953, 73],
+          "m": [0, 94, 326, 53],
+          "z": 2,
+          "tag": "h1",
+          "kind": "page",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 74,
+          "mfs": 54,
+          "text": "Who's visited"
+        },
+        {
+          "id": "ephsp01led",
+          "type": "text",
+          "d": [0, 207, 690.8, 64],
+          "m": [0, 163, 326, 86],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "People from biotech, pharma and medical devices who have spoken to CLIP members."
+        },
+        {
+          "id": "ephsp01fig",
+          "type": "figure",
+          "d": [980.2, 169.1, 200, 101],
+          "m": [-0.2, 273.5, 200, 101],
+          "z": 4,
+          "r": -2,
+          "art": "mortar",
+          "alt": "Mortar and pestle",
+          "caption": "fig. 6 · mortar and pestle",
+          "k": 1
+        }
+      ]
+    },
+    {
+      "id": "sspls01",
+      "bg": "none",
+      "h": 466.8,
+      "mh": 1204,
+      "els": [
+        {
+          "id": "espls01lst",
+          "type": "list",
+          "d": [0, 36.4, 1180, 394],
+          "m": [0, 28, 326, 1148],
+          "z": 1,
+          "kind": "speakers",
+          "items": [
+            {
+              "name": "Dr. Alice Tang",
+              "when": "Sept 2026",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            },
+            {
+              "name": "[Speaker name]",
+              "when": "[Month year]",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            },
+            {
+              "name": "[Speaker name]",
+              "when": "[Month year]",
+              "title": "[Title, organization]",
+              "topic": "[Talk topic]",
+              "photo": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scall01",
+      "bg": "none",
+      "h": 314.8,
+      "mh": 366.5,
+      "els": [
+        {
+          "id": "ecall01cal",
+          "type": "callout",
+          "d": [0, 36.6, 1180, 162],
+          "m": [0, 27.9, 326, 253],
+          "z": 1,
+          "r": -0.6,
+          "title": "Know someone we should invite?",
+          "text": "Send us their name and what they work on."
+        }
+      ]
+    }
+  ]
+}

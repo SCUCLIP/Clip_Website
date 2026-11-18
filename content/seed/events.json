@@ -1,0 +1,172 @@
+{
+  "id": "events",
+  "title": "Events · CLIP at Santa Clara University",
+  "description": "General meetings every week, plus talks and skill-building sessions through the quarter. New events go out in the weekly email first.",
+  "sections": [
+    {
+      "id": "sphev01",
+      "bg": "none",
+      "h": 307.4,
+      "mh": 463.4,
+      "els": [
+        {
+          "id": "ephev01ent",
+          "type": "entry",
+          "d": [0, 64, 1180, 30],
+          "m": [0, 40, 326, 30],
+          "z": 1,
+          "num": "Entry 003",
+          "label": "Events",
+          "page": "p. 03",
+          "href": ""
+        },
+        {
+          "id": "ephev01ttl",
+          "type": "text",
+          "d": [0, 118, 876.8, 73],
+          "m": [0, 94, 326, 53],
+          "z": 2,
+          "tag": "h1",
+          "kind": "page",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 74,
+          "mfs": 54,
+          "text": "On the calendar"
+        },
+        {
+          "id": "ephev01led",
+          "type": "text",
+          "d": [0, 207, 690.8, 64],
+          "m": [0, 163, 326, 115],
+          "z": 3,
+          "tag": "p",
+          "kind": "lede",
+          "color": "",
+          "align": "",
+          "rule": false,
+          "fs": 20,
+          "mfs": 18,
+          "text": "General meetings every week, plus talks and skill-building sessions through the quarter. New events go out in the weekly email first."
+        },
+        {
+          "id": "ephev01fig",
+          "type": "figure",
+          "d": [905.8, 137.1, 274, 133],
+          "m": [0.2, 302.3, 274, 133],
+          "z": 4,
+          "r": -2,
+          "art": "tlc",
+          "alt": "Thin-layer chromatography plate with two spots",
+          "caption": "fig. 4 · TLC plate, R<sub>f</sub> 0.67 and 0.33",
+          "k": 1
+        }
+      ]
+    },
+    {
+      "id": "sevls01",
+      "bg": "none",
+      "h": 388.2,
+      "mh": 887,
+      "els": [
+        {
+          "id": "eevls01ttl",
+          "type": "text",
+          "d": [0, 36.4, 1180, 57],
+          "m": [0, 28, 326, 51],
+          "z": 1,
+          "tag": "h2",
+          "kind": "sub",
+          "color": "",
+          "align": "",
+          "rule": true,
+          "fs": 42,
+          "mfs": 36,
+          "text": "Coming up"
+        },
+        {
+          "id": "eevls01lst",
+          "type": "list",
+          "d": [0, 125.8, 1180, 226],
+          "m": [0, 111, 326, 748],
+          "z": 2,
+          "kind": "events",
+          "items": [
+            {
+              "month": "Every",
+              "day": "week",
+              "name": "General meeting",
+              "time": "[Day] · [Time]",
+              "location": "[Room, building]",
+              "desc": "The easiest way to meet the club. Come once, no sign-up needed.",
+              "linkLabel": "Get the weekly email",
+              "linkHref": "#join"
+            },
+            {
+              "month": "[Mon]",
+              "day": "[00]",
+              "name": "[Event name]",
+              "time": "[Time]",
+              "location": "[Location]",
+              "desc": "[One line on what happens and who's speaking]",
+              "linkLabel": "[RSVP link]",
+              "linkHref": ""
+            },
+            {
+              "month": "[Mon]",
+              "day": "[00]",
+              "name": "[Event name]",
+              "time": "[Time]",
+              "location": "[Location]",
+              "desc": "[One line on what happens and who's speaking]",
+              "linkLabel": "[RSVP link]",
+              "linkHref": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spast01",
+      "bg": "none",
+      "h": 355.6,
+      "mh": 387.3,
+      "els": [
+        {
+          "id": "epast01ttl",
+          "type": "text",
+          "d": [0, 36.4, 1180, 57],
+          "m": [0, 28, 326, 51],
+          "z": 1,
+          "tag": "h2",
+          "kind": "sub",
+          "color": "",
+          "align": "",
+          "rule": true,
+          "fs": 42,
+          "mfs": 36,
+          "text": "Past events"
+        },
+        {
+          "id": "epast01lst",
+          "type": "list",
+          "d": [0, 125.8, 1180, 113],
+          "m": [0, 111, 326, 190],
+          "z": 2,
+          "kind": "past",
+          "items": [
+            {
+              "when": "Sept 2026",
+              "what": "Dr. Alice Tang spoke to CLIP · [Talk topic]"
+            },
+            {
+              "when": "[Month]",
+              "what": "[Add past events here]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
