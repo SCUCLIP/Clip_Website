@@ -7,11 +7,17 @@
       editor's own origin. Other websites open in the same browser can't change anything.
    3. Sign-in: Cloudflare Access, checked by verifyAccess(). Skipped only in local mode (see hosts.js). */
 
-import { apiError, json, text, methodNotAllowed } from "./http.js";
+import { apiError, json, text, methodNotAllowed, readText, readBytes } from "./http.js";
 import { verifyAccess } from "./access.js";
 import { isAssetPath, serveAsset } from "./assets.js";
+import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDraft } from "./db.js";
+import { storePhoto, listPhotos, servePhoto, MAX_PHOTO_BYTES } from "./photos.js";
+import { norm, NormError } from "../public/shared/norm.js";
+import { DOC_IDS } from "../public/shared/pages.js";
 
 const SAFE = new Set(["GET", "HEAD"]);
+const MAX_DRAFT_BYTES = 512 * 1024;
+const MAX_JSON_BYTES = 16 * 1024;
 
 /** @returns {Promise<{res: Response} | {editor: {email: string, local: boolean}}>} */
 export async function gate(request, env, site, url) {
@@ -31,9 +37,25 @@ export async function gate(request, env, site, url) {
   return { editor: { email: who.email, local: false } };
 }
 
-/* Routes: [method, pattern, handler]. Patterns are matched against the path; :id captures one segment. */
+/* ---------- Helpers ---------- */
+const isJson = (request) => /^application\/json\b/i.test(request.headers.get("Content-Type") || "");
+
+/** Read a JSON object body. Returns {body} or {res} with the refusal. */
+async function readJson(request, limit) {
+  if (!isJson(request)) return { res: apiError(415, "Send JSON (Content-Type: application/json).") };
+  const raw = await readText(request, limit);
+  if (raw === null) return { res: apiError(413, "That request is too large.") };
+  let body;
+  try { body = JSON.parse(raw); } catch { return { res: apiError(400, "That request isn't valid JSON.") }; }
+  if (!body || typeof body !== "object" || Array.isArray(body)) return { res: apiError(400, "That request must be a JSON object.") };
+  return { body };
+}
+const isVersion = (v) => Number.isInteger(v) && v >= 1;
+const knownDoc = (id) => DOC_IDS.includes(id);
+
+/* ---------- Routes ---------- */
 const ROUTES = [];
-export function route(method, pattern, handler) {
+function route(method, pattern, handler) {
   const keys = [];
   const re = new RegExp("^" + pattern.replace(/:(\w+)/g, (_, k) => { keys.push(k); return "([^/]+)"; }) + "$");
   ROUTES.push({ method, re, keys, handler });
@@ -45,6 +67,78 @@ route("GET", "/api/admin/session", (c) => json({
   publicOrigin: c.site.publicOrigin,
   adminOrigin: c.site.adminOrigin,
 }));
+
+route("GET", "/api/admin/docs", async (c) => json({ docs: await getAllDocs(c.env) }));
+
+route("GET", "/api/admin/drafts/:id", async (c) => {
+  const doc = knownDoc(c.params.id) ? await getDoc(c.env, c.params.id) : null;
+  return doc ? json(doc) : apiError(404, "There's no such page.");
+});
+
+route("PUT", "/api/admin/drafts/:id", async (c) => {
+  const { id } = c.params;
+  if (!knownDoc(id)) return apiError(404, "There's no such page.");
+  const r = await readJson(c.request, MAX_DRAFT_BYTES);
+  if (r.res) return r.res;
+  const { version, doc } = r.body;
+  if (!isVersion(version)) return apiError(400, "Send the version you loaded.");
+  let clean;
+  try { clean = norm(id, doc); } catch (err) {
+    if (err instanceof NormError) return apiError(400, "This page can't be saved: " + err.message);
+    throw err;
+  }
+  const saved = await saveDraft(c.env, id, version, clean, c.editor.email);
+  if (saved.ok) return json({ version: saved.version, doc: clean });
+  if (saved.current === null) return apiError(404, "There's no such page.");
+  return apiError(409, "Someone else changed this page.", { version: saved.current });
+});
+
+route("POST", "/api/admin/publish", async (c) => {
+  const r = await readJson(c.request, MAX_JSON_BYTES);
+  if (r.res) return r.res;
+  const versions = r.body.versions;
+  if (!versions || typeof versions !== "object" || Array.isArray(versions) || !Object.keys(versions).length) return apiError(400, "Say which pages to publish.");
+  for (const [id, v] of Object.entries(versions)) {
+    if (!knownDoc(id)) return apiError(404, `There's no page called "${id}".`);
+    if (!isVersion(v)) return apiError(400, "Send the version of each page you're publishing.");
+  }
+  const out = await publishDrafts(c.env, versions, c.editor.email);
+  if (out.ok) return json({ published: Object.keys(versions), at: out.at });
+  return apiError(409, "Someone else changed a page you're publishing, so nothing was published.", { stale: out.stale });
+});
+
+route("POST", "/api/admin/discard/:id", async (c) => {
+  const { id } = c.params;
+  if (!knownDoc(id)) return apiError(404, "There's no such page.");
+  const r = await readJson(c.request, MAX_JSON_BYTES);
+  if (r.res) return r.res;
+  if (!isVersion(r.body.version)) return apiError(400, "Send the version you loaded.");
+  const out = await discardDraft(c.env, id, r.body.version, c.editor.email);
+  if (out.ok) return json({ version: out.version, doc: (await getDoc(c.env, id)).draft });
+  if (out.current === null) return apiError(404, "There's no such page.");
+  return apiError(409, "Someone else changed this page.", { version: out.current });
+});
+
+route("GET", "/api/admin/photos", async (c) => json({ photos: await listPhotos(c.env) }));
+
+route("POST", "/api/admin/photos", async (c) => {
+  const bytes = await readBytes(c.request, MAX_PHOTO_BYTES);
+  if (bytes === null) return apiError(413, "Photos can be at most 5 MB.");
+  const out = await storePhoto(c.env, bytes, c.request.headers.get("Content-Type"), c.editor.email);
+  return out.ok ? json(out.photo, 201) : apiError(out.status, out.message);
+});
+
+route("GET", "/api/admin/signups", async (c) => {
+  const { results } = await c.env.DB.prepare("SELECT id, email, list, created_at FROM signups ORDER BY list, created_at, id").all();
+  return json({ signups: results.map((r) => ({ id: r.id, email: r.email, list: r.list, createdAt: r.created_at })) });
+});
+
+route("DELETE", "/api/admin/signups/:id", async (c) => {
+  const id = Number(c.params.id);
+  if (!Number.isSafeInteger(id) || id < 1) return apiError(404, "There's no such sign-up.");
+  const res = await c.env.DB.prepare("DELETE FROM signups WHERE id = ?").bind(id).run();
+  return res.meta.changes ? json({ ok: true }) : apiError(404, "There's no such sign-up.");
+});
 
 export async function handleAdmin(request, env, ctx, site, url) {
   const path = url.pathname;
@@ -60,14 +154,22 @@ export async function handleAdmin(request, env, ctx, site, url) {
     if (!SAFE.has(request.method)) return methodNotAllowed("GET, HEAD");
     return serveAsset(env, request, path);
   }
+  if (path.startsWith("/photos/")) {
+    if (!SAFE.has(request.method)) return methodNotAllowed("GET, HEAD");
+    return servePhoto(env, request, path.slice(8));
+  }
 
-  let allowed = [];
+  const allowed = [];
   for (const r of ROUTES) {
     const m = r.re.exec(path);
     if (!m) continue;
     const method = request.method === "HEAD" ? "GET" : request.method;
     if (r.method !== method) { allowed.push(r.method); continue; }
-    r.keys.forEach((k, i) => { c.params[k] = decodeURIComponent(m[i + 1]); });
+    try {
+      r.keys.forEach((k, i) => { c.params[k] = decodeURIComponent(m[i + 1]); });
+    } catch {
+      return apiError(404, "Not found");
+    }
     return r.handler(c);
   }
   if (allowed.length) return methodNotAllowed(allowed.join(", "));
