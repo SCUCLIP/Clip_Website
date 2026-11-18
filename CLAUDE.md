@@ -12,17 +12,20 @@ Content lives in D1 (`published` and `drafts`), photos in R2. Plain ES modules, 
 
 ## Commands
 - `npm ci`: install exactly what `package-lock.json` lists.
-- `npm run dev`: apply pending local migrations, then serve the site and editor in local mode (see below).
-- `npm run check`: Node tests (render vs `prototype/static`, `norm()`, config rules, seed up to date) and Worker tests (every route against local D1 and R2). Must pass before every commit.
+- `npm run dev`: apply pending local migrations, then serve the site at http://localhost:8787 and the editor at http://admin.localhost:8787 in local mode (see below). Stop it with Ctrl+C.
+- `npm run check`: Node tests (render vs `prototype/static`, `norm()`, config rules, seed up to date, nothing inline in `public/`) and Worker tests (every route against local D1 and R2). Must pass before every commit.
 - `npm test`: the Worker tests only.
-- `npm run seed:sql`: rebuild `migrations/0002_seed.sql` from `content/seed/*.json`.
-- `npm run db:reset:local`: delete the local database so the next `npm run dev` starts from the seed. `-- --photos` also deletes local photos.
+- `npm run seed:sql`: rebuild `migrations/0002_seed.sql` from `content/seed/*.json`. A migration runs once per database, so follow it with `npm run db:reset:local` to see the change locally.
+- `npm run db:reset:local`: delete the local database so the next `npm run dev` starts from the seed. `npm run db:reset:local -- --photos` also deletes local photos. Stop `npm run dev` first.
 - `npm run fonts:fetch`: download the self-hosted fonts again (only needed to change them).
+
+Never run `wrangler deploy`, `wrangler login`, `wrangler d1 execute` or anything with `--remote` from this repo during development (security rule 13).
 
 ## Layout
 - `src/`: the Worker. `index.js` picks the host; `admin.js` (editor + API, behind `gate()`), `public.js` (pages, sign-up, photos), `hosts.js` (local mode), `access.js`, `turnstile.js`, `http.js` (security headers), `db.js`.
 - `public/shared/`: code used by both the Worker and the browser: `render.js` (the only copy of the page markup), `norm.js` (content validation and schema), `rich.js`, `pages.js`, `layout.js`, `facts.js`, `sprite.js`.
-- `public/assets/`: the public site's CSS, `site.js` and logos. `public/fonts/`: Caveat, DM Sans, DM Mono (SIL OFL). `public/editor/`: the editor.
+- `public/assets/`: the public site's CSS, `site.js` and logos. `public/fonts/`: Caveat, DM Sans, DM Mono (SIL OFL).
+- `public/editor/`: the editor, served only on the admin host. `editor.js` (state, autosave, publish, keyboard), `canvas.js` (selection, drag, handles, snapping, typing in place), `panels.js` (Add, Settings, Site tab), `catalog.js` (what Add offers), `model.js`, `history.js`, `api.js`. In the browser console, `window.clipEditor` is the editor's state.
 - `content/seed/`: the starting content, one JSON file per doc. `migrations/`: D1 schema and the generated seed.
 - `prototype/static/`: the original static export. The render must match it apart from links and asset paths.
 - `docs/CONTENT-FORMAT.md`, `docs/THREAT-MODEL.md`, `docs/GO-LIVE.md`.
