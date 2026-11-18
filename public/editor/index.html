@@ -3,9 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>CLIP editor</title>
+<link rel="icon" type="image/png" href="/assets/clip-mark.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/editor/editor.css">
+<script type="module" src="/editor/editor.js"></script>
 </head>
-<body>
-<p>The CLIP editor goes here (step 5).</p>
+<body class="ed">
+<div id="ed-sprite"></div>
+<header class="ed-top">
+  <div class="ed-brand"><img src="/assets/clip-mark.png" alt="" width="33" height="24"><span>CLIP editor</span></div>
+  <label class="ed-top-field"><span class="sr-only">Page</span><select id="ed-page"></select></label>
+  <div class="ed-seg" role="group" aria-label="Layout">
+    <button type="button" id="ed-mode-d" aria-pressed="true">Desktop</button>
+    <button type="button" id="ed-mode-m" aria-pressed="false">Phone</button>
+  </div>
+  <div class="ed-seg">
+    <button type="button" id="ed-undo" title="Undo (Ctrl+Z)">Undo</button>
+    <button type="button" id="ed-redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+  </div>
+  <button type="button" class="ed-btn is-ghost" id="ed-toggle-add">Add panel</button>
+  <span class="ed-status" id="ed-status" role="status" aria-live="polite">Loading…</span>
+  <span class="ed-who" id="ed-who"></span>
+  <button type="button" class="ed-btn" id="ed-discard">Discard</button>
+  <button type="button" class="ed-btn is-primary" id="ed-publish">Publish</button>
+  <button type="button" class="ed-btn is-ghost" id="ed-view">View site ↗</button>
+</header>
+<div class="ed-main">
+  <aside class="ed-add" id="ed-add" aria-label="Add"></aside>
+  <main class="ed-stage" id="ed-stage">
+    <div class="ed-canvas" id="ed-canvas"></div>
+    <div class="ed-sitetab" id="ed-sitetab"></div>
+  </main>
+  <aside class="ed-settings" id="ed-settings" aria-label="Settings"></aside>
+</div>
+<div class="ed-rtb" id="ed-rtb" hidden>
+  <button type="button" data-cmd="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+  <button type="button" data-cmd="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+  <button type="button" data-cmd="hl" title="Highlight"><span class="hl">H</span></button>
+  <button type="button" data-cmd="subscript" title="Subscript">x<sub>2</sub></button>
+  <button type="button" data-cmd="superscript" title="Superscript">x<sup>2</sup></button>
+  <button type="button" data-cmd="br" title="Line break (Enter)">↵</button>
+  <button type="button" data-cmd="plain" title="Remove all formatting">Plain</button>
+</div>
+<div class="ed-toasts" id="ed-toasts"></div>
+<dialog id="ed-dialog"></dialog>
+<input type="file" id="ed-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
 </body>
 </html>

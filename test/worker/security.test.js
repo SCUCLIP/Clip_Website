@@ -157,6 +157,19 @@ describe("request origin rules", () => {
     expect(res.headers.get("Strict-Transport-Security")).toBeNull();
   });
 
+  it("serves the editor and its files on the admin host only", async () => {
+    const page = await call(LOCAL_ADMIN + "/", {}, LOCAL_ENV);
+    expect(page.status).toBe(200);
+    expect(page.headers.get("Content-Type")).toContain("text/html");
+    const html = await page.text();
+    expect(html).toContain('<script type="module" src="/editor/editor.js"></script>');
+    expect(page.headers.get("Content-Security-Policy")).toContain("script-src 'self';");
+    for (const f of ["/editor/editor.js", "/editor/canvas.js", "/editor/panels.js", "/editor/editor.css", "/shared/render.js", "/shared/norm.js"]) {
+      expect((await call(LOCAL_ADMIN + f, {}, LOCAL_ENV)).status, f).toBe(200);
+      expect((await call(LOCAL_PUBLIC + f, {}, LOCAL_ENV)).status, f).toBe(f.startsWith("/editor/") ? 404 : 200);
+    }
+  });
+
   it("redirects plain HTTP to HTTPS on real hostnames", async () => {
     const res = await call("http://scuclip.com/about", {}, PROD_ENV);
     expect(res.status).toBe(308);

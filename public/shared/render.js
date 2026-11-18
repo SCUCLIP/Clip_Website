@@ -189,7 +189,7 @@ export function renderMain(page, opts = {}) {
   return `<main id="view-${page.id}" class="view is-free">\n${page.sections.map((s) => renderSection(s, opts)).join("\n")}\n</main>`;
 }
 
-function renderHeader(site, current) {
+export function renderHeader(site, current) {
   const nav = site.nav.map((n) => `<a href="${pagePath(n.page)}"${n.page === current ? ' aria-current="page"' : ""}>${plainHtml(n.label)}</a>`).join("");
   return `<header class="site-header">
   <div class="header-inner">
@@ -210,7 +210,7 @@ function instagramHtml(handle) {
   return plainHtml(h);
 }
 
-function renderFooter(site) {
+export function renderFooter(site) {
   return `<div class="wrap"><footer class="site-footer">
   <div class="foot-brand">
     <img src="/assets/clip-mark.png" alt="CLIP" width="55" height="40">
