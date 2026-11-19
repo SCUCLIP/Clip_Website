@@ -27,7 +27,7 @@ test("browser code loads only from the site itself", () => {
     for (const m of src.matchAll(/(?:import\s[^'"]*|import\(|@import\s|url\()\s*["']?([^"')\s]+)/g)) {
       const target = m[1];
       if (target.startsWith("data:")) continue;
-      assert.ok(target.startsWith("/") || target.startsWith("./"), `${rel} loads ${target}`);
+      assert.ok(/^(\/(?!\/)|\.\.?\/)/.test(target), `${rel} loads ${target}`);
     }
     assert.ok(!/eval\(|new Function\(/.test(src), `${rel}: eval`);
   }

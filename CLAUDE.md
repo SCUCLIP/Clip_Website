@@ -25,7 +25,7 @@ Never run `wrangler deploy`, `wrangler login`, `wrangler d1 execute` or anything
 - `src/`: the Worker. `index.js` picks the host; `admin.js` (editor + API, behind `gate()`), `public.js` (pages, sign-up, photos), `hosts.js` (local mode), `access.js`, `turnstile.js`, `http.js` (security headers), `db.js`.
 - `public/shared/`: code used by both the Worker and the browser, ported from `prototype/clip-website.html` and kept as close to it as possible: `model.js` (the content model and `norm()`), `render.js` (the only copy of the page markup), `layout.js` (push-down and the phone layout). Plus `export.js` (a whole public page, as the static export wrote it), `facts.js` (Ask CLIP) and `sprite.js`.
 - `public/assets/`: the public site's CSS, `site.js` and logos. `public/fonts/`: Caveat, DM Sans, DM Mono (SIL OFL).
-- `public/editor/`: the editor, served only on the admin host. Being ported from the prototype.
+- `public/editor/`: the editor, served only on the admin host, ported from the prototype's `#admin` view and kept as close to it as possible. `editor.js` (everything the prototype's editor does), `catalog.js` (what the Add panel offers), `api.js` (the Worker's API, in place of the prototype's `window.claude`), `editor.css`. In the browser console, `window.clipEditor` is the editor's state.
 - `content/seed/`: the starting content, one JSON file per doc. `migrations/`: D1 schema and the generated seed.
 - `prototype/clip-website.html`: the working prototype, the spec for the look, the editor and the content format. `prototype/static/`: the same pages exported as plain HTML. The render must match them apart from links and asset paths.
 - `docs/CONTENT-FORMAT.md`, `docs/THREAT-MODEL.md`, `docs/GO-LIVE.md`.

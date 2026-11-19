@@ -35,12 +35,12 @@ Everything here needs the club's Cloudflare account. None of it has been done; t
 - While `npm run dev` runs, wrangler's file watcher can crash on the temporary files some editors write under `public/` ("ENOENT … .tmp"). Start `npm run dev` again if it stops.
 
 ### Site and editor
-- The original editor prototype (`prototype/clip-website.html`) wasn't available, so the editor was built new from the static export. It covers the brief (drag, handles, snapping, typing in place, multi-select, copy and paste, undo and redo, phone layout, Add panel, sections, Settings, Site tab), but it will feel different from the prototype in places.
-- The content format was worked out from the static export (`docs/CONTENT-FORMAT.md`). If the prototype turns up, compare its format before anything else is built on this one.
+- The editor and the content format are the prototype's (`prototype/clip-website.html`). The prototype had live updates from other editors; here the drafts load again when the editor window gets focus, and a save that clashes with someone else's (409) loads their version and leaves this one on Undo.
 - Content in `[brackets]` is still unwritten: meeting time and room, events, speakers, roles, links, Instagram.
 - Uploaded photos are never deleted, even when no page uses them. Add a cleanup (list R2 objects not referenced by any draft or published doc) if storage grows.
 - Sign-up lists have no unsubscribe link; people email the club. Add one before sending a lot of email.
-- The editor has no marquee (drag-a-box) selection, no drag-and-drop of image files onto the canvas, and no cropping. The resize and rotate handles need a mouse; keyboard users can nudge with the arrow keys and type positions in Settings.
+- Like the prototype, the editor has no drag-a-box selection and no cropping. The handles need a mouse or touch; keyboard users can nudge with the arrow keys and type positions in Settings.
+- Not done yet, from the original repo's CLAUDE.md (left for later, as asked): the Access check with `jose` (`src/security/access.ts`), the sign-up rate limit (`SIGNUP_LIMITER`), the audit log, the privacy line under each sign-up form, the CI, CodeQL and deploy workflows, the `scuclip`/`scuclip-photos` names and the www route, and the zip's wrangler and vitest versions.
 - Ask CLIP answers from published content only (FAQ, board, speakers, events). The Claude-powered chat mode was dropped, as asked.
 
 ### Hosting

@@ -162,8 +162,9 @@ describe("request origin rules", () => {
     expect(page.status).toBe(200);
     expect(page.headers.get("Content-Type")).toContain("text/html");
     const html = await page.text();
+    expect(html).toContain('<script type="module" src="/editor/editor.js"></script>');
     expect(page.headers.get("Content-Security-Policy")).toContain("script-src 'self';");
-    for (const f of ["/editor/index.html", "/shared/render.js", "/shared/model.js", "/shared/layout.js"]) {
+    for (const f of ["/editor/index.html", "/editor/editor.js", "/editor/catalog.js", "/editor/api.js", "/editor/editor.css", "/shared/render.js", "/shared/model.js", "/shared/layout.js"]) {
       expect((await call(LOCAL_ADMIN + f, {}, LOCAL_ENV)).status, f).toBe(200);
       expect((await call(LOCAL_PUBLIC + f, {}, LOCAL_ENV)).status, f).toBe(f.startsWith("/editor/") ? 404 : 200);
     }
