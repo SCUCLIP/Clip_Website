@@ -1,0 +1,164 @@
+{
+ "v": 5,
+ "sections": [
+  {
+   "id": "sphsp01",
+   "h": 307.4,
+   "mh": 402.6,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ephsp01ent",
+     "type": "entry",
+     "tag": "Entry 005",
+     "label": "Speakers",
+     "pg": "this",
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephsp01ttl",
+     "type": "text",
+     "text": "Who's visited",
+     "hl": "",
+     "kind": "page",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118,
+      "w": 953,
+      "h": 73
+     },
+     "m": {
+      "x": 0,
+      "y": 94,
+      "w": 326,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephsp01led",
+     "type": "text",
+     "text": "People from biotech, pharma and medical devices who have spoken to CLIP members.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 207,
+      "w": 690.8,
+      "h": 64
+     },
+     "m": {
+      "x": 0,
+      "y": 163,
+      "w": 326,
+      "h": 86
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephsp01fig",
+     "type": "figure",
+     "fig": "mortar",
+     "d": {
+      "x": 980.2,
+      "y": 169.1,
+      "w": 200,
+      "h": 101
+     },
+     "m": {
+      "x": -0.2,
+      "y": 273.5,
+      "w": 200,
+      "h": 101
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
+    }
+   ]
+  },
+  {
+   "id": "sspls01",
+   "h": 466.8,
+   "mh": 1204,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "espls01lst",
+     "type": "list",
+     "src": "speakers",
+     "limit": "all",
+     "empty": "Speaker photos go up after each talk.",
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 394
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 1148
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "scall01",
+   "h": 314.8,
+   "mh": 366.5,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ecall01cal",
+     "type": "callout",
+     "title": "Know someone we should invite?",
+     "body": "Send us their name and what they work on.",
+     "showEmail": true,
+     "color": "blue",
+     "d": {
+      "x": 0,
+      "y": 36.6,
+      "w": 1180,
+      "h": 162
+     },
+     "m": {
+      "x": 0,
+      "y": 27.9,
+      "w": 326,
+      "h": 253
+     },
+     "mHide": false,
+     "r": -0.6
+    }
+   ]
+  }
+ ]
+}

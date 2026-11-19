@@ -1,0 +1,367 @@
+{
+ "v": 5,
+ "sections": [
+  {
+   "id": "shack01",
+   "h": 477.7,
+   "mh": 893.4,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ehack01eyb",
+     "type": "text",
+     "text": "Entry 004 · Experiment in progress",
+     "hl": "",
+     "kind": "eyebrow",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 308.6,
+      "h": 21
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 308.6,
+      "h": 21
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01ttl",
+     "type": "text",
+     "text": "CLIP",
+     "hl": "Biohackathon",
+     "kind": "big",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 107,
+      "w": 657.5,
+      "h": 88
+     },
+     "m": {
+      "x": 0,
+      "y": 83,
+      "w": 326,
+      "h": 114
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01led",
+     "type": "text",
+     "text": "We're planning a biohackathon for students. What it is, when it happens and how to apply go up here once the plan is final.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 217,
+      "w": 682.3,
+      "h": 64
+     },
+     "m": {
+      "x": 0,
+      "y": 219,
+      "w": 326,
+      "h": 115
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01frm",
+     "type": "form",
+     "list": "biohackathon",
+     "label": "Get the announcement",
+     "buttonLabel": "Notify me",
+     "okText": "Got it. We'll email you when the details are out.",
+     "d": {
+      "x": 0,
+      "y": 303.1,
+      "w": 560,
+      "h": 89
+     },
+     "m": {
+      "x": 0,
+      "y": 356.2,
+      "w": 326,
+      "h": 153
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01pen",
+     "type": "text",
+     "text": "one email when the details are out",
+     "hl": "",
+     "kind": "hand",
+     "color": "pen",
+     "fs": 26,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 414.3,
+      "w": 311.1,
+      "h": 27
+     },
+     "m": {
+      "x": 0,
+      "y": 531.4,
+      "w": 311.1,
+      "h": 27
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01stp",
+     "type": "stamp",
+     "text": "Status\nplanning",
+     "d": {
+      "x": 856.5,
+      "y": 134.9,
+      "w": 200,
+      "h": 99
+     },
+     "m": {
+      "x": 63,
+      "y": 618.6,
+      "w": 200,
+      "h": 99
+     },
+     "mHide": false,
+     "r": -8,
+     "k": 1,
+     "mk": null
+    },
+    {
+     "id": "ehack01msc",
+     "type": "doodle",
+     "sym": "flask",
+     "faint": false,
+     "d": {
+      "x": 874.1,
+      "y": 261.8,
+      "w": 96,
+      "h": 108
+     },
+     "m": {
+      "x": 80.6,
+      "y": 745.4,
+      "w": 96,
+      "h": 108
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehack01mlb",
+     "type": "text",
+     "text": "still\nbrewing",
+     "hl": "",
+     "kind": "hand",
+     "color": "teal",
+     "fs": 25,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 972.1,
+      "y": 291.3,
+      "w": 70.2,
+      "h": 53
+     },
+     "m": {
+      "x": 178.6,
+      "y": 774.9,
+      "w": 70.2,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "splan01",
+   "h": 643.5,
+   "mh": 1034.3,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "eplan01kck",
+     "type": "text",
+     "text": "Page plan",
+     "hl": "",
+     "kind": "eyebrow",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 874.7,
+      "h": 21
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 21
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eplan01ttl",
+     "type": "text",
+     "text": "Coming to this page",
+     "hl": "",
+     "kind": "section",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 67.4,
+      "w": 874.7,
+      "h": 56
+     },
+     "m": {
+      "x": 0,
+      "y": 59,
+      "w": 326,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eplan01int",
+     "type": "text",
+     "text": "Each part fills in once the plan is final.",
+     "hl": "",
+     "kind": "small",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 133.4,
+      "w": 874.7,
+      "h": 26
+     },
+     "m": {
+      "x": 0,
+      "y": 113,
+      "w": 326,
+      "h": 26
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eplan01fig",
+     "type": "figure",
+     "fig": "rxn",
+     "d": {
+      "x": 903.8,
+      "y": 93.3,
+      "w": 276,
+      "h": 65
+     },
+     "m": {
+      "x": 0.2,
+      "y": 163.1,
+      "w": 276,
+      "h": 65
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
+    },
+    {
+     "id": "eplan01lst",
+     "type": "list",
+     "src": "status",
+     "items": [
+      {
+       "title": "What it is",
+       "body": "[One paragraph on the event]",
+       "state": "pending"
+      },
+      {
+       "title": "When and where",
+       "body": "[Dates] · [Venue]",
+       "state": "pending"
+      },
+      {
+       "title": "Who can apply",
+       "body": "[Eligibility]",
+       "state": "pending"
+      },
+      {
+       "title": "How to apply",
+       "body": "[Application link] · [Deadline]",
+       "state": "pending"
+      }
+     ],
+     "limit": "all",
+     "empty": "",
+     "d": {
+      "x": 0,
+      "y": 191.4,
+      "w": 1180,
+      "h": 267
+     },
+     "m": {
+      "x": 0,
+      "y": 260.2,
+      "w": 326,
+      "h": 592
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eplan01cnt",
+     "type": "contact",
+     "lead": "Questions about the Biohackathon?",
+     "d": {
+      "x": 0,
+      "y": 490.6,
+      "w": 1180,
+      "h": 36
+     },
+     "m": {
+      "x": 0,
+      "y": 884.6,
+      "w": 326,
+      "h": 64
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  }
+ ]
+}

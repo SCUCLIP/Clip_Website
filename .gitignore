@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+*.log
+coverage/
+
+# The original repo, as the board sent it. Its prototype and seed are in prototype/ and content/seed/.
+prototype/Clip_Website.zip
+dist/

@@ -1,0 +1,679 @@
+{
+ "v": 5,
+ "sections": [
+  {
+   "id": "shero01",
+   "h": 613.7,
+   "mh": 1172.3,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ehero01eyb",
+     "type": "text",
+     "text": "Entry 001 · Santa Clara University · Est. 2025",
+     "hl": "",
+     "kind": "eyebrow",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 75.5,
+      "w": 416.8,
+      "h": 21
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 42
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01ttl",
+     "type": "text",
+     "text": "Meet the people who",
+     "hl": "make medicines.",
+     "kind": "hero",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118.5,
+      "w": 661.9,
+      "h": 162
+     },
+     "m": {
+      "x": 0,
+      "y": 104,
+      "w": 326,
+      "h": 160
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01led",
+     "type": "text",
+     "text": "CLIP connects Santa Clara students in bioengineering, biology, chemistry, computer science and business with people working in biotech, pharma and medical devices.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 302.5,
+      "w": 661.9,
+      "h": 96
+     },
+     "m": {
+      "x": 0,
+      "y": 286,
+      "w": 326,
+      "h": 144
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01btn1",
+     "type": "button",
+     "label": "Join CLIP",
+     "url": "#join",
+     "style": "primary",
+     "d": {
+      "x": 0,
+      "y": 426.5,
+      "w": 135.9,
+      "h": 52
+     },
+     "m": {
+      "x": 0,
+      "y": 457.9,
+      "w": 135.9,
+      "h": 52
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01btn2",
+     "type": "button",
+     "label": "See upcoming events",
+     "url": "#events",
+     "style": "secondary",
+     "d": {
+      "x": 149.8,
+      "y": 426.5,
+      "w": 238.6,
+      "h": 52
+     },
+     "m": {
+      "x": 0,
+      "y": 523.9,
+      "w": 238.6,
+      "h": 52
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01arw",
+     "type": "doodle",
+     "sym": "arrow",
+     "faint": false,
+     "d": {
+      "x": 18,
+      "y": 500.5,
+      "w": 56,
+      "h": 44
+     },
+     "m": {
+      "x": 18,
+      "y": 610.6,
+      "w": 56,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01pen",
+     "type": "text",
+     "text": "weekly meetings, every major welcome",
+     "hl": "",
+     "kind": "hand",
+     "color": "pen",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 78,
+      "y": 516.2,
+      "w": 347,
+      "h": 28
+     },
+     "m": {
+      "x": 78,
+      "y": 597.9,
+      "w": 248,
+      "h": 57
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01logo",
+     "type": "image",
+     "src": "logo",
+     "caption": "Fig. 1 · our logo",
+     "frame": "card",
+     "ar": 0.9677,
+     "tape": true,
+     "alt": "",
+     "d": {
+      "x": 781.5,
+      "y": 98.1,
+      "w": 330,
+      "h": 360
+     },
+     "m": {
+      "x": 29.5,
+      "y": 737.1,
+      "w": 267,
+      "h": 295
+     },
+     "mHide": false,
+     "r": 2
+    },
+    {
+     "id": "ehero01msc",
+     "type": "doodle",
+     "sym": "flask",
+     "faint": false,
+     "d": {
+      "x": 713.1,
+      "y": 446.1,
+      "w": 96,
+      "h": 108
+     },
+     "m": {
+      "x": 0,
+      "y": 1020.3,
+      "w": 96,
+      "h": 108
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ehero01mlb",
+     "type": "text",
+     "text": "our lab\nmascot",
+     "hl": "",
+     "kind": "hand",
+     "color": "teal",
+     "fs": 25,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 811.1,
+      "y": 475.6,
+      "w": 64.3,
+      "h": 53
+     },
+     "m": {
+      "x": 98,
+      "y": 1049.8,
+      "w": 64.3,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "kbenz01",
+     "type": "doodle",
+     "sym": "benzene",
+     "faint": true,
+     "d": {
+      "x": 1066.7,
+      "y": 69.9,
+      "w": 103.9,
+      "h": 104
+     },
+     "m": null,
+     "mHide": true,
+     "r": 0
+    },
+    {
+     "id": "kcaps01",
+     "type": "doodle",
+     "sym": "capsule",
+     "faint": false,
+     "d": {
+      "x": 734.7,
+      "y": 63.8,
+      "w": 48,
+      "h": 24
+     },
+     "m": null,
+     "mHide": true,
+     "r": -10
+    },
+    {
+     "id": "ktabl01",
+     "type": "doodle",
+     "sym": "tablet",
+     "faint": false,
+     "d": {
+      "x": 1117.5,
+      "y": 494.3,
+      "w": 26,
+      "h": 26
+     },
+     "m": null,
+     "mHide": true,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "sintr01",
+   "h": 605.2,
+   "mh": 1147.2,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "eintr01ent",
+     "type": "entry",
+     "tag": "Entry 002",
+     "label": "About",
+     "pg": "about",
+     "d": {
+      "x": 0,
+      "y": 59.6,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 44,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eintr01ttl",
+     "type": "text",
+     "text": "What CLIP does",
+     "hl": "",
+     "kind": "section",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 121.6,
+      "w": 326.8,
+      "h": 56
+     },
+     "m": {
+      "x": 0,
+      "y": 106,
+      "w": 259,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eintr01bdy",
+     "type": "text",
+     "text": "CLIP is a student-led club at Santa Clara University. We connect students with industry leaders, build skills you don't get in class, and show how coursework turns into real drug discovery, molecular engineering, biotech and AI for healthcare.",
+     "hl": "",
+     "kind": "body",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 197.6,
+      "w": 590.5,
+      "h": 119
+     },
+     "m": {
+      "x": 0,
+      "y": 170,
+      "w": 326,
+      "h": 208
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eintr01lnk",
+     "type": "link",
+     "label": "Read the full entry",
+     "url": "#about",
+     "d": {
+      "x": 0,
+      "y": 336.5,
+      "w": 182,
+      "h": 44
+     },
+     "m": {
+      "x": 0,
+      "y": 398,
+      "w": 182,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eintr01fig",
+     "type": "figure",
+     "fig": "aspirin",
+     "d": {
+      "x": 0.1,
+      "y": 400.6,
+      "w": 178,
+      "h": 145
+     },
+     "m": {
+      "x": 0.1,
+      "y": 462.1,
+      "w": 178,
+      "h": 145
+     },
+     "mHide": false,
+     "r": -1.5,
+     "k": 1,
+     "mk": null
+    },
+    {
+     "id": "eintr01lst",
+     "type": "list",
+     "src": "highlights",
+     "limit": "all",
+     "empty": "",
+     "d": {
+      "x": 643.1,
+      "y": 121.6,
+      "w": 537,
+      "h": 354
+     },
+     "m": {
+      "x": 0,
+      "y": 647.2,
+      "w": 326,
+      "h": 456
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "sevnt01",
+   "h": 519.2,
+   "mh": 1029.2,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "eevnt01ent",
+     "type": "entry",
+     "tag": "Entry 003",
+     "label": "Upcoming events",
+     "pg": "events",
+     "d": {
+      "x": 0,
+      "y": 59.6,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 44,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eevnt01ttl",
+     "type": "text",
+     "text": "On the calendar",
+     "hl": "",
+     "kind": "section",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 121.6,
+      "w": 315.5,
+      "h": 56
+     },
+     "m": {
+      "x": 0,
+      "y": 106,
+      "w": 250.2,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eevnt01int",
+     "type": "text",
+     "text": "General meetings every week, plus talks and skill-building sessions through the quarter.",
+     "hl": "",
+     "kind": "small",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 732,
+      "y": 126,
+      "w": 448,
+      "h": 51
+     },
+     "m": {
+      "x": 0,
+      "y": 162,
+      "w": 326,
+      "h": 77
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eevnt01lst",
+     "type": "list",
+     "src": "events",
+     "limit": "3",
+     "showLinks": false,
+     "empty": "New events are on the way. The weekly email has them first.",
+     "d": {
+      "x": 0,
+      "y": 209.6,
+      "w": 1180,
+      "h": 174
+     },
+     "m": {
+      "x": 0,
+      "y": 271,
+      "w": 326,
+      "h": 638
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eevnt01lnk",
+     "type": "link",
+     "label": "See all events",
+     "url": "#events",
+     "d": {
+      "x": 0,
+      "y": 415.6,
+      "w": 145,
+      "h": 44
+     },
+     "m": {
+      "x": 0,
+      "y": 941.2,
+      "w": 145,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "sspkr01",
+   "h": 739.1,
+   "mh": 1450,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "espkr01ent",
+     "type": "entry",
+     "tag": "Entry 005",
+     "label": "Past speakers",
+     "pg": "speakers",
+     "d": {
+      "x": 0,
+      "y": 59.6,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 44,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "espkr01ttl",
+     "type": "text",
+     "text": "Who's visited",
+     "hl": "",
+     "kind": "section",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 121.6,
+      "w": 1180,
+      "h": 56
+     },
+     "m": {
+      "x": 0,
+      "y": 106,
+      "w": 326,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "espkr01lst",
+     "type": "list",
+     "src": "speakers",
+     "limit": "3",
+     "empty": "Speaker photos go up after each talk.",
+     "d": {
+      "x": 0,
+      "y": 209.6,
+      "w": 1180,
+      "h": 394
+     },
+     "m": {
+      "x": 0,
+      "y": 182,
+      "w": 326,
+      "h": 1148
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "espkr01lnk",
+     "type": "link",
+     "label": "See all speakers",
+     "url": "#speakers",
+     "d": {
+      "x": 0,
+      "y": 635.6,
+      "w": 164,
+      "h": 44
+     },
+     "m": {
+      "x": 0,
+      "y": 1362,
+      "w": 164,
+      "h": 44
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "ssign01",
+   "h": 585.6,
+   "mh": 726.6,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "esign01sgn",
+     "type": "signup",
+     "list": "weekly",
+     "eyebrow": "Sign-up sheet · Newsletter",
+     "title": "Get the weekly email",
+     "body": "Event announcements, industry talks and research spotlights, once a week.",
+     "buttonLabel": "Sign up",
+     "okText": "You're on the list. Watch for the weekly email.",
+     "contact": "Or come to a weekly general meeting. Questions?",
+     "d": {
+      "x": 180,
+      "y": 59.7,
+      "w": 820,
+      "h": 408
+     },
+     "m": {
+      "x": 0,
+      "y": 44,
+      "w": 326,
+      "h": 595
+     },
+     "mHide": false,
+     "r": -1
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,179 @@
+{
+ "v": 5,
+ "sections": [
+  {
+   "id": "sphfq01",
+   "h": 275.3,
+   "mh": 360.2,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ephfq01ent",
+     "type": "entry",
+     "tag": "Entry 008",
+     "label": "FAQ",
+     "pg": "this",
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephfq01ttl",
+     "type": "text",
+     "text": "Questions we get",
+     "hl": "",
+     "kind": "page",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118,
+      "w": 986.4,
+      "h": 73
+     },
+     "m": {
+      "x": 0,
+      "y": 94,
+      "w": 326,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephfq01led",
+     "type": "text",
+     "text": "Still stuck after this? Ask CLIP in the corner, or email the board.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 207,
+      "w": 690.8,
+      "h": 32
+     },
+     "m": {
+      "x": 0,
+      "y": 163,
+      "w": 326,
+      "h": 58
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephfq01fig",
+     "type": "figure",
+     "fig": "sn2",
+     "d": {
+      "x": 1013,
+      "y": 151.3,
+      "w": 167,
+      "h": 87
+     },
+     "m": {
+      "x": 0,
+      "y": 245.1,
+      "w": 167,
+      "h": 87
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
+    }
+   ]
+  },
+  {
+   "id": "sfaqs01",
+   "h": 611.7,
+   "mh": 1175.2,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "efaqs01lst",
+     "type": "list",
+     "src": "faq",
+     "items": [
+      {
+       "q": "Who can join?",
+       "a": "Any SCU undergraduate, graduate student, faculty or staff member."
+      },
+      {
+       "q": "Do I need to be a bio or pharma major?",
+       "a": "No. CLIP is for every major, from bioengineering and chemistry to computer science and business."
+      },
+      {
+       "q": "What makes someone an active member?",
+       "a": "Coming to at least two CLIP events a quarter. Meetings, seminars and off-campus visits all count."
+      },
+      {
+       "q": "When do you meet?",
+       "a": "General meetings are weekly: [day, time, room]."
+      },
+      {
+       "q": "How do I join the board?",
+       "a": "Officers are picked by application each spring, in week 4 of spring quarter."
+      },
+      {
+       "q": "Can I suggest a speaker or event?",
+       "a": "Yes. Email connectingleaders@scu.edu or tell a board member at a meeting."
+      }
+     ],
+     "limit": "all",
+     "empty": "",
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 390
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 965
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "efaqs01cnt",
+     "type": "contact",
+     "lead": "Email the board:",
+     "d": {
+      "x": 0,
+      "y": 458.8,
+      "w": 1180,
+      "h": 36
+     },
+     "m": {
+      "x": 0,
+      "y": 1025.5,
+      "w": 326,
+      "h": 64
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  }
+ ]
+}

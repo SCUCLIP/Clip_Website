@@ -1,0 +1,25 @@
+{
+  "name": "clip-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website and editor for CLIP (Connecting Leaders in Innovation and Pharma) at Santa Clara University.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "vitest run",
+    "seed:sql": "node scripts/seed-sql.mjs",
+    "db:reset:local": "node scripts/db-reset-local.mjs",
+    "fonts:fetch": "node scripts/fetch-fonts.mjs",
+    "demo:build": "node scripts/build-demo.mjs",
+    "demo:serve": "node scripts/serve-demo.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.5.1",
+    "vitest": "4.1.12",
+    "wrangler": "4.156.2"
+  }
+}
