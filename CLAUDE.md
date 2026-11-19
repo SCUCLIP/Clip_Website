@@ -18,6 +18,7 @@ Content lives in D1 (`published` and `drafts`), photos in R2. Plain ES modules, 
 - `npm run seed:sql`: rebuild `migrations/0002_seed.sql` from `content/seed/*.json`. A migration runs once per database, so follow it with `npm run db:reset:local` to see the change locally.
 - `npm run db:reset:local`: delete the local database so the next `npm run dev` starts from the seed. `npm run db:reset:local -- --photos` also deletes local photos. Stop `npm run dev` first.
 - `npm run fonts:fetch`: download the self-hosted fonts again (only needed to change them).
+- `npm run demo:build`, then `npm run demo:serve`: the GitHub Pages demo, at http://127.0.0.1:8790 (see Demo).
 
 Never run `wrangler deploy`, `wrangler login`, `wrangler d1 execute` or anything with `--remote` from this repo during development (security rule 13).
 
@@ -28,6 +29,7 @@ Never run `wrangler deploy`, `wrangler login`, `wrangler d1 execute` or anything
 - `public/editor/`: the editor, served only on the admin host, ported from the prototype's `#admin` view and kept as close to it as possible. `editor.js` (everything the prototype's editor does), `catalog.js` (what the Add panel offers), `api.js` (the Worker's API, in place of the prototype's `window.claude`), `editor.css`. In the browser console, `window.clipEditor` is the editor's state.
 - `content/seed/`: the starting content, one JSON file per doc. `migrations/`: D1 schema and the generated seed.
 - `prototype/clip-website.html`: the working prototype, the spec for the look, the editor and the content format. `prototype/static/`: the same pages exported as plain HTML. The render must match them apart from links and asset paths.
+- `demo/`: the GitHub Pages demo's own files (see Demo). `scripts/build-demo.mjs` builds it into `dist/demo/`.
 - `docs/CONTENT-FORMAT.md`, `docs/THREAT-MODEL.md`, `docs/GO-LIVE.md`.
 
 ## Local mode
@@ -88,6 +90,14 @@ Public host:
 
 ## Drafts and versions
 Each draft row has a `version` that goes up by one on every save. The editor sends the version it loaded; if the row has moved on, the save is refused with 409 and the editor reloads that page and says someone else changed it. So two tabs saving the same page can't silently overwrite each other.
+
+## Demo (GitHub Pages)
+`.github/workflows/pages.yml` publishes a static demo from `main` (Pages source: GitHub Actions). It isn't the real
+site and never touches Cloudflare: `scripts/build-demo.mjs` renders the pages from `content/seed` with the shared
+code, and ships the real editor with `demo/api.js` in place of `public/editor/api.js`. Edits, photos, publish and
+sign-ups go to the visitor's own localStorage (`demo/store.js`); `demo/site.js` shows the visitor's published
+version on the pages. Every page sits at the demo's root and uses relative paths; don't add `<base href>`, which
+breaks the drawings. Keep the demo out of `public/`, so the Worker never serves it.
 
 ## Content format
 The prototype's v5 format, unchanged. See `docs/CONTENT-FORMAT.md`. In short: one doc per page (`{ v: 5, sections }`), plus `data` (the shared lists) and `settings`. Pages are sections of freely placed elements with a desktop box `d` and a phone box `m` (`null` = stacked at the bottom on phones). `[Brackets]` mark unwritten content. Links are `https://…` or `#page`/`#anchor`; `#about` renders as `/about` and `#join` as `/#join`.

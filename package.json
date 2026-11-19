@@ -13,7 +13,9 @@
     "test": "vitest run",
     "seed:sql": "node scripts/seed-sql.mjs",
     "db:reset:local": "node scripts/db-reset-local.mjs",
-    "fonts:fetch": "node scripts/fetch-fonts.mjs"
+    "fonts:fetch": "node scripts/fetch-fonts.mjs",
+    "demo:build": "node scripts/build-demo.mjs",
+    "demo:serve": "node scripts/serve-demo.mjs"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "1.5.1",
