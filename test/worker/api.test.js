@@ -1,4 +1,4 @@
-/* Every API route, and every refusal in CLAUDE.md security rule 12. */
+/* Every API route, and every refusal in CLAUDE.md security rule 13. */
 import { env } from "cloudflare:test";
 import { describe, expect, it, vi } from "vitest";
 import { call, fromEditor, stubNetwork, LOCAL_ADMIN, LOCAL_PUBLIC, PROD_PUBLIC, LOCAL_ENV, PROD_ENV } from "./helpers.js";
@@ -241,8 +241,10 @@ describe("photos", () => {
 });
 
 describe("sign-ups", () => {
-  const signup = (body, { base = LOCAL_PUBLIC, origin = base, envOver = LOCAL_ENV, type = "application/json" } = {}) =>
-    call(base + "/api/signup", { method: "POST", headers: { "Content-Type": type, ...(origin ? { Origin: origin } : {}) }, body: typeof body === "string" ? body : JSON.stringify(body) }, envOver);
+  /* Each call comes from its own IP address unless a test says otherwise, so the rate limit doesn't mix tests up. */
+  let nextIp = 1;
+  const signup = (body, { base = LOCAL_PUBLIC, origin = base, envOver = LOCAL_ENV, type = "application/json", ip = "10.1." + Math.floor(nextIp / 250) + "." + (nextIp++ % 250) } = {}) =>
+    call(base + "/api/signup", { method: "POST", headers: { "Content-Type": type, "CF-Connecting-IP": ip, ...(origin ? { Origin: origin } : {}) }, body: typeof body === "string" ? body : JSON.stringify(body) }, envOver);
   const rows = async () => (await env.DB.prepare("SELECT email, list FROM signups ORDER BY id").all()).results;
 
   it("stores the email (lowercased) and list in local mode, without Turnstile", async () => {
@@ -292,6 +294,36 @@ describe("sign-ups", () => {
     expect(await rows()).toEqual([{ email: "a@scu.edu", list: "weekly" }]);
   });
 
+  it("allows at most 5 sign-ups a minute from one IP address", async () => {
+    const ip = "203.0.113." + (Date.now() % 200);
+    for (let i = 0; i < 5; i++) expect((await signup({ email: `n${i}@scu.edu`, list: "weekly" }, { ip })).status, String(i)).toBe(200);
+    const sixth = await signup({ email: "n5@scu.edu", list: "weekly" }, { ip });
+    expect(sixth.status).toBe(429);
+    expect(sixth.headers.get("Retry-After")).toBe("60");
+    expect((await signup({ email: "other@scu.edu", list: "weekly" })).status).toBe(200);
+    expect(await rows()).toHaveLength(6);
+  });
+
+  it("refuses sign-ups when the rate limit isn't set up", async () => {
+    expect((await signup({ email: "a@scu.edu", list: "weekly" }, { envOver: { ...LOCAL_ENV, SIGNUP_LIMITER: undefined } })).status).toBe(503);
+    expect(await rows()).toEqual([]);
+  });
+
+  it("downloads a list as CSV, with formulas kept as text", async () => {
+    await signup({ email: "a@scu.edu", list: "weekly" });
+    await signup({ email: "=cmd@scu.edu", list: "weekly" });
+    await signup({ email: "b@scu.edu", list: "biohackathon" });
+    const res = await api("/api/admin/signups/weekly/csv");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toBe("text/csv; charset=utf-8");
+    expect(res.headers.get("Content-Disposition")).toBe('attachment; filename="clip-weekly-signups.csv"');
+    const lines = (await res.text()).trim().split("\r\n");
+    expect(lines[0]).toBe("email,signed_up");
+    expect(lines.slice(1).map((l) => l.split(",")[0])).toEqual(["a@scu.edu", "'=cmd@scu.edu"]);
+    expect((await api("/api/admin/signups/secret/csv")).status).toBe(404);
+    expect((await call(LOCAL_PUBLIC + "/api/admin/signups/weekly/csv", fromEditor("GET", undefined, LOCAL_PUBLIC), LOCAL_ENV)).status).toBe(404);
+  });
+
   it("lists sign-ups in the editor and deletes them", async () => {
     await signup({ email: "a@scu.edu", list: "weekly" });
     await signup({ email: "b@scu.edu", list: "biohackathon" });
@@ -302,5 +334,40 @@ describe("sign-ups", () => {
     expect((await api("/api/admin/signups/x", "DELETE")).status).toBe(404);
     expect(await rows()).toEqual([{ email: "a@scu.edu", list: "weekly" }]);
     expect((await call(LOCAL_PUBLIC + "/api/admin/signups", fromEditor("GET", undefined, LOCAL_PUBLIC), LOCAL_ENV)).status).toBe(404);
+  });
+});
+
+describe("audit log", () => {
+  const log = async () => (await env.DB.prepare("SELECT actor, action, target FROM audit_log ORDER BY id").all()).results;
+
+  it("records publish, discard, photo uploads, and sign-up deletes and downloads, without emails", async () => {
+    const home = await loadDraft("home");
+    home.draft.sections[0].elements[0].text = "Audited";
+    const saved = await (await api("/api/admin/drafts/home", "PUT", { version: home.version, doc: home.draft })).json();
+    expect(await log()).toEqual([]);
+    await api("/api/admin/publish", "POST", { versions: { home: saved.version } });
+    const about = await loadDraft("about");
+    about.draft.sections[0].elements[0].text = "Thrown away";
+    const a = await (await api("/api/admin/drafts/about", "PUT", { version: about.version, doc: about.draft })).json();
+    await api("/api/admin/discard", "POST", { versions: { about: a.version } });
+    const photo = await (await upload(PNG, "image/png")).json();
+    await call(LOCAL_PUBLIC + "/api/signup", { method: "POST", headers: { "Content-Type": "application/json", Origin: LOCAL_PUBLIC, "CF-Connecting-IP": "10.9.9.9" }, body: JSON.stringify({ email: "gone@scu.edu", list: "weekly" }) }, LOCAL_ENV);
+    const { signups } = await (await api("/api/admin/signups")).json();
+    await api("/api/admin/signups/weekly/csv");
+    await api("/api/admin/signups/" + signups[0].id, "DELETE");
+    expect(await log()).toEqual([
+      { actor: "local", action: "publish", target: "home" },
+      { actor: "local", action: "discard", target: "about" },
+      { actor: "local", action: "photo.upload", target: photo.id },
+      { actor: "local", action: "signup.export", target: "weekly" },
+      { actor: "local", action: "signup.delete", target: "signup:" + signups[0].id },
+    ]);
+    expect(JSON.stringify(await log())).not.toContain("gone@scu.edu");
+  });
+
+  it("records nothing when a publish or discard is refused", async () => {
+    expect((await api("/api/admin/publish", "POST", { versions: { home: 9 } })).status).toBe(409);
+    expect((await api("/api/admin/discard", "POST", { versions: { home: 9 } })).status).toBe(409);
+    expect(await log()).toEqual([]);
   });
 });

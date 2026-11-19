@@ -20,7 +20,8 @@ const DEV_ARGS = [
   "dev",
   "--ip", "127.0.0.1",                 // listen on this computer only
   "--port", "8787",
-  "--var", "LOCAL_MODE:1",             // local mode (it also needs a localhost hostname, see src/hosts.js)
+  "--var", "LOCAL_MODE:on",            // local mode (it also needs a localhost hostname, see src/hosts.js)
+  "--var", "ADMIN_HOST:admin.localhost", // the editor's hostname here (admin.scuclip.com when deployed)
   "--infer-origin-from-routes=false",  // keep the real Host and Origin; otherwise wrangler rewrites them to scuclip.com
 ];
 

@@ -10,9 +10,9 @@ export const TEAM = "clip-test.cloudflareaccess.com";
 export const AUD = "test-aud-0123456789";
 
 /** Local mode, as `npm run dev` sets it. */
-export const LOCAL_ENV = { LOCAL_MODE: "1" };
+export const LOCAL_ENV = { LOCAL_MODE: "on", ADMIN_HOST: "admin.localhost" };
 /** A deployed Worker with Access configured. */
-export const PROD_ENV = { ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, TURNSTILE_SITE_KEY: "site-key", TURNSTILE_SECRET: "secret" };
+export const PROD_ENV = { ACCESS_TEAM_DOMAIN: "https://" + TEAM, ACCESS_AUD: AUD, TURNSTILE_SITE_KEY: "site-key", TURNSTILE_SECRET: "secret" };
 
 /** Call the Worker directly with a request and env overrides. */
 export async function call(url, init = {}, envOverrides = {}) {

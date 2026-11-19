@@ -240,6 +240,7 @@ sub { font-size: 0.72em; line-height: 0; }
 .site .form-status:empty { min-height: 0; }
 .site .form-status.error { color: var(--pen); }
 .site .form-status.ok { color: var(--teal-ink); }
+.site .form-privacy { flex: 1 1 100%; margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
 .site .contact-line { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
 .site .addr { font-weight: 700; color: var(--ink); user-select: all; overflow-wrap: anywhere; }
 .copy-btn { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; background: transparent; border: 1.5px solid var(--ink); border-radius: 999px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); cursor: pointer; }

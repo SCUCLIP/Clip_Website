@@ -8,17 +8,13 @@ import {
 } from "./helpers.js";
 
 describe("local mode", () => {
-  it("is on only with LOCAL_MODE=1 and a localhost hostname", () => {
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "localhost")).toBe(true);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "admin.localhost")).toBe(true);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "ADMIN.LOCALHOST")).toBe(true);
+  it("is on only with LOCAL_MODE=on and a localhost hostname", () => {
+    for (const host of ["localhost", "admin.localhost", "ADMIN.LOCALHOST", "127.0.0.1", "x.localhost"]) expect(isLocalMode({ LOCAL_MODE: "on" }, host), host).toBe(true);
     expect(isLocalMode({}, "admin.localhost")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "true" }, "admin.localhost")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "0" }, "localhost")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "admin.scuclip.com")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "scuclip.com")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "127.0.0.1")).toBe(false);
-    expect(isLocalMode({ LOCAL_MODE: "1" }, "evil.localhost.example.com")).toBe(false);
+    for (const v of ["1", "true", "On", "yes", ""]) expect(isLocalMode({ LOCAL_MODE: v }, "localhost"), v).toBe(false);
+    for (const host of ["admin.scuclip.com", "scuclip.com", "evil.localhost.example.com", "localhost.evil.com", "127.0.0.2", "0.0.0.0"]) {
+      expect(isLocalMode({ LOCAL_MODE: "on" }, host), host).toBe(false);
+    }
   });
 
   it("the deployed config doesn't turn it on", async () => {
@@ -34,24 +30,24 @@ describe("local mode", () => {
     });
   });
 
-  it("stays off on admin.localhost without LOCAL_MODE", async () => {
-    const res = await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"), PROD_ENV);
-    expect(res.status).toBe(401);
-    const unconfigured = await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"));
-    expect(unconfigured.status).toBe(503);
+  it("stays off on admin.localhost without LOCAL_MODE and the local ADMIN_HOST", async () => {
+    expect((await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"), PROD_ENV)).status).toBe(404);
+    expect((await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"))).status).toBe(404);
+    expect((await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"), { ADMIN_HOST: "admin.localhost" })).status).toBe(503);
+    expect((await call(LOCAL_ADMIN + "/api/admin/session", fromEditor("GET"), { ...PROD_ENV, ADMIN_HOST: "admin.localhost" })).status).toBe(401);
   });
 
-  it("stays off on the real admin hostname even with LOCAL_MODE=1", async () => {
-    const res = await call(PROD_ADMIN + "/api/admin/session", fromEditor("GET", undefined, PROD_ADMIN), { ...PROD_ENV, ...LOCAL_ENV });
+  it("stays off on the real admin hostname even with LOCAL_MODE=on", async () => {
+    const res = await call(PROD_ADMIN + "/api/admin/session", fromEditor("GET", undefined, PROD_ADMIN), { ...PROD_ENV, LOCAL_MODE: "on" });
     expect(res.status).toBe(401);
-    const page = await call(PROD_ADMIN + "/", {}, { ...PROD_ENV, ...LOCAL_ENV });
+    const page = await call(PROD_ADMIN + "/", {}, { ...PROD_ENV, LOCAL_MODE: "on" });
     expect(page.status).toBe(401);
   });
 
   it("knows each host's origins", () => {
-    const local = siteFor(new URL("http://admin.localhost:8787/x"), { PUBLIC_HOST: "scuclip.com", ADMIN_HOST: "admin.scuclip.com", LOCAL_MODE: "1" });
+    const local = siteFor(new URL("http://admin.localhost:8787/x"), { PUBLIC_HOST: "scuclip.com", ADMIN_HOST: "admin.localhost", LOCAL_MODE: "on" });
     expect(local).toMatchObject({ kind: "admin", local: true, production: false, publicOrigin: "http://localhost:8787" });
-    const prod = siteFor(new URL("https://scuclip.com/"), { PUBLIC_HOST: "scuclip.com", ADMIN_HOST: "admin.scuclip.com", LOCAL_MODE: "1" });
+    const prod = siteFor(new URL("https://scuclip.com/"), { PUBLIC_HOST: "scuclip.com", ADMIN_HOST: "admin.scuclip.com", LOCAL_MODE: "on" });
     expect(prod).toMatchObject({ kind: "public", local: false, production: true, adminOrigin: "https://admin.scuclip.com" });
   });
 });
@@ -114,9 +110,11 @@ describe("request origin rules", () => {
     }
   });
 
-  it("refuses unknown hostnames", async () => {
-    const res = await call("http://127.0.0.1:8787/api/admin/session", fromEditor("GET"), LOCAL_ENV);
+  it("refuses unknown hostnames, and admin routes on 127.0.0.1", async () => {
+    const res = await call("http://127.0.0.1:8787/api/admin/session", fromEditor("GET", undefined, "http://127.0.0.1:8787"), LOCAL_ENV);
     expect(res.status).toBe(404);
+    expect((await call("http://127.0.0.1:8787/about", {}, LOCAL_ENV)).status).toBe(200);
+    expect((await call("http://127.0.0.1:8787/about", {}, PROD_ENV)).status).toBe(404);
     const other = await call("https://clip-website.example.workers.dev/", {}, LOCAL_ENV);
     expect(other.status).toBe(404);
   });
@@ -168,6 +166,13 @@ describe("request origin rules", () => {
       expect((await call(LOCAL_ADMIN + f, {}, LOCAL_ENV)).status, f).toBe(200);
       expect((await call(LOCAL_PUBLIC + f, {}, LOCAL_ENV)).status, f).toBe(f.startsWith("/editor/") ? 404 : 200);
     }
+  });
+
+  it("sends www.scuclip.com to scuclip.com", async () => {
+    const res = await call("https://www.scuclip.com/about?x=1", {}, PROD_ENV);
+    expect(res.status).toBe(301);
+    expect(res.headers.get("Location")).toBe("https://scuclip.com/about?x=1");
+    expect((await call("https://www.scuclip.com/api/admin/session", fromEditor("GET", undefined, "https://www.scuclip.com"), PROD_ENV)).status).toBe(301);
   });
 
   it("redirects plain HTTP to HTTPS on real hostnames", async () => {

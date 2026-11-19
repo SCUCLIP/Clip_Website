@@ -10,9 +10,10 @@
 import { apiError, json, text, methodNotAllowed, readText, readBytes } from "./http.js";
 import { verifyAccess } from "./access.js";
 import { isAssetPath, serveAsset } from "./assets.js";
-import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDrafts } from "./db.js";
+import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDrafts, audit } from "./db.js";
 import { storePhoto, listPhotos, servePhoto, MAX_PHOTO_BYTES } from "./photos.js";
-import { norm, isPageDoc, DOC_IDS, VIEW_IDS } from "../public/shared/model.js";
+import { norm, isPageDoc, DOC_IDS, VIEW_IDS, LIST_SIGNUP } from "../public/shared/model.js";
+import { signupsCsv } from "../public/shared/csv.js";
 
 const SAFE = new Set(["GET", "HEAD"]);
 /* A draft request, and the doc stored from it, are at most 256 KB. */
@@ -135,19 +136,39 @@ route("POST", "/api/admin/photos", async (c) => {
   const bytes = await readBytes(c.request, MAX_PHOTO_BYTES);
   if (bytes === null) return apiError(413, "Photos can be at most 10 MB.");
   const out = await storePhoto(c.env, bytes, c.request.headers.get("Content-Type"), c.editor.email);
-  return out.ok ? json(out.photo, 201) : apiError(out.status, out.message);
+  if (!out.ok) return apiError(out.status, out.message);
+  await audit(c.env, c.editor.email, "photo.upload", out.photo.id);
+  return json(out.photo, 201);
 });
 
-route("GET", "/api/admin/signups", async (c) => {
-  const { results } = await c.env.DB.prepare("SELECT id, email, list, created_at FROM signups ORDER BY list, created_at, id").all();
-  return json({ signups: results.map((r) => ({ id: r.id, email: r.email, list: r.list, createdAt: r.created_at })) });
+const signupRows = async (env, list) => {
+  const { results } = list
+    ? await env.DB.prepare("SELECT id, email, list, created_at FROM signups WHERE list = ? ORDER BY created_at, id").bind(list).all()
+    : await env.DB.prepare("SELECT id, email, list, created_at FROM signups ORDER BY list, created_at, id").all();
+  return results.map((r) => ({ id: r.id, email: r.email, list: r.list, createdAt: r.created_at }));
+};
+
+route("GET", "/api/admin/signups", async (c) => json({ signups: await signupRows(c.env) }));
+
+/* One list as a spreadsheet file. Every download goes in the audit log. */
+route("GET", "/api/admin/signups/:list/csv", async (c) => {
+  const { list } = c.params;
+  if (!LIST_SIGNUP.options.some((o) => o.v === list)) return apiError(404, "There's no such list.");
+  const rows = await signupRows(c.env, list);
+  await audit(c.env, c.editor.email, "signup.export", list);
+  return new Response(signupsCsv(rows), { headers: {
+    "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="clip-${list}-signups.csv"`,
+  } });
 });
 
+/* Takes someone off a list (they asked by email). The audit log records the row id, not the email. */
 route("DELETE", "/api/admin/signups/:id", async (c) => {
   const id = Number(c.params.id);
   if (!Number.isSafeInteger(id) || id < 1) return apiError(404, "There's no such sign-up.");
   const res = await c.env.DB.prepare("DELETE FROM signups WHERE id = ?").bind(id).run();
-  return res.meta.changes ? json({ ok: true }) : apiError(404, "There's no such sign-up.");
+  if (!res.meta.changes) return apiError(404, "There's no such sign-up.");
+  await audit(c.env, c.editor.email, "signup.delete", "signup:" + id);
+  return json({ ok: true });
 });
 
 export async function handleAdmin(request, env, ctx, site, url) {

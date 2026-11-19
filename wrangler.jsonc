@@ -1,19 +1,21 @@
 // Cloudflare Worker for the CLIP website (public site + editor).
 // Security rules live in CLAUDE.md and docs/THREAT-MODEL.md. In short:
 // - Never add a variable here that turns on local mode. `npm run dev` passes it on the command line.
-// - Secrets (TURNSTILE_SECRET) go in with `wrangler secret put`, never in this file.
-// - Before going live, follow docs/GO-LIVE.md (real D1 id, Access, Turnstile).
+// - Secrets (TURNSTILE_SECRET, SHEETS_SECRET) go in with `wrangler secret put`, never in this file.
+// - Before going live, follow docs/SETUP.md and docs/GO-LIVE.md (real D1 id, Access, Turnstile).
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "clip-website",
+  "name": "scuclip",
   "main": "src/index.js",
-  "compatibility_date": "2026-08-01",
+  "compatibility_date": "2026-11-01",
 
-  // Only the two custom domains below. No *.workers.dev address and no preview URLs.
+  // Only reachable through scuclip.com, www.scuclip.com (redirects) and admin.scuclip.com. No *.workers.dev
+  // address and no preview URLs, because those would skip Cloudflare Access.
   "workers_dev": false,
   "preview_urls": false,
   "routes": [
     { "pattern": "scuclip.com", "custom_domain": true },
+    { "pattern": "www.scuclip.com", "custom_domain": true },
     { "pattern": "admin.scuclip.com", "custom_domain": true }
   ],
 
@@ -32,23 +34,30 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "clip-website",
-      // Placeholder. Replace with the id from `wrangler d1 create clip-website` when going live (docs/GO-LIVE.md).
+      "database_name": "scuclip",
+      // Placeholder. Replace with the id of the D1 database "scuclip" when going live (docs/SETUP.md).
       "database_id": "00000000-0000-0000-0000-000000000000",
       "migrations_dir": "migrations"
     }
   ],
 
   "r2_buckets": [
-    { "binding": "PHOTOS", "bucket_name": "clip-website-photos" }
+    { "binding": "PHOTOS", "bucket_name": "scuclip-photos" }
   ],
+
+  // Sign-ups: at most 5 a minute from one IP address.
+  "ratelimits": [
+    { "name": "SIGNUP_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+
+  "observability": { "enabled": true },
 
   "vars": {
     "PUBLIC_HOST": "scuclip.com",
     "ADMIN_HOST": "admin.scuclip.com",
-    // Cloudflare Access: the team domain (<team>.cloudflareaccess.com) and the editor app's Audience (AUD) tag.
-    // Left empty, the editor refuses every request off localhost.
-    "ACCESS_TEAM_DOMAIN": "",
+    // Cloudflare Access: the team domain and the editor app's Audience (AUD) tag (docs/SETUP.md).
+    // Until ACCESS_AUD is filled in, the editor refuses every request off localhost.
+    "ACCESS_TEAM_DOMAIN": "https://scuclip.cloudflareaccess.com",
     "ACCESS_AUD": "",
     // Turnstile site key (public). The secret is TURNSTILE_SECRET, set with `wrangler secret put`.
     // Left empty, the sign-up forms refuse every request off localhost.

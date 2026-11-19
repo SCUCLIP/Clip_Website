@@ -12,6 +12,8 @@ export default {
     const url = new URL(request.url);
     const site = siteFor(url, env);
     if (!site.kind) return secure(text("Not found", 404), site);
+    /* www.scuclip.com goes to scuclip.com. */
+    if (site.kind === "www") return secure(redirect(`https://${env.PUBLIC_HOST}${url.pathname}${url.search}`, 301), site);
     /* Real hostnames are HTTPS only. */
     if (site.production && url.protocol === "http:") {
       url.protocol = "https:";

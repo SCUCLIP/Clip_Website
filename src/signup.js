@@ -1,6 +1,8 @@
 /* POST /api/signup on the public host. Stores the email, the list and the time; nothing else, and never logs
    the email. The list is one of the two the sign-up forms offer (weekly, biohackathon). Signing up twice looks the
-   same as signing up once, so nobody can find out who is on a list. */
+   same as signing up once, so nobody can find out who is on a list.
+   Before anything touches D1: the site's own Origin, the size and shape of the request, at most 5 sign-ups a
+   minute from one IP address (SIGNUP_LIMITER), and Turnstile everywhere except local mode. */
 
 import { apiError, json, methodNotAllowed, readText } from "./http.js";
 import { LIST_SIGNUP } from "../public/shared/model.js";
@@ -15,6 +17,12 @@ export async function handleSignup(request, env, site, url) {
   if (request.method !== "POST") return methodNotAllowed("POST");
   if (request.headers.get("Origin") !== url.origin) return apiError(403, "Sign up from the CLIP website.");
   if (!/^application\/json\b/i.test(request.headers.get("Content-Type") || "")) return apiError(415, "Send the sign-up as JSON.");
+  /* The rate limit comes before reading the body, so a flood costs as little as possible. Without the binding,
+     refuse: it's in wrangler.jsonc, so a missing one means the Worker is misconfigured. */
+  if (!env.SIGNUP_LIMITER) return apiError(503, "Online sign-up isn't available right now. Email the club instead.");
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const { success } = await env.SIGNUP_LIMITER.limit({ key: "signup:" + ip });
+  if (!success) return apiError(429, "Too many sign-ups from here. Wait a minute and try again.", {}, { "Retry-After": "60" });
   const raw = await readText(request, MAX_BYTES);
   if (raw === null) return apiError(413, "That sign-up is too large.");
   let body;

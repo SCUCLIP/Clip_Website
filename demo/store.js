@@ -4,6 +4,7 @@
 
 import { DOC_IDS, norm, canon, isPageDoc, VIEW_IDS, LIST_SIGNUP } from "../shared/model.js";
 import { SEED } from "./seed.js";
+import { signupsCsv as toCsv } from "../shared/csv.js";
 
 const KEY = "clip-demo-v1";
 const now = () => new Date().toISOString();
@@ -133,6 +134,10 @@ export function signup(email, list) {
     save();
   }
   return { ok: true };
+}
+export function signupsCsv(list) {
+  load();
+  return toCsv(state.signups.filter((s) => s.list === list).sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
 }
 export function deleteSignup(id) {
   load();

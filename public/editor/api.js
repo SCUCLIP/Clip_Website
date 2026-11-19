@@ -13,7 +13,7 @@ export class ApiError extends Error {
 
 const CODES = { 400: "invalid_argument", 401: "revoked", 403: "revoked", 404: "not_found", 409: "conflict", 413: "too_large", 415: "unsupported_type", 429: "resource_exhausted" };
 
-async function call(method, path, body, type) {
+async function call(method, path, body, type, asText) {
   const init = { method, headers: {}, credentials: "same-origin", cache: "no-store" };
   if (body !== undefined) {
     init.headers["Content-Type"] = type || "application/json";
@@ -21,6 +21,7 @@ async function call(method, path, body, type) {
   }
   let res;
   try { res = await fetch(path, init); } catch (_) { throw new ApiError(0, "unavailable", "The editor's server didn't answer."); }
+  if (asText && res.ok) return res.text();
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new ApiError(res.status, CODES[res.status] || (res.status >= 500 ? "unavailable" : "error"), data.error || "HTTP " + res.status, data);
   return data;
@@ -43,4 +44,6 @@ export const discard = (versions) => call("POST", "/api/admin/discard", { versio
 export const uploadPhoto = (blob) => call("POST", "/api/admin/photos", blob, blob.type || "application/octet-stream");
 /** { signups: [{ id, email, list, createdAt }] } */
 export const signups = () => call("GET", "/api/admin/signups");
+/** One list as CSV text. The server records the download in the audit log. */
+export const signupsCsv = (list) => call("GET", "/api/admin/signups/" + encodeURIComponent(list) + "/csv", undefined, undefined, true);
 export const deleteSignup = (id) => call("DELETE", "/api/admin/signups/" + encodeURIComponent(id));

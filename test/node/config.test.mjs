@@ -22,7 +22,7 @@ test("wrangler.jsonc keeps the Worker off workers.dev and holds no secrets", () 
 
 test("only npm run dev turns on local mode, with every flag local mode needs", () => {
   const dev = read("scripts/dev.mjs");
-  for (const flag of ['"--ip", "127.0.0.1"', '"--port", "8787"', '"--var", "LOCAL_MODE:1"', '"--infer-origin-from-routes=false"']) {
+  for (const flag of ['"--ip", "127.0.0.1"', '"--port", "8787"', '"--var", "LOCAL_MODE:on"', '"--var", "ADMIN_HOST:admin.localhost"', '"--infer-origin-from-routes=false"']) {
     assert.ok(dev.includes(flag), `scripts/dev.mjs is missing ${flag}`);
   }
   assert.ok(!/--remote/.test(dev), "dev must never use remote bindings");
@@ -30,7 +30,7 @@ test("only npm run dev turns on local mode, with every flag local mode needs", (
   assert.equal(pkg.scripts.dev, "node scripts/dev.mjs");
   for (const [name, cmd] of Object.entries(pkg.scripts)) {
     if (name !== "dev") assert.ok(!/LOCAL_MODE/.test(cmd), `npm script "${name}" must not set LOCAL_MODE`);
-    assert.ok(!/\b(deploy|--remote|login)\b/.test(cmd), `npm script "${name}" must not deploy, log in or use remote resources`);
+    assert.ok(!/\b(deploy|--remote|login)\b/.test(cmd.replace("wrangler deploy --dry-run", "")), `npm script "${name}" must not deploy, log in or use remote resources`);
   }
 });
 

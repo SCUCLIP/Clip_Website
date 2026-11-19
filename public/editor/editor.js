@@ -1328,12 +1328,10 @@ function signupsHTML() {
   const card = (k, label) => `<section class="adm-card" style="margin-bottom:10px"><div class="adm-card-head"><h3 class="adm-card-title">${label} · ${rows[k].length}</h3><button class="copy-btn" type="button" data-copy="${esc(rows[k].map((r) => r.email).join("\n"))}" data-copy-target="adm-list-${k}">Copy all</button>${rows[k].length ? `<button class="copy-btn" type="button" data-act="su-csv" data-list="${k}">CSV</button>` : ""}</div>${rows[k].length ? `<ol class="ce-signups" id="adm-list-${k}">${rows[k].map((r) => `<li><span>${esc(r.email)}</span>${del(r)}</li>`).join("")}</ol>` : '<p class="adm-help">No sign-ups yet.</p>'}</section>`;
   return card("weekly", "Weekly email") + card("biohackathon", "Biohackathon") + '<p class="ce-note">Only board editors can see these. Delete takes someone off a list when they ask.</p>';
 }
-/* A spreadsheet of one list. Cells that a spreadsheet would read as a formula get a leading quote. */
-function downloadCsv(list) {
-  const rows = A.signups && A.signups[list];
-  if (!rows) return;
-  const cell = (s) => { s = str(s); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const csv = "email,signed_up\n" + rows.map((r) => cell(r.email) + "," + cell(r.at)).join("\n") + "\n";
+/* A spreadsheet of one list, made by the server (which records the download in the audit log). */
+async function downloadCsv(list) {
+  let csv;
+  try { csv = await api.signupsCsv(list); } catch (_) { setFlash("The list couldn't download. Try again.", true); return; }
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   const a = document.createElement("a");
   a.href = url;
