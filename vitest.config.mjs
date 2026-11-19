@@ -2,7 +2,7 @@
    Each test starts from an empty store with every migration (including the seed) applied: see test/worker/setup.js. */
 import fs from "node:fs";
 import { defineConfig } from "vitest/config";
-import { cloudflareTest, readD1Migrations } from "@cloudflare/vitest-pool-workers";
+import { cloudflareTest, readD1Migrations } from "@cloudflare/vitest-plugin";
 
 export default defineConfig(async () => {
   const migrations = fs.existsSync("./migrations") ? await readD1Migrations("./migrations") : [];

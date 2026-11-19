@@ -31,7 +31,6 @@ Everything here needs the club's Cloudflare account. None of it has been done; t
 
 ## Left for later
 ### Tooling
-- `@cloudflare/vitest-pool-workers` has been renamed to `@cloudflare/vitest-plugin`. 0.23.0 still works with vitest 4; switch when convenient (`npx @cloudflare/codemods vitest:pool-workers-to-vitest-plugin`).
 - wrangler is pinned at 4.156.2; 4.164.0 is out. Upgrade deliberately, keeping `--infer-origin-from-routes=false` working.
 - While `npm run dev` runs, wrangler's file watcher can crash on the temporary files some editors write under `public/` ("ENOENT … .tmp"). Start `npm run dev` again if it stops.
 
