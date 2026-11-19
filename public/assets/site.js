@@ -2,7 +2,7 @@
    - scales the layout to the screen and switches to the phone layout below 1000px wide (shared/layout.js),
    - runs the phone menu, the Copy buttons, the sign-up forms (POST /api/signup) and the Ask CLIP chat.
    Ask CLIP answers from window.CLIP_FACTS, which /assets/clip-facts.js builds from the published content. */
-import { attachLayout } from "/shared/layout.js";
+import { attachLayout } from "../shared/layout.js";
 
 (() => {
   "use strict";

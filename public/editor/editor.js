@@ -17,10 +17,10 @@ import {
   CLUB_EMAIL, esc, str, arr, clone, uid, clamp, r1, canon, safeHref, BLOB_RE, blobSrc, getPath, setPath, DW, MW, PAGES,
   VIEW_IDS, DOC_IDS, pageLabel, pageNum, SYMS, ARROW_PATH, BG_OPTS, LISTS, LIST_ORDER, SETTINGS_FIELDS, listFields, EL,
   fieldsOf, hasText, elName, elSnippet, normElement, norm, usableDoc,
-} from "/shared/model.js";
-import { ICON, MASCOT, shellHTML, pageMain, boxStyle } from "/shared/render.js";
-import { fitSite, layoutAll, measure, arrangePhone, appendPhone } from "/shared/layout.js";
-import { SPRITE } from "/shared/sprite.js";
+} from "../shared/model.js";
+import { ICON, MASCOT, shellHTML, pageMain, boxStyle } from "../shared/render.js";
+import { fitSite, layoutAll, measure, arrangePhone, appendPhone } from "../shared/layout.js";
+import { SPRITE } from "../shared/sprite.js";
 import { NEW_W, SYM_W, makeElement, SEC_PRESETS, ADD_GROUPS, ADD_SPECS } from "./catalog.js";
 import * as api from "./api.js";
 
@@ -330,7 +330,8 @@ function bakeSec(s) {
     if (!b) return;
     const cur = e[k];
     const content = ["k", "auto"].includes(EL[e.type].size);
-    const nb = { x: cur ? cur.x : r1(b.x), y: r1(b.y), w: cur && !content ? cur.w : r1(b.w), h: r1(b.h) };
+    const typing = !!(cur && A.editEl && A.editEl.closest(".el") && A.editEl.closest(".el").dataset.eid === e.id);
+    const nb = { x: cur ? cur.x : r1(b.x), y: r1(b.y), w: cur && !content ? cur.w : r1(b.w), h: typing ? Math.max(cur.h, r1(b.h)) : r1(b.h) };
     if (!cur || cur.x !== nb.x || cur.y !== nb.y || cur.w !== nb.w || cur.h !== nb.h) { e[k] = nb; changed = true; }
   });
   const rh = r1(lay.rh);
