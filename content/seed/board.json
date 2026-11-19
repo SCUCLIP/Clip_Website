@@ -1,209 +1,285 @@
 {
-  "id": "board",
-  "title": "Board · CLIP at Santa Clara University",
-  "description": "Five officers, chosen by application each spring, and our faculty advisor.",
-  "sections": [
+ "v": 5,
+ "sections": [
+  {
+   "id": "sphbd01",
+   "h": 275.3,
+   "mh": 368.2,
+   "bg": "none",
+   "elements": [
     {
-      "id": "sphbd01",
-      "bg": "none",
-      "h": 275.3,
-      "mh": 368.2,
-      "els": [
-        {
-          "id": "ephbd01ent",
-          "type": "entry",
-          "d": [0, 64, 1180, 30],
-          "m": [0, 40, 326, 30],
-          "z": 1,
-          "num": "Entry 006",
-          "label": "Board",
-          "page": "p. 06",
-          "href": ""
-        },
-        {
-          "id": "ephbd01ttl",
-          "type": "text",
-          "d": [0, 118, 929.5, 73],
-          "m": [0, 94, 326, 53],
-          "z": 2,
-          "tag": "h1",
-          "kind": "page",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 74,
-          "mfs": 54,
-          "text": "Meet the board"
-        },
-        {
-          "id": "ephbd01led",
-          "type": "text",
-          "d": [0, 207, 690.8, 32],
-          "m": [0, 163, 326, 58],
-          "z": 3,
-          "tag": "p",
-          "kind": "lede",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 20,
-          "mfs": 18,
-          "text": "Five officers, chosen by application each spring, and our faculty advisor."
-        },
-        {
-          "id": "ephbd01fig",
-          "type": "figure",
-          "d": [957.1, 143.3, 223, 95],
-          "m": [-0.1, 245.1, 223, 95],
-          "z": 4,
-          "r": -2,
-          "art": "ballstick",
-          "alt": "Ball-and-stick molecule model",
-          "caption": "fig. 7 · ball-and-stick model",
-          "k": 1
-        }
-      ]
+     "id": "ephbd01ent",
+     "type": "entry",
+     "tag": "Entry 006",
+     "label": "Board",
+     "pg": "this",
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "smemb02",
-      "bg": "none",
-      "h": 425.4,
-      "mh": 901,
-      "els": [
-        {
-          "id": "ememb02lst",
-          "type": "list",
-          "d": [0, 36.4, 1180, 291],
-          "m": [0, 28, 326, 784],
-          "z": 1,
-          "kind": "members",
-          "items": [
-            {
-              "name": "Cindia Qi",
-              "role": "President",
-              "photo": ""
-            },
-            {
-              "name": "Gordon Yang",
-              "role": "Treasurer",
-              "photo": ""
-            },
-            {
-              "name": "Violetta Yousefpor",
-              "role": "Secretary",
-              "photo": ""
-            },
-            {
-              "name": "Agatha Zhao",
-              "role": "[Role]",
-              "photo": ""
-            },
-            {
-              "name": "Lulu Schollaert",
-              "role": "[Role]",
-              "photo": ""
-            }
-          ]
-        },
-        {
-          "id": "ememb02avl",
-          "type": "text",
-          "d": [0, 369.8, 127, 19],
-          "m": [0, 854, 127, 19],
-          "z": 2,
-          "tag": "p",
-          "kind": "eyebrow",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 12,
-          "mfs": 12,
-          "text": "Faculty advisor"
-        },
-        {
-          "id": "ememb02avn",
-          "type": "text",
-          "d": [136.4, 359.8, 106.7, 29],
-          "m": [136.4, 844, 106.7, 29],
-          "z": 3,
-          "tag": "p",
-          "kind": "hand",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 28,
-          "mfs": 28,
-          "text": "Dr. Zhang"
-        }
-      ]
+     "id": "ephbd01ttl",
+     "type": "text",
+     "text": "Meet the board",
+     "hl": "",
+     "kind": "page",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118,
+      "w": 929.5,
+      "h": 73
+     },
+     "m": {
+      "x": 0,
+      "y": 94,
+      "w": 326,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "sroles1",
-      "bg": "none",
-      "h": 725.3,
-      "mh": 1175.5,
-      "els": [
-        {
-          "id": "eroles1ttl",
-          "type": "text",
-          "d": [0, 36.4, 1180, 57],
-          "m": [0, 28, 326, 51],
-          "z": 1,
-          "tag": "h2",
-          "kind": "sub",
-          "color": "",
-          "align": "",
-          "rule": true,
-          "fs": 42,
-          "mfs": 36,
-          "text": "What each officer does"
-        },
-        {
-          "id": "eroles1lst",
-          "type": "list",
-          "d": [0, 125.8, 1180, 424],
-          "m": [0, 111, 326, 864],
-          "z": 2,
-          "kind": "roles",
-          "items": [
-            {
-              "title": "President",
-              "text": "Represents CLIP on campus and off, oversees events and projects, keeps in touch with industry leaders and builds partnerships with Bay Area organizations."
-            },
-            {
-              "title": "Vice President",
-              "text": "Represents CLIP, works with industry leaders and other SCU groups, and keeps budgets, registration forms, event posts and emails on time."
-            },
-            {
-              "title": "Secretary",
-              "text": "Takes meeting notes, books rooms, keeps the club calendar and agendas, and tracks attendance."
-            },
-            {
-              "title": "Treasurer",
-              "text": "Files funding requests, keeps the club's financial records, finds new funding and handles budget and reimbursement forms."
-            },
-            {
-              "title": "Marketing and Outreach",
-              "text": "Designs posters, sends the weekly email, runs promotion and sets up events with other clubs and departments."
-            }
-          ]
-        },
-        {
-          "id": "eroles1nte",
-          "type": "text",
-          "d": [0, 581.8, 1180, 27],
-          "m": [0, 1007.4, 326, 82],
-          "z": 3,
-          "tag": "p",
-          "kind": "small",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 17,
-          "mfs": 17,
-          "text": "Want to run for the board? Applications open each spring, and officers are picked in week 4 of spring quarter."
-        }
-      ]
+     "id": "ephbd01led",
+     "type": "text",
+     "text": "Five officers, chosen by application each spring, and our faculty advisor.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 207,
+      "w": 690.8,
+      "h": 32
+     },
+     "m": {
+      "x": 0,
+      "y": 163,
+      "w": 326,
+      "h": 58
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephbd01fig",
+     "type": "figure",
+     "fig": "ballstick",
+     "d": {
+      "x": 957.1,
+      "y": 143.3,
+      "w": 223,
+      "h": 95
+     },
+     "m": {
+      "x": -0.1,
+      "y": 245.1,
+      "w": 223,
+      "h": 95
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
     }
-  ]
+   ]
+  },
+  {
+   "id": "smemb02",
+   "h": 425.4,
+   "mh": 901,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ememb02lst",
+     "type": "list",
+     "src": "members",
+     "empty": "",
+     "limit": "all",
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 291
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 784
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ememb02avl",
+     "type": "text",
+     "text": "Faculty advisor",
+     "hl": "",
+     "kind": "eyebrow",
+     "color": "",
+     "fs": 12,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 369.8,
+      "w": 127,
+      "h": 19
+     },
+     "m": {
+      "x": 0,
+      "y": 854,
+      "w": 127,
+      "h": 19
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ememb02avn",
+     "type": "text",
+     "text": "Dr. Zhang",
+     "hl": "",
+     "kind": "hand",
+     "color": "",
+     "fs": 28,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 136.4,
+      "y": 359.8,
+      "w": 106.7,
+      "h": 29
+     },
+     "m": {
+      "x": 136.4,
+      "y": 844,
+      "w": 106.7,
+      "h": 29
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "sroles1",
+   "h": 725.3,
+   "mh": 1175.5,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "eroles1ttl",
+     "type": "text",
+     "text": "What each officer does",
+     "hl": "",
+     "kind": "sub",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": true,
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 57
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 51
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eroles1lst",
+     "type": "list",
+     "src": "roles",
+     "items": [
+      {
+       "title": "President",
+       "duties": "Represents CLIP on campus and off, oversees events and projects, keeps in touch with industry leaders and builds partnerships with Bay Area organizations."
+      },
+      {
+       "title": "Vice President",
+       "duties": "Represents CLIP, works with industry leaders and other SCU groups, and keeps budgets, registration forms, event posts and emails on time."
+      },
+      {
+       "title": "Secretary",
+       "duties": "Takes meeting notes, books rooms, keeps the club calendar and agendas, and tracks attendance."
+      },
+      {
+       "title": "Treasurer",
+       "duties": "Files funding requests, keeps the club's financial records, finds new funding and handles budget and reimbursement forms."
+      },
+      {
+       "title": "Marketing and Outreach",
+       "duties": "Designs posters, sends the weekly email, runs promotion and sets up events with other clubs and departments."
+      }
+     ],
+     "limit": "all",
+     "empty": "",
+     "d": {
+      "x": 0,
+      "y": 125.8,
+      "w": 1180,
+      "h": 424
+     },
+     "m": {
+      "x": 0,
+      "y": 111,
+      "w": 326,
+      "h": 864
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eroles1nte",
+     "type": "text",
+     "text": "Want to run for the board? Applications open each spring, and officers are picked in week 4 of spring quarter.",
+     "hl": "",
+     "kind": "small",
+     "color": "",
+     "fs": 17,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 581.8,
+      "w": 1180,
+      "h": 27
+     },
+     "m": {
+      "x": 0,
+      "y": 1007.4,
+      "w": 326,
+      "h": 82
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  }
+ ]
 }

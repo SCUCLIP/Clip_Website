@@ -1,0 +1,108 @@
+{
+ "events": [
+  {
+   "name": "General meeting",
+   "month": "Every",
+   "day": "week",
+   "time": "[Day] · [Time]",
+   "location": "[Room, building]",
+   "description": "The easiest way to meet the club. Come once, no sign-up needed.",
+   "linkLabel": "Get the weekly email",
+   "linkUrl": "#join"
+  },
+  {
+   "name": "[Event name]",
+   "month": "[Mon]",
+   "day": "[00]",
+   "time": "[Time]",
+   "location": "[Location]",
+   "description": "[One line on what happens and who's speaking]",
+   "linkLabel": "[RSVP link]",
+   "linkUrl": ""
+  },
+  {
+   "name": "[Event name]",
+   "month": "[Mon]",
+   "day": "[00]",
+   "time": "[Time]",
+   "location": "[Location]",
+   "description": "[One line on what happens and who's speaking]",
+   "linkLabel": "[RSVP link]",
+   "linkUrl": ""
+  }
+ ],
+ "past": [
+  {
+   "when": "Sept 2026",
+   "what": "Dr. Alice Tang spoke to CLIP · [Talk topic]"
+  },
+  {
+   "when": "[Month]",
+   "what": "[Add past events here]"
+  }
+ ],
+ "speakers": [
+  {
+   "name": "Dr. Alice Tang",
+   "when": "Sept 2026",
+   "role": "[Title, organization]",
+   "topic": "[Talk topic]",
+   "photo": ""
+  },
+  {
+   "name": "[Speaker name]",
+   "when": "[Month year]",
+   "role": "[Title, organization]",
+   "topic": "[Talk topic]",
+   "photo": ""
+  },
+  {
+   "name": "[Speaker name]",
+   "when": "[Month year]",
+   "role": "[Title, organization]",
+   "topic": "[Talk topic]",
+   "photo": ""
+  }
+ ],
+ "members": [
+  {
+   "name": "Cindia Qi",
+   "role": "President",
+   "photo": ""
+  },
+  {
+   "name": "Gordon Yang",
+   "role": "Treasurer",
+   "photo": ""
+  },
+  {
+   "name": "Violetta Yousefpor",
+   "role": "Secretary",
+   "photo": ""
+  },
+  {
+   "name": "Agatha Zhao",
+   "role": "[Role]",
+   "photo": ""
+  },
+  {
+   "name": "Lulu Schollaert",
+   "role": "[Role]",
+   "photo": ""
+  }
+ ],
+ "highlights": [
+  {
+   "title": "Talks with industry leaders",
+   "body": "Meet people working in biotech, pharma and medical devices, on campus and off."
+  },
+  {
+   "title": "Skill-building",
+   "body": "Build skills for drug discovery, molecular engineering, biotech and AI in healthcare."
+  },
+  {
+   "title": "Connections across the Bay Area",
+   "body": "Work with Bay Area organizations and other SCU clubs on events and projects."
+  }
+ ]
+}

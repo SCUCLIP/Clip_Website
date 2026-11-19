@@ -1,125 +1,164 @@
 {
-  "id": "speakers",
-  "title": "Speakers · CLIP at Santa Clara University",
-  "description": "People from biotech, pharma and medical devices who have spoken to CLIP members.",
-  "sections": [
+ "v": 5,
+ "sections": [
+  {
+   "id": "sphsp01",
+   "h": 307.4,
+   "mh": 402.6,
+   "bg": "none",
+   "elements": [
     {
-      "id": "sphsp01",
-      "bg": "none",
-      "h": 307.4,
-      "mh": 402.6,
-      "els": [
-        {
-          "id": "ephsp01ent",
-          "type": "entry",
-          "d": [0, 64, 1180, 30],
-          "m": [0, 40, 326, 30],
-          "z": 1,
-          "num": "Entry 005",
-          "label": "Speakers",
-          "page": "p. 05",
-          "href": ""
-        },
-        {
-          "id": "ephsp01ttl",
-          "type": "text",
-          "d": [0, 118, 953, 73],
-          "m": [0, 94, 326, 53],
-          "z": 2,
-          "tag": "h1",
-          "kind": "page",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 74,
-          "mfs": 54,
-          "text": "Who's visited"
-        },
-        {
-          "id": "ephsp01led",
-          "type": "text",
-          "d": [0, 207, 690.8, 64],
-          "m": [0, 163, 326, 86],
-          "z": 3,
-          "tag": "p",
-          "kind": "lede",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 20,
-          "mfs": 18,
-          "text": "People from biotech, pharma and medical devices who have spoken to CLIP members."
-        },
-        {
-          "id": "ephsp01fig",
-          "type": "figure",
-          "d": [980.2, 169.1, 200, 101],
-          "m": [-0.2, 273.5, 200, 101],
-          "z": 4,
-          "r": -2,
-          "art": "mortar",
-          "alt": "Mortar and pestle",
-          "caption": "fig. 6 · mortar and pestle",
-          "k": 1
-        }
-      ]
+     "id": "ephsp01ent",
+     "type": "entry",
+     "tag": "Entry 005",
+     "label": "Speakers",
+     "pg": "this",
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "sspls01",
-      "bg": "none",
-      "h": 466.8,
-      "mh": 1204,
-      "els": [
-        {
-          "id": "espls01lst",
-          "type": "list",
-          "d": [0, 36.4, 1180, 394],
-          "m": [0, 28, 326, 1148],
-          "z": 1,
-          "kind": "speakers",
-          "items": [
-            {
-              "name": "Dr. Alice Tang",
-              "when": "Sept 2026",
-              "title": "[Title, organization]",
-              "topic": "[Talk topic]",
-              "photo": ""
-            },
-            {
-              "name": "[Speaker name]",
-              "when": "[Month year]",
-              "title": "[Title, organization]",
-              "topic": "[Talk topic]",
-              "photo": ""
-            },
-            {
-              "name": "[Speaker name]",
-              "when": "[Month year]",
-              "title": "[Title, organization]",
-              "topic": "[Talk topic]",
-              "photo": ""
-            }
-          ]
-        }
-      ]
+     "id": "ephsp01ttl",
+     "type": "text",
+     "text": "Who's visited",
+     "hl": "",
+     "kind": "page",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118,
+      "w": 953,
+      "h": 73
+     },
+     "m": {
+      "x": 0,
+      "y": 94,
+      "w": 326,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "scall01",
-      "bg": "none",
-      "h": 314.8,
-      "mh": 366.5,
-      "els": [
-        {
-          "id": "ecall01cal",
-          "type": "callout",
-          "d": [0, 36.6, 1180, 162],
-          "m": [0, 27.9, 326, 253],
-          "z": 1,
-          "r": -0.6,
-          "title": "Know someone we should invite?",
-          "text": "Send us their name and what they work on."
-        }
-      ]
+     "id": "ephsp01led",
+     "type": "text",
+     "text": "People from biotech, pharma and medical devices who have spoken to CLIP members.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 207,
+      "w": 690.8,
+      "h": 64
+     },
+     "m": {
+      "x": 0,
+      "y": 163,
+      "w": 326,
+      "h": 86
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephsp01fig",
+     "type": "figure",
+     "fig": "mortar",
+     "d": {
+      "x": 980.2,
+      "y": 169.1,
+      "w": 200,
+      "h": 101
+     },
+     "m": {
+      "x": -0.2,
+      "y": 273.5,
+      "w": 200,
+      "h": 101
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
     }
-  ]
+   ]
+  },
+  {
+   "id": "sspls01",
+   "h": 466.8,
+   "mh": 1204,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "espls01lst",
+     "type": "list",
+     "src": "speakers",
+     "limit": "all",
+     "empty": "Speaker photos go up after each talk.",
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 394
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 1148
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "scall01",
+   "h": 314.8,
+   "mh": 366.5,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "ecall01cal",
+     "type": "callout",
+     "title": "Know someone we should invite?",
+     "body": "Send us their name and what they work on.",
+     "showEmail": true,
+     "color": "blue",
+     "d": {
+      "x": 0,
+      "y": 36.6,
+      "w": 1180,
+      "h": 162
+     },
+     "m": {
+      "x": 0,
+      "y": 27.9,
+      "w": 326,
+      "h": 253
+     },
+     "mHide": false,
+     "r": -0.6
+    }
+   ]
+  }
+ ]
 }

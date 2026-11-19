@@ -1,11 +1,11 @@
 /* Photos: uploaded in the editor, stored in R2 under photos/<id>, served at /photos/<id> on both hosts.
    Only PNG, JPEG, WebP and GIF, checked by their first bytes (never trusting the declared type alone), at most
-   5 MB. No SVG: it can carry scripts. */
+   10 MB. No SVG: it can carry scripts. The editor shrinks and re-encodes photos before uploading them. */
 
-import { PHOTO_ID } from "../public/shared/pages.js";
 import { nowIso } from "./db.js";
 
-export const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+export const PHOTO_ID = /^[a-f0-9]{32}$/;
+export const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
 export const PHOTO_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 /** The image type these bytes really are, or null. */

@@ -11,64 +11,91 @@ const published = async (id) => JSON.parse((await env.DB.prepare("SELECT body FR
 const PNG = Uint8Array.from(atob("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="), (c) => c.charCodeAt(0));
 const upload = (bytes, type) => call(LOCAL_ADMIN + "/api/admin/photos", fromEditor("POST", bytes, LOCAL_ADMIN, { "Content-Type": type }), LOCAL_ENV);
 
+const DOC_IDS = ["about", "biohackathon", "board", "data", "events", "faq", "home", "resources", "settings", "speakers"];
+const el = (doc, id) => doc.sections.flatMap((s) => s.elements).find((e) => e.id === id);
+
 describe("GET /api/admin/docs and /drafts/:id", () => {
   it("returns every doc with its draft, version and published copy", async () => {
     const res = await api("/api/admin/docs");
     expect(res.status).toBe(200);
     const { docs } = await res.json();
-    expect(Object.keys(docs).sort()).toEqual(["about", "biohackathon", "board", "events", "faq", "home", "resources", "site", "speakers"]);
+    expect(Object.keys(docs).sort()).toEqual(DOC_IDS);
     expect(docs.home).toMatchObject({ version: 1, draftUpdatedBy: "seed", publishedBy: "seed" });
     expect(docs.home.draft).toEqual(docs.home.published);
+    expect(docs.home.draft.v).toBe(5);
+    expect(docs.settings.draft.contactEmail).toBe("connectingleaders@scu.edu");
   });
 
   it("returns one doc, and 404 for anything else", async () => {
-    expect((await loadDraft("faq")).draft.id).toBe("faq");
-    expect((await api("/api/admin/drafts/admin")).status).toBe(404);
-    expect((await api("/api/admin/drafts/%E0%A4%A")).status).toBe(404);
+    expect((await loadDraft("faq")).draft.v).toBe(5);
+    expect((await loadDraft("data")).draft.members.length).toBe(5);
+    for (const id of ["admin", "site", "_meta", "%E0%A4%A"]) expect((await api("/api/admin/drafts/" + id)).status, id).toBe(404);
   });
 });
 
 describe("PUT /api/admin/drafts/:id", () => {
-  it("validates with norm(), saves and bumps the version", async () => {
+  it("saves what norm() returns and bumps the version", async () => {
     const { draft, version } = await loadDraft("about");
-    draft.title = "About CLIP";
+    el(draft, "ephab01ttl").text = "About CLIP";
     draft.junk = "dropped";
+    el(draft, "ephab01ttl").onclick = "dropped";
     const res = await api("/api/admin/drafts/about", "PUT", { version, doc: draft });
     expect(res.status).toBe(200);
     const out = await res.json();
     expect(out.version).toBe(version + 1);
-    expect(out.doc.title).toBe("About CLIP");
+    expect(el(out.doc, "ephab01ttl").text).toBe("About CLIP");
     expect(out.doc.junk).toBeUndefined();
-    const row = await env.DB.prepare("SELECT version, updated_by FROM drafts WHERE id = 'about'").first();
-    expect(row).toEqual({ version: 2, updated_by: "local" });
-    expect((await published("about")).title).not.toBe("About CLIP");
+    expect(el(out.doc, "ephab01ttl").onclick).toBeUndefined();
+    const row = await env.DB.prepare("SELECT body, version, updated_by FROM drafts WHERE id = 'about'").first();
+    expect({ version: row.version, updated_by: row.updated_by }).toEqual({ version: 2, updated_by: "local" });
+    expect(JSON.parse(row.body)).toEqual(out.doc);
+    expect(el(await published("about"), "ephab01ttl").text).not.toBe("About CLIP");
+  });
+
+  it("gives a normalized doc back unchanged", async () => {
+    for (const id of DOC_IDS) {
+      const { draft, version } = await loadDraft(id);
+      const out = await (await api("/api/admin/drafts/" + id, "PUT", { version, doc: draft })).json();
+      expect(out.doc, id).toEqual(draft);
+    }
+  });
+
+  it("repairs what it can, like the prototype's norm()", async () => {
+    const { draft, version } = await loadDraft("home");
+    el(draft, "ehero01btn1").url = "javascript:alert(document.cookie)";
+    el(draft, "ehero01ttl").kind = "gigantic";
+    el(draft, "ehero01logo").src = "../../secrets";
+    draft.sections[0].elements.push({ id: "bad1", type: "iframe", src: "https://evil.example" });
+    const out = await (await api("/api/admin/drafts/home", "PUT", { version, doc: draft })).json();
+    expect(el(out.doc, "ehero01btn1").url).toBe("javascript:alert(document.cookie)");
+    expect(el(out.doc, "ehero01ttl").kind).toBe("hero");
+    expect(el(out.doc, "ehero01logo").src).toBe("");
+    expect(el(out.doc, "bad1")).toBeUndefined();
+    /* The stored link is never rendered as a link. */
+    await api("/api/admin/publish", "POST", { versions: { home: out.version } });
+    const page = await (await call(LOCAL_PUBLIC + "/", {}, LOCAL_ENV)).text();
+    expect(page).not.toContain("javascript:");
   });
 
   it("refuses a stale version, so two tabs can't overwrite each other", async () => {
     const tabA = await loadDraft("home"), tabB = await loadDraft("home");
-    tabA.draft.title = "From tab A";
+    el(tabA.draft, "ehero01ttl").text = "From tab A";
     expect((await api("/api/admin/drafts/home", "PUT", { version: tabA.version, doc: tabA.draft })).status).toBe(200);
-    tabB.draft.title = "From tab B";
+    el(tabB.draft, "ehero01ttl").text = "From tab B";
     const res = await api("/api/admin/drafts/home", "PUT", { version: tabB.version, doc: tabB.draft });
     expect(res.status).toBe(409);
     expect(await res.json()).toMatchObject({ error: "Someone else changed this page.", version: 2 });
-    expect((await loadDraft("home")).draft.title).toBe("From tab A");
+    expect(el((await loadDraft("home")).draft, "ehero01ttl").text).toBe("From tab A");
   });
 
-  it("refuses content norm() rejects", async () => {
-    const { draft, version } = await loadDraft("home");
-    draft.sections[0].els[3].href = "javascript:alert(document.cookie)";
-    const res = await api("/api/admin/drafts/home", "PUT", { version, doc: draft });
-    expect(res.status).toBe(400);
-    expect((await res.json()).error).toMatch(/can't be saved: sections\[0\]\.els\[3\]\.href/);
-    expect((await loadDraft("home")).version).toBe(1);
-  });
-
-  it("escapes script in rich text instead of storing it", async () => {
-    const { draft, version } = await loadDraft("home");
-    draft.sections[0].els[1].text = 'Hi <img src=x onerror=alert(1)><b>bold</b>';
-    const out = await (await api("/api/admin/drafts/home", "PUT", { version, doc: draft })).json();
-    expect(out.doc.sections[0].els[1].text).toBe("Hi &lt;img src=x onerror=alert(1)&gt;<b>bold</b>");
+  it("refuses a page that isn't v5, and settings or data that aren't objects", async () => {
+    const { draft, version } = await loadDraft("about");
+    for (const doc of [{ ...draft, v: 4 }, { id: "about", title: "x", sections: [] }, [], "x", null]) {
+      const res = await api("/api/admin/drafts/about", "PUT", { version, doc });
+      expect(res.status, JSON.stringify(doc).slice(0, 40)).toBe(400);
+    }
+    for (const doc of [[], "x", null, 5]) expect((await api("/api/admin/drafts/settings", "PUT", { version: 1, doc })).status).toBe(400);
+    expect((await loadDraft("about")).version).toBe(1);
   });
 
   it("refuses bad requests", async () => {
@@ -76,12 +103,11 @@ describe("PUT /api/admin/drafts/:id", () => {
     expect((await api("/api/admin/drafts/nope", "PUT", { version, doc: draft })).status).toBe(404);
     expect((await api("/api/admin/drafts/faq", "PUT", { doc: draft })).status).toBe(400);
     expect((await api("/api/admin/drafts/faq", "PUT", { version: "1", doc: draft })).status).toBe(400);
-    expect((await api("/api/admin/drafts/faq", "PUT", { version, doc: "x" })).status).toBe(400);
     const notJson = await call(LOCAL_ADMIN + "/api/admin/drafts/faq", { ...fromEditor("PUT"), body: "{nope", headers: { ...fromEditor("PUT").headers, "Content-Type": "application/json" } }, LOCAL_ENV);
     expect(notJson.status).toBe(400);
     const wrongType = await call(LOCAL_ADMIN + "/api/admin/drafts/faq", { ...fromEditor("PUT"), body: JSON.stringify({ version, doc: draft }), headers: { ...fromEditor("PUT").headers, "Content-Type": "text/plain" } }, LOCAL_ENV);
     expect(wrongType.status).toBe(415);
-    const huge = await api("/api/admin/drafts/faq", "PUT", { version, doc: { ...draft, title: "x".repeat(600 * 1024) } });
+    const huge = await api("/api/admin/drafts/faq", "PUT", { version, doc: { ...draft, pad: "x".repeat(260 * 1024) } });
     expect(huge.status).toBe(413);
     expect((await api("/api/admin/drafts/faq", "POST", { version, doc: draft })).status).toBe(405);
   });
@@ -100,28 +126,28 @@ describe("PUT /api/admin/drafts/:id", () => {
 
 describe("POST /api/admin/publish", () => {
   it("copies drafts to published in one go", async () => {
-    const home = await loadDraft("home"), site = await loadDraft("site");
-    home.draft.title = "New home title";
-    site.draft.email = "board@scu.edu";
+    const home = await loadDraft("home"), settings = await loadDraft("settings");
+    el(home.draft, "ehero01ttl").text = "New home title";
+    settings.draft.contactEmail = "board@scu.edu";
     const h = await (await api("/api/admin/drafts/home", "PUT", { version: home.version, doc: home.draft })).json();
-    const s = await (await api("/api/admin/drafts/site", "PUT", { version: site.version, doc: site.draft })).json();
-    const res = await api("/api/admin/publish", "POST", { versions: { home: h.version, site: s.version } });
+    const s = await (await api("/api/admin/drafts/settings", "PUT", { version: settings.version, doc: settings.draft })).json();
+    const res = await api("/api/admin/publish", "POST", { versions: { home: h.version, settings: s.version } });
     expect(res.status).toBe(200);
-    expect((await res.json()).published).toEqual(["home", "site"]);
-    expect((await published("home")).title).toBe("New home title");
-    expect((await published("site")).email).toBe("board@scu.edu");
+    expect((await res.json()).published).toEqual(["home", "settings"]);
+    expect(el(await published("home"), "ehero01ttl").text).toBe("New home title");
+    expect((await published("settings")).contactEmail).toBe("board@scu.edu");
     const row = await env.DB.prepare("SELECT updated_by FROM published WHERE id = 'home'").first();
     expect(row.updated_by).toBe("local");
   });
 
   it("publishes nothing if any draft is stale", async () => {
     const home = await loadDraft("home"), faq = await loadDraft("faq");
-    home.draft.title = "Should not go live";
+    el(home.draft, "ehero01ttl").text = "Should not go live";
     const h = await (await api("/api/admin/drafts/home", "PUT", { version: home.version, doc: home.draft })).json();
     const res = await api("/api/admin/publish", "POST", { versions: { home: h.version, faq: faq.version + 5 } });
     expect(res.status).toBe(409);
     expect((await res.json()).stale).toEqual({ faq: 1 });
-    expect((await published("home")).title).not.toBe("Should not go live");
+    expect(el(await published("home"), "ehero01ttl").text).not.toBe("Should not go live");
     expect((await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_guard").first()).n).toBe(0);
   });
 
@@ -134,22 +160,36 @@ describe("POST /api/admin/publish", () => {
   });
 });
 
-describe("POST /api/admin/discard/:id", () => {
-  it("resets the draft to the published doc", async () => {
-    const { draft, version } = await loadDraft("events");
-    draft.title = "Throwaway";
-    const saved = await (await api("/api/admin/drafts/events", "PUT", { version, doc: draft })).json();
-    const res = await api("/api/admin/discard/events", "POST", { version: saved.version });
+describe("POST /api/admin/discard", () => {
+  it("resets every listed draft to its published doc", async () => {
+    const events = await loadDraft("events"), data = await loadDraft("data");
+    el(events.draft, "ephev01ttl").text = "Throwaway";
+    data.draft.members = [];
+    const e = await (await api("/api/admin/drafts/events", "PUT", { version: events.version, doc: events.draft })).json();
+    const d = await (await api("/api/admin/drafts/data", "PUT", { version: data.version, doc: data.draft })).json();
+    const res = await api("/api/admin/discard", "POST", { versions: { events: e.version, data: d.version } });
     expect(res.status).toBe(200);
-    const out = await res.json();
-    expect(out.version).toBe(saved.version + 1);
-    expect(out.doc).toEqual(await published("events"));
+    const { docs } = await res.json();
+    expect(docs.events.version).toBe(e.version + 1);
+    expect(docs.events.draft).toEqual(await published("events"));
+    expect(docs.data.draft.members.length).toBe(5);
   });
 
-  it("refuses a stale version and unknown pages", async () => {
-    expect((await api("/api/admin/discard/events", "POST", { version: 9 })).status).toBe(409);
-    expect((await api("/api/admin/discard/nope", "POST", { version: 1 })).status).toBe(404);
-    expect((await api("/api/admin/discard/events", "POST", {})).status).toBe(400);
+  it("discards nothing if any version is stale", async () => {
+    const events = await loadDraft("events");
+    el(events.draft, "ephev01ttl").text = "Keep me";
+    const e = await (await api("/api/admin/drafts/events", "PUT", { version: events.version, doc: events.draft })).json();
+    const res = await api("/api/admin/discard", "POST", { versions: { events: e.version, faq: 9 } });
+    expect(res.status).toBe(409);
+    expect((await res.json()).stale).toEqual({ faq: 1 });
+    expect(el((await loadDraft("events")).draft, "ephev01ttl").text).toBe("Keep me");
+  });
+
+  it("refuses bad requests", async () => {
+    expect((await api("/api/admin/discard", "POST", {})).status).toBe(400);
+    expect((await api("/api/admin/discard", "POST", { versions: { nope: 1 } })).status).toBe(404);
+    expect((await api("/api/admin/discard", "POST", { versions: { events: "1" } })).status).toBe(400);
+    expect((await api("/api/admin/discard/events", "POST", { version: 1 })).status).toBe(404);
   });
 });
 
@@ -182,8 +222,8 @@ describe("photos", () => {
     expect((await upload(new Uint8Array(0), "image/png")).status).toBe(400);
   });
 
-  it("refuses photos over 5 MB", async () => {
-    const big = new Uint8Array(5 * 1024 * 1024 + 1);
+  it("refuses photos over 10 MB", async () => {
+    const big = new Uint8Array(10 * 1024 * 1024 + 1);
     big.set(PNG);
     expect((await upload(big, "image/png")).status).toBe(413);
   });
@@ -233,11 +273,10 @@ describe("sign-ups", () => {
     expect(await rows()).toEqual([]);
   });
 
-  it("accepts only lists used in published content", async () => {
-    const home = await loadDraft("home");
-    home.draft.sections[4].els[0].list = "newlist";
-    await api("/api/admin/drafts/home", "PUT", { version: home.version, doc: home.draft });
-    expect((await signup({ email: "a@scu.edu", list: "newlist" })).status).toBe(400);
+  it("accepts only the two lists the forms offer", async () => {
+    for (const list of ["weekly", "biohackathon"]) expect((await signup({ email: "a@scu.edu", list })).status, list).toBe(200);
+    for (const list of ["Weekly", "newlist", "", "weekly "]) expect((await signup({ email: "b@scu.edu", list })).status, list).toBe(400);
+    expect(await rows()).toHaveLength(2);
   });
 
   it("needs Turnstile on the real hostname, even with LOCAL_MODE set", async () => {

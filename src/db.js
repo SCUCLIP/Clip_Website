@@ -91,14 +91,33 @@ export async function publishDrafts(env, versions, by) {
 }
 
 /**
- * Reset a draft to its published doc if `version` is still current.
- * @returns {Promise<{ok: true, version: number} | {ok: false, current: number | null}>}
+ * Reset these drafts to their published docs in one transaction. Each draft must still be at the given version and
+ * have a published doc, or nothing changes (the publish_guard CHECK aborts the batch).
+ * @param {Record<string, number>} versions
+ * @returns {Promise<{ok: true, at: string} | {ok: false, stale: Record<string, number | null>}>}
  */
-export async function discardDraft(env, id, version, by) {
-  const res = await env.DB.prepare(
-    `UPDATE drafts SET body = (SELECT body FROM published WHERE id = ?1), version = version + 1, updated_at = ?2, updated_by = ?3
-     WHERE id = ?1 AND version = ?4 AND EXISTS (SELECT 1 FROM published WHERE id = ?1)`,
-  ).bind(id, nowIso(), by, version).run();
-  if (res.meta.changes === 1) return { ok: true, version: version + 1 };
-  return { ok: false, current: await draftVersion(env, id) };
+export async function discardDrafts(env, versions, by) {
+  const at = nowIso();
+  const stmts = [];
+  for (const [id, v] of Object.entries(versions)) {
+    stmts.push(env.DB.prepare(
+      "INSERT INTO publish_guard (ok) SELECT COUNT(*) FROM drafts d JOIN published p USING (id) WHERE d.id = ? AND d.version = ?",
+    ).bind(id, v));
+    stmts.push(env.DB.prepare(
+      "UPDATE drafts SET body = (SELECT body FROM published WHERE id = ?1), version = version + 1, updated_at = ?2, updated_by = ?3 WHERE id = ?1",
+    ).bind(id, at, by));
+  }
+  stmts.push(env.DB.prepare("DELETE FROM publish_guard"));
+  try {
+    await env.DB.batch(stmts);
+    return { ok: true, at };
+  } catch (err) {
+    if (!/CHECK constraint failed/i.test(String(err?.message ?? err))) throw err;
+    const stale = {};
+    for (const [id, v] of Object.entries(versions)) {
+      const cur = await draftVersion(env, id);
+      if (cur !== v) stale[id] = cur;
+    }
+    return { ok: false, stale };
+  }
 }

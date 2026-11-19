@@ -46,11 +46,11 @@ describe("pages", () => {
 
   it("shows a published edit, and not a draft", async () => {
     const { draft, version } = await (await api("/api/admin/drafts/about")).json();
-    draft.sections[0].els[1].text = "What CLIP <b>really</b> does";
+    draft.sections[0].elements.find((e) => e.id === "ephab01ttl").text = "What CLIP <b>really</b> does\nnext [line]";
     const saved = await (await api("/api/admin/drafts/about", "PUT", { version, doc: draft })).json();
     expect(await (await get("/about")).text()).not.toContain("really");
     await api("/api/admin/publish", "POST", { versions: { about: saved.version } });
-    expect(await (await get("/about")).text()).toContain('What CLIP <b>really</b> does</h1>');
+    expect(await (await get("/about")).text()).toContain('What CLIP &lt;b&gt;really&lt;/b&gt; does<br>next <span class="ph">[line]</span>');
   });
 
   it("sends a strict CSP: fonts and styles only from the site", async () => {
@@ -104,10 +104,10 @@ describe("files", () => {
     expect(facts.faqs).toHaveLength(6);
     expect(facts.members.map((m) => m.name)).toContain("Cindia Qi");
 
-    const { draft, version } = await (await api("/api/admin/drafts/site")).json();
-    draft.email = "board@scu.edu";
-    const saved = await (await api("/api/admin/drafts/site", "PUT", { version, doc: draft })).json();
-    await api("/api/admin/publish", "POST", { versions: { site: saved.version } });
+    const { draft, version } = await (await api("/api/admin/drafts/settings")).json();
+    draft.contactEmail = "board@scu.edu";
+    const saved = await (await api("/api/admin/drafts/settings", "PUT", { version, doc: draft })).json();
+    await api("/api/admin/publish", "POST", { versions: { settings: saved.version } });
     expect(await (await get("/assets/clip-facts.js")).text()).toContain('"email": "board@scu.edu"');
     expect(await (await get("/")).text()).toContain('<span class="addr">board@scu.edu</span>');
   });

@@ -2,7 +2,7 @@
 import { env } from "cloudflare:test";
 import { describe, expect, it } from "vitest";
 
-const DOC_IDS = ["site", "home", "about", "events", "biohackathon", "speakers", "board", "resources", "faq"];
+const DOC_IDS = ["home", "about", "events", "biohackathon", "speakers", "board", "resources", "faq", "data", "settings"];
 const seedMigration = () => env.TEST_MIGRATIONS.find((m) => m.name.startsWith("0002_"));
 const runSeedAgain = () => env.DB.batch(seedMigration().queries.map((q) => env.DB.prepare(q)));
 

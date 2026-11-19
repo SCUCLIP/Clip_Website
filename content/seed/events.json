@@ -1,172 +1,214 @@
 {
-  "id": "events",
-  "title": "Events · CLIP at Santa Clara University",
-  "description": "General meetings every week, plus talks and skill-building sessions through the quarter. New events go out in the weekly email first.",
-  "sections": [
+ "v": 5,
+ "sections": [
+  {
+   "id": "sphev01",
+   "h": 307.4,
+   "mh": 463.4,
+   "bg": "none",
+   "elements": [
     {
-      "id": "sphev01",
-      "bg": "none",
-      "h": 307.4,
-      "mh": 463.4,
-      "els": [
-        {
-          "id": "ephev01ent",
-          "type": "entry",
-          "d": [0, 64, 1180, 30],
-          "m": [0, 40, 326, 30],
-          "z": 1,
-          "num": "Entry 003",
-          "label": "Events",
-          "page": "p. 03",
-          "href": ""
-        },
-        {
-          "id": "ephev01ttl",
-          "type": "text",
-          "d": [0, 118, 876.8, 73],
-          "m": [0, 94, 326, 53],
-          "z": 2,
-          "tag": "h1",
-          "kind": "page",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 74,
-          "mfs": 54,
-          "text": "On the calendar"
-        },
-        {
-          "id": "ephev01led",
-          "type": "text",
-          "d": [0, 207, 690.8, 64],
-          "m": [0, 163, 326, 115],
-          "z": 3,
-          "tag": "p",
-          "kind": "lede",
-          "color": "",
-          "align": "",
-          "rule": false,
-          "fs": 20,
-          "mfs": 18,
-          "text": "General meetings every week, plus talks and skill-building sessions through the quarter. New events go out in the weekly email first."
-        },
-        {
-          "id": "ephev01fig",
-          "type": "figure",
-          "d": [905.8, 137.1, 274, 133],
-          "m": [0.2, 302.3, 274, 133],
-          "z": 4,
-          "r": -2,
-          "art": "tlc",
-          "alt": "Thin-layer chromatography plate with two spots",
-          "caption": "fig. 4 · TLC plate, R<sub>f</sub> 0.67 and 0.33",
-          "k": 1
-        }
-      ]
+     "id": "ephev01ent",
+     "type": "entry",
+     "tag": "Entry 003",
+     "label": "Events",
+     "pg": "this",
+     "d": {
+      "x": 0,
+      "y": 64,
+      "w": 1180,
+      "h": 30
+     },
+     "m": {
+      "x": 0,
+      "y": 40,
+      "w": 326,
+      "h": 30
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "sevls01",
-      "bg": "none",
-      "h": 388.2,
-      "mh": 887,
-      "els": [
-        {
-          "id": "eevls01ttl",
-          "type": "text",
-          "d": [0, 36.4, 1180, 57],
-          "m": [0, 28, 326, 51],
-          "z": 1,
-          "tag": "h2",
-          "kind": "sub",
-          "color": "",
-          "align": "",
-          "rule": true,
-          "fs": 42,
-          "mfs": 36,
-          "text": "Coming up"
-        },
-        {
-          "id": "eevls01lst",
-          "type": "list",
-          "d": [0, 125.8, 1180, 226],
-          "m": [0, 111, 326, 748],
-          "z": 2,
-          "kind": "events",
-          "items": [
-            {
-              "month": "Every",
-              "day": "week",
-              "name": "General meeting",
-              "time": "[Day] · [Time]",
-              "location": "[Room, building]",
-              "desc": "The easiest way to meet the club. Come once, no sign-up needed.",
-              "linkLabel": "Get the weekly email",
-              "linkHref": "#join"
-            },
-            {
-              "month": "[Mon]",
-              "day": "[00]",
-              "name": "[Event name]",
-              "time": "[Time]",
-              "location": "[Location]",
-              "desc": "[One line on what happens and who's speaking]",
-              "linkLabel": "[RSVP link]",
-              "linkHref": ""
-            },
-            {
-              "month": "[Mon]",
-              "day": "[00]",
-              "name": "[Event name]",
-              "time": "[Time]",
-              "location": "[Location]",
-              "desc": "[One line on what happens and who's speaking]",
-              "linkLabel": "[RSVP link]",
-              "linkHref": ""
-            }
-          ]
-        }
-      ]
+     "id": "ephev01ttl",
+     "type": "text",
+     "text": "On the calendar",
+     "hl": "",
+     "kind": "page",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 118,
+      "w": 876.8,
+      "h": 73
+     },
+     "m": {
+      "x": 0,
+      "y": 94,
+      "w": 326,
+      "h": 53
+     },
+     "mHide": false,
+     "r": 0
     },
     {
-      "id": "spast01",
-      "bg": "none",
-      "h": 355.6,
-      "mh": 387.3,
-      "els": [
-        {
-          "id": "epast01ttl",
-          "type": "text",
-          "d": [0, 36.4, 1180, 57],
-          "m": [0, 28, 326, 51],
-          "z": 1,
-          "tag": "h2",
-          "kind": "sub",
-          "color": "",
-          "align": "",
-          "rule": true,
-          "fs": 42,
-          "mfs": 36,
-          "text": "Past events"
-        },
-        {
-          "id": "epast01lst",
-          "type": "list",
-          "d": [0, 125.8, 1180, 113],
-          "m": [0, 111, 326, 190],
-          "z": 2,
-          "kind": "past",
-          "items": [
-            {
-              "when": "Sept 2026",
-              "what": "Dr. Alice Tang spoke to CLIP · [Talk topic]"
-            },
-            {
-              "when": "[Month]",
-              "what": "[Add past events here]"
-            }
-          ]
-        }
-      ]
+     "id": "ephev01led",
+     "type": "text",
+     "text": "General meetings every week, plus talks and skill-building sessions through the quarter. New events go out in the weekly email first.",
+     "hl": "",
+     "kind": "lede",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": false,
+     "d": {
+      "x": 0,
+      "y": 207,
+      "w": 690.8,
+      "h": 64
+     },
+     "m": {
+      "x": 0,
+      "y": 163,
+      "w": 326,
+      "h": 115
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "ephev01fig",
+     "type": "figure",
+     "fig": "tlc",
+     "d": {
+      "x": 905.8,
+      "y": 137.1,
+      "w": 274,
+      "h": 133
+     },
+     "m": {
+      "x": 0.2,
+      "y": 302.3,
+      "w": 274,
+      "h": 133
+     },
+     "mHide": false,
+     "r": -2,
+     "k": 1,
+     "mk": null
     }
-  ]
+   ]
+  },
+  {
+   "id": "sevls01",
+   "h": 388.2,
+   "mh": 887,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "eevls01ttl",
+     "type": "text",
+     "text": "Coming up",
+     "hl": "",
+     "kind": "sub",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": true,
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 57
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 51
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "eevls01lst",
+     "type": "list",
+     "src": "events",
+     "limit": "all",
+     "showLinks": true,
+     "empty": "Nothing on the calendar right now. New events go out in the weekly email first.",
+     "d": {
+      "x": 0,
+      "y": 125.8,
+      "w": 1180,
+      "h": 226
+     },
+     "m": {
+      "x": 0,
+      "y": 111,
+      "w": 326,
+      "h": 748
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  },
+  {
+   "id": "spast01",
+   "h": 355.6,
+   "mh": 387.3,
+   "bg": "none",
+   "elements": [
+    {
+     "id": "epast01ttl",
+     "type": "text",
+     "text": "Past events",
+     "hl": "",
+     "kind": "sub",
+     "color": "",
+     "fs": 0,
+     "align": "left",
+     "rule": true,
+     "d": {
+      "x": 0,
+      "y": 36.4,
+      "w": 1180,
+      "h": 57
+     },
+     "m": {
+      "x": 0,
+      "y": 28,
+      "w": 326,
+      "h": 51
+     },
+     "mHide": false,
+     "r": 0
+    },
+    {
+     "id": "epast01lst",
+     "type": "list",
+     "src": "past",
+     "empty": "",
+     "limit": "all",
+     "d": {
+      "x": 0,
+      "y": 125.8,
+      "w": 1180,
+      "h": 113
+     },
+     "m": {
+      "x": 0,
+      "y": 111,
+      "w": 326,
+      "h": 190
+     },
+     "mHide": false,
+     "r": 0
+    }
+   ]
+  }
+ ]
 }

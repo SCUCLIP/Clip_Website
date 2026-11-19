@@ -4,8 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { norm } from "../../public/shared/norm.js";
-import { DOC_IDS } from "../../public/shared/pages.js";
+import { norm, DOC_IDS } from "../../public/shared/model.js";
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const SEED_DIR = path.join(ROOT, "content/seed");
@@ -15,14 +14,14 @@ export const SEED_TIME = "2026-11-12T00:00:00.000Z";
 
 const sql = (s) => "'" + String(s).replace(/'/g, "''") + "'";
 
-/** Read and validate every seed doc. Throws if one is missing or fails norm(). */
+/** Every seed doc, normalized. Throws if one is missing or isn't valid JSON. */
 export function readSeedDocs() {
   return DOC_IDS.map((id) => {
     const file = path.join(SEED_DIR, id + ".json");
     if (!fs.existsSync(file)) throw new Error(`content/seed/${id}.json is missing`);
     let raw;
     try { raw = JSON.parse(fs.readFileSync(file, "utf8")); } catch (e) { throw new Error(`content/seed/${id}.json isn't valid JSON: ${e.message}`); }
-    try { return norm(id, raw); } catch (e) { throw new Error(`content/seed/${id}.json: ${e.message}`); }
+    return { id, doc: norm(id, raw) };
   });
 }
 
@@ -32,10 +31,10 @@ export function buildSeedSql(docs = readSeedDocs()) {
     "-- Inserts every doc into both published and drafts with INSERT OR IGNORE, so it never overwrites later edits.",
     "",
   ];
-  for (const doc of docs) {
+  for (const { id, doc } of docs) {
     const body = sql(JSON.stringify(doc));
-    lines.push(`INSERT OR IGNORE INTO published (id, body, updated_at, updated_by) VALUES (${sql(doc.id)}, ${body}, ${sql(SEED_TIME)}, 'seed');`);
-    lines.push(`INSERT OR IGNORE INTO drafts (id, body, version, updated_at, updated_by) VALUES (${sql(doc.id)}, ${body}, 1, ${sql(SEED_TIME)}, 'seed');`);
+    lines.push(`INSERT OR IGNORE INTO published (id, body, updated_at, updated_by) VALUES (${sql(id)}, ${body}, ${sql(SEED_TIME)}, 'seed');`);
+    lines.push(`INSERT OR IGNORE INTO drafts (id, body, version, updated_at, updated_by) VALUES (${sql(id)}, ${body}, 1, ${sql(SEED_TIME)}, 'seed');`);
   }
   return lines.join("\n") + "\n";
 }

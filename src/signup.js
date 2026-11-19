@@ -1,15 +1,14 @@
 /* POST /api/signup on the public host. Stores the email, the list and the time; nothing else, and never logs
-   the email. The list must be used by a sign-up form in published content. Signing up twice looks the same as
-   signing up once, so nobody can find out who is on a list. */
+   the email. The list is one of the two the sign-up forms offer (weekly, biohackathon). Signing up twice looks the
+   same as signing up once, so nobody can find out who is on a list. */
 
 import { apiError, json, methodNotAllowed, readText } from "./http.js";
-import { getPublished } from "./db.js";
-import { listNames } from "../public/shared/norm.js";
-import { PAGE_IDS } from "../public/shared/pages.js";
+import { LIST_SIGNUP } from "../public/shared/model.js";
 import { turnstileRequired, verifyTurnstile } from "./turnstile.js";
 import { nowIso } from "./db.js";
 
 const MAX_BYTES = 4096;
+export const LISTS = LIST_SIGNUP.options.map((o) => o.v);
 export const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 
 export async function handleSignup(request, env, site, url) {
@@ -25,8 +24,7 @@ export async function handleSignup(request, env, site, url) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   if (!email || email.length > 254 || !EMAIL_RE.test(email)) return apiError(400, "Enter an email address like you@scu.edu.");
   const list = typeof body.list === "string" ? body.list : "";
-  const published = Object.values(await getPublished(env, PAGE_IDS));
-  if (!listNames(published).has(list)) return apiError(400, "That sign-up list doesn't exist.");
+  if (!LISTS.includes(list)) return apiError(400, "That sign-up list doesn't exist.");
 
   if (turnstileRequired(site)) {
     const check = await verifyTurnstile(body.token, env, request.headers.get("CF-Connecting-IP") || "");

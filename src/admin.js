@@ -10,13 +10,13 @@
 import { apiError, json, text, methodNotAllowed, readText, readBytes } from "./http.js";
 import { verifyAccess } from "./access.js";
 import { isAssetPath, serveAsset } from "./assets.js";
-import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDraft } from "./db.js";
+import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDrafts } from "./db.js";
 import { storePhoto, listPhotos, servePhoto, MAX_PHOTO_BYTES } from "./photos.js";
-import { norm, NormError } from "../public/shared/norm.js";
-import { DOC_IDS } from "../public/shared/pages.js";
+import { norm, isPageDoc, DOC_IDS, VIEW_IDS } from "../public/shared/model.js";
 
 const SAFE = new Set(["GET", "HEAD"]);
-const MAX_DRAFT_BYTES = 512 * 1024;
+/* A draft request, and the doc stored from it, are at most 256 KB. */
+export const MAX_DRAFT_BYTES = 256 * 1024;
 const MAX_JSON_BYTES = 16 * 1024;
 
 /** @returns {Promise<{res: Response} | {editor: {email: string, local: boolean}}>} */
@@ -52,6 +52,17 @@ async function readJson(request, limit) {
 }
 const isVersion = (v) => Number.isInteger(v) && v >= 1;
 const knownDoc = (id) => DOC_IDS.includes(id);
+const isObject = (v) => !!v && typeof v === "object" && !Array.isArray(v);
+
+/** Check a versions map ({ [docId]: version }) from a publish or discard. Returns a refusal, or null. */
+function badVersions(versions, what) {
+  if (!isObject(versions) || !Object.keys(versions).length) return apiError(400, `Say which pages to ${what}.`);
+  for (const [id, v] of Object.entries(versions)) {
+    if (!knownDoc(id)) return apiError(404, `There's no page called "${id}".`);
+    if (!isVersion(v)) return apiError(400, `Send the version of each page you're going to ${what}.`);
+  }
+  return null;
+}
 
 /* ---------- Routes ---------- */
 const ROUTES = [];
@@ -82,11 +93,11 @@ route("PUT", "/api/admin/drafts/:id", async (c) => {
   if (r.res) return r.res;
   const { version, doc } = r.body;
   if (!isVersion(version)) return apiError(400, "Send the version you loaded.");
-  let clean;
-  try { clean = norm(id, doc); } catch (err) {
-    if (err instanceof NormError) return apiError(400, "This page can't be saved: " + err.message);
-    throw err;
-  }
+  /* Like the prototype: norm() repairs the doc, and what it returns is stored. Only a page that isn't in the
+     current format (v: 5), or a data or settings doc that isn't an object, is refused. */
+  if (VIEW_IDS.includes(id) ? !isPageDoc(doc) : !isObject(doc)) return apiError(400, "This page is in an old format, so it can't be saved. Reload the editor.");
+  const clean = norm(id, doc);
+  if (JSON.stringify(clean).length > MAX_DRAFT_BYTES) return apiError(413, "This page is too large to save.");
   const saved = await saveDraft(c.env, id, version, clean, c.editor.email);
   if (saved.ok) return json({ version: saved.version, doc: clean });
   if (saved.current === null) return apiError(404, "There's no such page.");
@@ -97,33 +108,32 @@ route("POST", "/api/admin/publish", async (c) => {
   const r = await readJson(c.request, MAX_JSON_BYTES);
   if (r.res) return r.res;
   const versions = r.body.versions;
-  if (!versions || typeof versions !== "object" || Array.isArray(versions) || !Object.keys(versions).length) return apiError(400, "Say which pages to publish.");
-  for (const [id, v] of Object.entries(versions)) {
-    if (!knownDoc(id)) return apiError(404, `There's no page called "${id}".`);
-    if (!isVersion(v)) return apiError(400, "Send the version of each page you're publishing.");
-  }
+  const bad = badVersions(versions, "publish");
+  if (bad) return bad;
   const out = await publishDrafts(c.env, versions, c.editor.email);
   if (out.ok) return json({ published: Object.keys(versions), at: out.at });
   return apiError(409, "Someone else changed a page you're publishing, so nothing was published.", { stale: out.stale });
 });
 
-route("POST", "/api/admin/discard/:id", async (c) => {
-  const { id } = c.params;
-  if (!knownDoc(id)) return apiError(404, "There's no such page.");
+/* Discard: the listed drafts go back to their published docs, all at once or not at all. */
+route("POST", "/api/admin/discard", async (c) => {
   const r = await readJson(c.request, MAX_JSON_BYTES);
   if (r.res) return r.res;
-  if (!isVersion(r.body.version)) return apiError(400, "Send the version you loaded.");
-  const out = await discardDraft(c.env, id, r.body.version, c.editor.email);
-  if (out.ok) return json({ version: out.version, doc: (await getDoc(c.env, id)).draft });
-  if (out.current === null) return apiError(404, "There's no such page.");
-  return apiError(409, "Someone else changed this page.", { version: out.current });
+  const versions = r.body.versions;
+  const bad = badVersions(versions, "discard");
+  if (bad) return bad;
+  const out = await discardDrafts(c.env, versions, c.editor.email);
+  if (!out.ok) return apiError(409, "Someone else changed a page you're discarding, so nothing was discarded.", { stale: out.stale });
+  const docs = {};
+  for (const id of Object.keys(versions)) docs[id] = await getDoc(c.env, id);
+  return json({ docs });
 });
 
 route("GET", "/api/admin/photos", async (c) => json({ photos: await listPhotos(c.env) }));
 
 route("POST", "/api/admin/photos", async (c) => {
   const bytes = await readBytes(c.request, MAX_PHOTO_BYTES);
-  if (bytes === null) return apiError(413, "Photos can be at most 5 MB.");
+  if (bytes === null) return apiError(413, "Photos can be at most 10 MB.");
   const out = await storePhoto(c.env, bytes, c.request.headers.get("Content-Type"), c.editor.email);
   return out.ok ? json(out.photo, 201) : apiError(out.status, out.message);
 });
