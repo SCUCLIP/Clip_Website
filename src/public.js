@@ -7,9 +7,8 @@ import { servePhoto } from "./photos.js";
 import { handleSignup } from "./signup.js";
 import { getPublished } from "./db.js";
 import { turnstileSiteKey } from "./turnstile.js";
-import { norm, DOC_IDS, VIEW_IDS } from "../public/shared/model.js";
+import { norm, VIEW_IDS } from "../public/shared/model.js";
 import { renderPage, renderNotFound, pagePath } from "../public/shared/export.js";
-import { buildFacts, factsScript } from "../public/shared/facts.js";
 
 const PAGE_BY_PATH = new Map(VIEW_IDS.map((id) => [pagePath(id), id]));
 const NO_CACHE = { "Cache-Control": "no-cache" };
@@ -33,11 +32,6 @@ export async function handlePublic(request, env, ctx, site, url) {
   if (path.startsWith("/api/")) return apiError(404, "Not found");
   if (request.method !== "GET" && request.method !== "HEAD") return methodNotAllowed("GET, HEAD");
 
-  if (path === "/assets/clip-facts.js") {
-    const C = await publishedDocs(env, DOC_IDS);
-    if (!C) return notLoaded();
-    return new Response(factsScript(buildFacts(C)), { headers: { "Content-Type": "text/javascript; charset=utf-8", ...NO_CACHE } });
-  }
   if (path.startsWith("/photos/")) return servePhoto(env, request, path.slice(8));
   if (isAssetPath(path, "public")) return serveAsset(env, request, path);
 

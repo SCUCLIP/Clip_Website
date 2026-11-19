@@ -1,7 +1,7 @@
 /* A whole public page, the way the Worker serves it. The page markup itself comes from render.js (the prototype's
    render code). This file adds only what the static export in prototype/static/ added around it:
    - the <head> (title, and the page's first intro paragraph as its description),
-   - the drawings sprite and the Ask CLIP panel from the prototype's <body>,
+   - the drawings sprite from the prototype's <body>,
    - clean links (#about -> /about, #join -> /#join),
    - the browser's way of writing HTML out: <use ...></use> instead of <use .../>, and ' instead of &#39;.
    The result matches prototype/static/*.html apart from links and asset paths (test/node/render.test.mjs). */
@@ -47,34 +47,6 @@ export function pageDescription(doc) {
   return "CLIP (Connecting Leaders in Innovation and Pharma), a student club at Santa Clara University.";
 }
 
-const CHAT = `<button class="chat-launcher" id="chat-launcher" type="button" aria-expanded="false" aria-controls="chat-panel">
-  <span class="av" aria-hidden="true"><svg width="36" height="40"><use href="#flask-mini"/></svg></span>
-  <span>Ask CLIP</span>
-</button>
-
-<section class="chat-panel" id="chat-panel" role="dialog" aria-label="Ask CLIP" hidden>
-  <div class="chat-head">
-    <span class="av" aria-hidden="true"><svg width="32" height="36"><use href="#flask-mini"/></svg></span>
-    <div class="chat-title"><h2>Ask CLIP</h2><p>Club questions, any time</p></div>
-    <button class="icon-btn" id="chat-close" type="button" aria-label="Close chat"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3L15 15M15 3L3 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-  </div>
-  <div class="chat-log" id="chat-log" role="log" aria-live="polite">
-    <p class="msg bot">Hi! I'm the CLIP lab assistant. Ask me about meetings, joining, the board or the Biohackathon.</p>
-    <div class="chat-suggest" id="chat-suggest">
-      <button class="chip-btn" type="button">When do you meet?</button>
-      <button class="chip-btn" type="button">Who can join?</button>
-      <button class="chip-btn" type="button">How do I join the board?</button>
-      <button class="chip-btn" type="button">What's the Biohackathon?</button>
-    </div>
-  </div>
-  <form class="chat-form" id="chat-form" novalidate>
-    <label class="sr-only" for="chat-input">Ask a question</label>
-    <input class="chat-input" id="chat-input" type="text" autocomplete="off" maxlength="500" placeholder="Ask about CLIP">
-    <button class="icon-btn send-btn" id="chat-send" type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path id="chat-send-icon" d="M3 9H15M10 4L15 9L10 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-  </form>
-  <p class="chat-foot" id="chat-mode">Answers from the CLIP FAQ.</p>
-</section>`;
-
 /**
  * A whole public page.
  * @param {Record<string, object>} C  normalized published docs: the page, "data" and "settings"
@@ -102,8 +74,6 @@ export function renderPage(C, id, opts = {}) {
 <body>
 ${SPRITE}
 ${site}
-${CHAT}
-<script src="/assets/clip-facts.js"></script>
 <script type="module" src="/assets/site.js"></script>
 </body>
 </html>

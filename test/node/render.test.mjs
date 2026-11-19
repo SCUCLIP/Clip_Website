@@ -8,7 +8,6 @@ import { expectedHtml, readSeed, STATIC_FILES, ROOT } from "./static-html.mjs";
 import { DOC_IDS, VIEW_IDS, EL, LISTS, LIST_ORDER, norm, listMake } from "../../public/shared/model.js";
 import { pageMain, headerHTML, footerHTML } from "../../public/shared/render.js";
 import { renderPage, renderNotFound, cleanUrl } from "../../public/shared/export.js";
-import { buildFacts } from "../../public/shared/facts.js";
 
 const seed = () => Object.fromEntries(DOC_IDS.map((id) => [id, readSeed(id)]));
 
@@ -23,10 +22,9 @@ for (const id of Object.keys(STATIC_FILES)) {
   });
 }
 
-test("Ask CLIP's facts from the seed match the export's clip-facts.js", () => {
-  const src = fs.readFileSync(path.join(ROOT, "prototype/static/assets/clip-facts.js"), "utf8");
-  const want = JSON.parse(src.replace(/^[\s\S]*?window\.CLIP_FACTS = /, "").replace(/;\s*$/, ""));
-  assert.deepEqual(buildFacts(seed()), want);
+test("there's no Ask CLIP", () => {
+  const html = renderPage(seed(), "faq");
+  assert.ok(!/chat-launcher|chat-panel|clip-facts/.test(html));
 });
 
 test("links render as clean URLs", () => {

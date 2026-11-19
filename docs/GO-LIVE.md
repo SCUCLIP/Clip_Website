@@ -41,7 +41,7 @@ Everything here needs the club's Cloudflare account. None of it has been done; t
 - Sign-up lists have no unsubscribe link; people email the club. Add one before sending a lot of email.
 - Like the prototype, the editor has no drag-a-box selection and no cropping. The handles need a mouse or touch; keyboard users can nudge with the arrow keys and type positions in Settings.
 - Not done yet, from the original repo's CLAUDE.md (left for later, as asked): the Access check with `jose` (`src/security/access.ts`), the sign-up rate limit (`SIGNUP_LIMITER`), the audit log, the privacy line under each sign-up form, the CI, CodeQL and deploy workflows, the `scuclip`/`scuclip-photos` names and the www route, and the zip's wrangler and vitest versions.
-- Ask CLIP answers from published content only (FAQ, board, speakers, events). The Claude-powered chat mode was dropped, as asked.
+- Ask CLIP (the chat in the corner) was removed, as asked. The static export still has it, so the render tests strip it from what they compare with.
 
 ### Hosting
 - `www.scuclip.com`: add a redirect rule to `scuclip.com` if people type it.

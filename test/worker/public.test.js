@@ -94,21 +94,16 @@ describe("files", () => {
     }
   });
 
-  it("builds Ask CLIP's facts from published content", async () => {
-    const res = await get("/assets/clip-facts.js");
-    expect(res.headers.get("Content-Type")).toBe("text/javascript; charset=utf-8");
-    const js = await res.text();
-    expect(js).toMatch(/^\/\* What Ask CLIP answers from/);
-    const facts = JSON.parse(js.replace(/^[\s\S]*?window\.CLIP_FACTS = /, "").replace(/;\s*$/, ""));
-    expect(facts.email).toBe("connectingleaders@scu.edu");
-    expect(facts.faqs).toHaveLength(6);
-    expect(facts.members.map((m) => m.name)).toContain("Cindia Qi");
+  it("has no Ask CLIP", async () => {
+    expect((await get("/assets/clip-facts.js")).status).toBe(404);
+    expect(await (await get("/faq")).text()).not.toMatch(/chat-launcher|clip-facts/);
+  });
 
+  it("shows a published change to the club email", async () => {
     const { draft, version } = await (await api("/api/admin/drafts/settings")).json();
     draft.contactEmail = "board@scu.edu";
     const saved = await (await api("/api/admin/drafts/settings", "PUT", { version, doc: draft })).json();
     await api("/api/admin/publish", "POST", { versions: { settings: saved.version } });
-    expect(await (await get("/assets/clip-facts.js")).text()).toContain('"email": "board@scu.edu"');
     expect(await (await get("/")).text()).toContain('<span class="addr">board@scu.edu</span>');
   });
 });

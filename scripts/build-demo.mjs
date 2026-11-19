@@ -14,7 +14,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DOC_IDS, VIEW_IDS, norm } from "../public/shared/model.js";
 import { renderPage, renderNotFound } from "../public/shared/export.js";
-import { buildFacts, factsScript } from "../public/shared/facts.js";
 import { readSeedDocs, SEED_TIME } from "./lib/seed.mjs";
 import { demoLink, pageFile } from "../demo/links.js";
 
@@ -66,8 +65,7 @@ const page = (html, p) => {
 };
 for (const id of VIEW_IDS) write(pageFile(id), page(renderPage(C, id, { link: demoLink }), ""));
 const fromAnywhere = (href) => { const l = demoLink(href); return /^https:/.test(l) ? l : BASE + l; };
-write("404.html", page(renderNotFound(C, { link: fromAnywhere }), BASE).split('src="assets/').join(`src="${BASE}assets/`));
-write("assets/clip-facts.js", factsScript(buildFacts(C)));
+write("404.html", page(renderNotFound(C, { link: fromAnywhere }), BASE));
 write("editor.html", head(read(path.join(ROOT, "public/editor/index.html")), ""));
 
 console.log(`Built the demo in ${path.relative(ROOT, OUT)} for ${BASE}`);

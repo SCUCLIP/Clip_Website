@@ -1,14 +1,14 @@
 /* CLIP website, public pages. The Worker renders each page's content into its HTML. This script does the rest:
    - scales the layout to the screen and switches to the phone layout below 1000px wide (shared/layout.js),
-   - runs the phone menu, the Copy buttons, the sign-up forms (POST /api/signup) and the Ask CLIP chat.
-   Ask CLIP answers from window.CLIP_FACTS, which /assets/clip-facts.js builds from the published content. */
+   - runs the phone menu, the Copy buttons and the sign-up forms (POST /api/signup). */
 import { attachLayout } from "../shared/layout.js";
 
 (() => {
   "use strict";
   const site = document.getElementById("site");
-  const F = Object.assign({ email: "connectingleaders@scu.edu", faqs: [], members: [], speakers: [], events: [], hackLede: "", boardNote: "" }, window.CLIP_FACTS || {});
   const $ = (s, r) => (r || document).querySelector(s);
+  /* The club email, as the footer shows it. */
+  const clubEmail = () => (($(".site-footer .addr", site) || {}).textContent || "").trim() || "connectingleaders@scu.edu";
 
   /* ---------- Layout ---------- */
   attachLayout(site);
@@ -121,53 +121,10 @@ import { attachLayout } from "../shared/layout.js";
       setStatus(form, form.dataset.ok || "You're on the list.", false);
       input.value = "";
     } catch (err) {
-      setStatus(form, (err && err.message && !/^check |^Turnstile/.test(err.message) ? err.message + " " : "Sign-up didn't go through. ") + "You can also email " + F.email + ".", true);
+      setStatus(form, (err && err.message && !/^check |^Turnstile/.test(err.message) ? err.message + " " : "Sign-up didn't go through. ") + "You can also email " + clubEmail() + ".", true);
     } finally {
       delete form.dataset.busy;
       button.disabled = false;
     }
   });
-
-  /* ---------- Ask CLIP (answers from the published FAQ, board, speakers and events) ---------- */
-  const launcher = $("#chat-launcher"), panel = $("#chat-panel");
-  if (!launcher || !panel) return;
-  const log = $("#chat-log"), suggest = $("#chat-suggest"), form = $("#chat-form"), input = $("#chat-input");
-  const clean = (s) => String(s || "").replace(/\[[^\]]*\]/g, "(not posted yet)").replace(/\s+/g, " ").trim();
-  const STOP = new Set("the and are for you can how what when where who why does with about your this that have from will there their them they our out any".split(" "));
-  const stems = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter((w) => w.length > 2 && !STOP.has(w)).map((w) => w.slice(0, 4));
-  function answer(q) {
-    const t = q.toLowerCase(), mail = F.email;
-    if (/hack/.test(t)) return clean(F.hackLede || "We're planning a biohackathon.") + " Leave your email on the Biohackathon page to get the announcement.";
-    if (/\b(board|officer|officers|president|treasurer|secretary|vice)\b/.test(t) && F.members.length)
-      return clean("This year's board: " + F.members.map((m) => m.name + (m.role && !/^\[/.test(m.role.trim()) ? " (" + m.role + ")" : "")).join(", ") + ". " + F.boardNote);
-    if (/\b(contact|email|reach|instagram)\b/.test(t)) return "Email " + mail + ", or catch a board member at a weekly general meeting.";
-    if (/\b(speaker|speakers|visited|guest)\b/.test(t)) {
-      const named = F.speakers.filter((s) => !/^\[/.test(String(s.name).trim())).map((s) => s.name + (s.when ? " (" + clean(s.when) + ")" : ""));
-      if (named.length) return "Past speakers include " + named.join(", ") + ". The Speakers page has the full list.";
-    }
-    const qs = new Set(stems(q));
-    let best = null, score = 0;
-    F.faqs.forEach((it) => { const s = stems(it.q).reduce((n, w) => n + (qs.has(w) ? 2 : 0), 0) + stems(it.a).reduce((n, w) => n + (qs.has(w) ? 1 : 0), 0); if (s > score) { score = s; best = it; } });
-    if (best && score >= 2) return clean(best.a);
-    if (/\b(event|events|calendar|talk|talks|workshop)/.test(t)) {
-      const e = F.events[0];
-      return e ? clean("Next on the calendar: " + [e.name, [e.month, e.day].join(" "), e.time, e.location].filter((x) => String(x || "").trim()).join(", ") + ". The Events page has the rest.") : "New events go out in the weekly email first. Sign up at the bottom of the home page.";
-    }
-    return "I can answer questions about meetings, joining, the board and the Biohackathon. For anything else, email " + mail + ".";
-  }
-  function addMsg(kind, text) { const p = document.createElement("p"); p.className = "msg " + kind; p.textContent = text; log.appendChild(p); log.scrollTop = log.scrollHeight; }
-  function ask(q) {
-    q = q.trim();
-    if (!q) return;
-    if (suggest && suggest.isConnected) suggest.remove();
-    addMsg("user", q);
-    addMsg("bot", answer(q));
-  }
-  const openChat = () => { panel.hidden = false; launcher.setAttribute("aria-expanded", "true"); input.focus(); };
-  const closeChat = () => { if (panel.hidden) return; panel.hidden = true; launcher.setAttribute("aria-expanded", "false"); launcher.focus(); };
-  launcher.addEventListener("click", () => (panel.hidden ? openChat() : closeChat()));
-  $("#chat-close").addEventListener("click", closeChat);
-  panel.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeChat(); });
-  if (suggest) suggest.addEventListener("click", (ev) => { const chip = ev.target.closest(".chip-btn"); if (chip) ask(chip.textContent); });
-  form.addEventListener("submit", (ev) => { ev.preventDefault(); const q = input.value; input.value = ""; if (q.trim()) ask(q); else input.focus(); });
 })();
