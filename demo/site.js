@@ -7,7 +7,6 @@
 import * as store from "./store.js";
 import { headerHTML, pageMain, footerHTML } from "../shared/render.js";
 import { domSerialize } from "../shared/export.js";
-import { buildFacts } from "../shared/facts.js";
 import { VIEW_IDS } from "../shared/model.js";
 import { demoLink } from "./links.js";
 
@@ -18,7 +17,6 @@ if (site && VIEW_IDS.includes(page) && store.publishedChanged()) {
   const C = store.publishedDocs();
   const X = { C, edit: false, idp: "", editor: false, animate: false, exp: true, link: demoLink };
   site.innerHTML = domSerialize(`<div class="page">${headerHTML(X, page)}\n${pageMain(X, page)}\n<div class="wrap">${footerHTML(X)}</div></div>`);
-  window.CLIP_FACTS = buildFacts(C);
 }
 
 /* Sign-ups: assets/site.js posts to /api/signup, which a static host doesn't have. Answer it from here. */
@@ -34,7 +32,7 @@ window.fetch = async (input, init) => {
   }
 };
 
-/* The demo note, bottom left (Ask CLIP is bottom right). */
+/* The demo note, bottom left. */
 const note = document.createElement("aside");
 note.className = "demo-note";
 note.setAttribute("aria-label", "About this demo");

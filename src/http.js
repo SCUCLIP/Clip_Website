@@ -43,7 +43,7 @@ export const json = (data, status = 200, headers = {}) =>
   new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json; charset=utf-8", ...headers } });
 
 /** An API error. The message is safe to show to the editor or the visitor. */
-export const apiError = (status, message, extra = {}) => json({ error: message, ...extra }, status);
+export const apiError = (status, message, extra = {}, headers = {}) => json({ error: message, ...extra }, status, headers);
 
 export const text = (body, status = 200, headers = {}) =>
   new Response(body, { status, headers: { "Content-Type": "text/plain; charset=utf-8", ...headers } });

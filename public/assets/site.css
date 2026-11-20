@@ -240,6 +240,7 @@ sub { font-size: 0.72em; line-height: 0; }
 .site .form-status:empty { min-height: 0; }
 .site .form-status.error { color: var(--pen); }
 .site .form-status.ok { color: var(--teal-ink); }
+.site .form-privacy { flex: 1 1 100%; margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
 .site .contact-line { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
 .site .addr { font-weight: 700; color: var(--ink); user-select: all; overflow-wrap: anywhere; }
 .copy-btn { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; background: transparent; border: 1.5px solid var(--ink); border-radius: 999px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
@@ -271,32 +272,6 @@ sub { font-size: 0.72em; line-height: 0; }
 .site .back-row { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; font-size: 16px; color: var(--ink-2); }
 .site .rxn { display: flex; align-items: center; gap: 10px; font-family: var(--hand); font-weight: 700; font-size: 28px; line-height: 1; color: var(--ink); }
 .site .rxn-arrow { display: flex; flex-direction: column; align-items: center; gap: 2px; font-family: var(--mono); font-weight: 400; font-size: 11px; letter-spacing: 0.04em; color: var(--ink-2); }
-
-/* ================= Ask CLIP chat ================= */
-.chat-launcher { position: fixed; z-index: 20; right: calc(clamp(16px, 2.5vw, 32px) + env(safe-area-inset-right, 0px)); bottom: calc(clamp(16px, 2.5vw, 32px) + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 5px 20px 5px 5px; background: var(--card); color: var(--ink); border: 2px solid var(--ink); border-radius: 999px; box-shadow: 0 10px 24px rgba(14, 48, 76, 0.2); font-family: var(--sans); font-size: 16px; font-weight: 700; cursor: pointer; }
-.chat-launcher .av { width: 52px; height: 52px; border-radius: 50%; background: var(--wash); display: flex; align-items: center; justify-content: center; }
-.chat-launcher svg, .chat-head svg { display: block; }
-.chat-panel { position: fixed; z-index: 21; right: calc(clamp(16px, 2.5vw, 32px) + env(safe-area-inset-right, 0px)); bottom: calc(clamp(16px, 2.5vw, 32px) + 76px + env(safe-area-inset-bottom, 0px)); width: min(390px, calc(100vw - 32px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))); height: min(580px, calc(100vh - 170px)); display: flex; flex-direction: column; background: var(--card); border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; box-shadow: 0 16px 36px rgba(14, 48, 76, 0.2); }
-.chat-head { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 12px 10px 12px 14px; background: var(--wash); border-bottom: 1.5px solid var(--ink); }
-.chat-head .av { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; background: var(--card); border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
-.chat-title { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.chat-title h2 { margin: 0; font-family: var(--hand); font-weight: 700; font-size: 30px; line-height: 1; }
-.chat-title p { margin: 0; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
-.icon-btn { flex: 0 0 auto; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: 0; border-radius: 10px; color: var(--ink); cursor: pointer; }
-.icon-btn:hover { background: rgba(14, 48, 76, 0.08); }
-.chat-log { flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 16px; }
-.msg { margin: 0; max-width: 88%; padding: 11px 14px; font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
-.msg.bot { align-self: flex-start; background: var(--wash); border: 1.5px solid var(--ink); border-radius: 14px 14px 14px 4px; }
-.msg.user { align-self: flex-end; background: var(--ink); color: var(--on-ink); border-radius: 14px 14px 4px 14px; }
-.msg.pending { color: var(--ink-2); font-style: italic; }
-.chat-suggest { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip-btn { min-height: 44px; padding: 0 14px; background: var(--card); border: 1.5px solid var(--ink); border-radius: 999px; font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; }
-.chip-btn:hover { background: var(--wash); }
-.chat-form { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 12px 12px 6px; border-top: 1.5px solid var(--ink); }
-.chat-input { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 0 14px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 10px; font-family: var(--sans); font-size: 15px; color: var(--ink); }
-.send-btn { background: var(--ink); color: var(--on-ink); }
-.send-btn:hover { background: var(--ink-2); }
-.chat-foot { flex: 0 0 auto; margin: 0; padding: 0 14px 10px; font-family: var(--mono); font-size: 11px; line-height: 1.5; color: var(--ink-2); }
 
 /* ================= Free layout (public site and editor canvas) =================
    Each section is a full-width band. Its elements sit in a fixed design box (1180px wide on desktop, 326px on

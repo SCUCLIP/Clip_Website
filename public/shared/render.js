@@ -5,7 +5,8 @@
    - edit: the editor's canvas. Editable text gets data-f="<ref>" and list items get their tools.
    - link: a function that turns a stored link (#about, #join, or an https link) into the address the page uses.
    - exp: the public pages' extra markup from the static export (data-d and data-m, one element per line).
-   Changes from the prototype: logos are under /assets/, and links go through X.link. */
+   Changes from the prototype: logos are under /assets/, links go through X.link, and each sign-up form has a
+   privacy line. */
 
 import {
   CLUB_EMAIL, esc, str, arr, fmt, safeHref, isExternal, blobSrc, initials, PAGES, pageNum, FIGURES, SYMS, ARROW_PATH,
@@ -37,6 +38,8 @@ const ARROW = '<svg width="30" height="14" aria-hidden="true"><use href="#arrow-
 const TICK = '<svg class="tick" width="32" height="32" aria-hidden="true"><use href="#tick"/></svg>';
 const MASCOT = (label) => `<div class="mascot"><svg width="96" height="108" role="img" aria-label="CLIP's flask mascot in a lab coat"><use href="#flask"/></svg>${label}</div>`;
 const emailOf = (X) => str(X.C.settings.contactEmail).trim() || CLUB_EMAIL;
+/* Under every sign-up form (not in the prototype): what we collect, why, and how to be taken off the list. */
+const privacyText = (X) => `We use your email only to send you CLIP news. To be taken off the list, email ${esc(emailOf(X))}.`;
 const er = (s, e) => `E.${s.id}.${e.id}`;
 const out = (X, href) => (X.link ? X.link(href) : href);
 const extAttrs = (href) => (isExternal(href) ? ' target="_blank" rel="noopener noreferrer"' : "");
@@ -166,6 +169,7 @@ const RX = {
           <div class="field"><label for="${P}em-${e.id}">SCU email</label><input class="input" id="${P}em-${e.id}" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@scu.edu" aria-describedby="${P}st-${e.id}"${inert}></div>
           <button class="btn btn-primary" type="submit"${X.edit ? ' tabindex="-1"' : ""}>${tf(X, "span", "", r + ".buttonLabel", e.buttonLabel || "Sign up", { ph: "Button" })}</button>
           <p class="form-status" id="${P}st-${e.id}" role="status" aria-live="polite"></p>
+          <p class="form-privacy">${privacyText(X)}</p>
         </form>
         ${contactLine(X, e.id, e.contact, r + ".contact")}
       </div>`;
@@ -176,6 +180,7 @@ const RX = {
         <div class="field" style="flex-basis: 260px">${tf(X, "label", "", r + ".label", e.label || "Your email", { ph: "Label", attrs: ` for="${P}em-${e.id}"` })}<input class="input" id="${P}em-${e.id}" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@scu.edu" aria-describedby="${P}st-${e.id}"${inert}></div>
         <button class="btn btn-primary" type="submit"${X.edit ? ' tabindex="-1"' : ""}>${tf(X, "span", "", r + ".buttonLabel", e.buttonLabel || "Notify me", { ph: "Button" })}</button>
         <p class="form-status" id="${P}st-${e.id}" role="status" aria-live="polite"></p>
+        <p class="form-privacy">${privacyText(X)}</p>
       </form>`;
   },
   callout(X, s, e) {

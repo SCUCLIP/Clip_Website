@@ -10,9 +10,9 @@ export const TEAM = "clip-test.cloudflareaccess.com";
 export const AUD = "test-aud-0123456789";
 
 /** Local mode, as `npm run dev` sets it. */
-export const LOCAL_ENV = { LOCAL_MODE: "1" };
+export const LOCAL_ENV = { LOCAL_MODE: "on", ADMIN_HOST: "admin.localhost" };
 /** A deployed Worker with Access configured. */
-export const PROD_ENV = { ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, TURNSTILE_SITE_KEY: "site-key", TURNSTILE_SECRET: "secret" };
+export const PROD_ENV = { ACCESS_TEAM_DOMAIN: "https://" + TEAM, ACCESS_AUD: AUD, TURNSTILE_SITE_KEY: "site-key", TURNSTILE_SECRET: "secret" };
 
 /** Call the Worker directly with a request and env overrides. */
 export async function call(url, init = {}, envOverrides = {}) {
@@ -61,8 +61,12 @@ export async function accessToken(claims = {}, { kid = KID, alg = "RS256", signW
   return `${header}.${payload}.${b64url(sig)}`;
 }
 
-/** Answer Access's certs URL with the test key, and Turnstile's siteverify with `turnstile` (or fail if unset). */
-export async function stubNetwork({ turnstile } = {}) {
+/** The Google Sheet's Apps Script, as the Worker sees it (src/sheets.js). */
+export const SHEETS_ENV = { SHEETS_URL: "https://script.google.com/macros/s/AKfycbTestScriptId0123456789/exec", SHEETS_SECRET: "test-sheets-secret-0123456789" };
+
+/** Answer Access's certs URL with the test key, Turnstile's siteverify with `turnstile`, and the Sheet's script
+ *  with `sheets` (a function from the request body to a Response), or fail if unset. */
+export async function stubNetwork({ turnstile, sheets } = {}) {
   const { publicJwk } = await keys();
   const calls = [];
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
@@ -72,6 +76,7 @@ export async function stubNetwork({ turnstile } = {}) {
       return Response.json({ keys: [{ ...publicJwk, kid: KID, alg: "RS256", use: "sig" }] });
     }
     if (url === "https://challenges.cloudflare.com/turnstile/v0/siteverify" && turnstile) return Response.json(turnstile);
+    if (url === SHEETS_ENV.SHEETS_URL && sheets) return sheets(JSON.parse(init.body));
     throw new Error("Unexpected network request in a test: " + url);
   });
   return calls;

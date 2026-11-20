@@ -21,6 +21,12 @@ export function expectedHtml(id) {
     .replace(/href="index\.html#/g, 'href="/#')
     .replace(/href="index\.html"/g, 'href="/"')
     .replace(/href="(about|events|biohackathon|speakers|board|resources|faq)\.html"/g, 'href="/$1"')
+    /* Every sign-up form has a privacy line under its status line. */
+    .replace(/(\n( *)<p class="form-status" id="st-[^"]+" role="status" aria-live="polite"><\/p>)/g,
+      '$1\n$2<p class="form-privacy">We use your email only to send you CLIP news. To be taken off the list, email connectingleaders@scu.edu.</p>')
+    /* Ask CLIP was removed: its button, its panel and its facts script. */
+    .replace(/<button class="chat-launcher"[\s\S]*?<\/section>\n/, "")
+    .replace('<script src="/assets/clip-facts.js"></script>\n', "")
     /* site.js is an ES module now (it imports the shared layout code). */
     .replace('<script src="/assets/site.js"></script>', '<script type="module" src="/assets/site.js"></script>');
 }

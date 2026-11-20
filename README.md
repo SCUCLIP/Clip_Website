@@ -8,7 +8,7 @@ University.
 
 One Cloudflare Worker serves both, with D1 (content and sign-ups) and R2 (photos). The working prototype, which is
 the spec for the look, the editor and the content format, is `prototype/clip-website.html`. The content is in
-`content/seed/`. The site isn't live yet: for now it runs on a laptop with no sign-in (local mode, see
+`content/seed/`. Newsletter sign-ups go to a Google Sheet ([docs/NEWSLETTER.md](docs/NEWSLETTER.md)). The site isn't live yet: for now it runs on a laptop with no sign-in (local mode, see
 [CLAUDE.md](CLAUDE.md)).
 
 ```

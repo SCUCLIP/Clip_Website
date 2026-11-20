@@ -2,6 +2,11 @@
 
 export const nowIso = () => new Date().toISOString();
 
+/** An audit_log row, as a statement to run on its own or inside a batch. */
+export const auditStmt = (env, at, actor, action, target) =>
+  env.DB.prepare("INSERT INTO audit_log (at, actor, action, target) VALUES (?, ?, ?, ?)").bind(at, actor, action, String(target).slice(0, 500));
+export const audit = (env, actor, action, target) => auditStmt(env, nowIso(), actor, action, target).run();
+
 const parse = (s) => (s === null || s === undefined ? null : JSON.parse(s));
 
 function shape(row) {
@@ -75,6 +80,7 @@ export async function publishDrafts(env, versions, by) {
        ON CONFLICT (id) DO UPDATE SET body = excluded.body, updated_at = excluded.updated_at, updated_by = excluded.updated_by`,
     ).bind(at, by, id));
   }
+  stmts.push(auditStmt(env, at, by, "publish", Object.keys(versions).join(",")));
   stmts.push(env.DB.prepare("DELETE FROM publish_guard"));
   try {
     await env.DB.batch(stmts);
@@ -107,6 +113,7 @@ export async function discardDrafts(env, versions, by) {
       "UPDATE drafts SET body = (SELECT body FROM published WHERE id = ?1), version = version + 1, updated_at = ?2, updated_by = ?3 WHERE id = ?1",
     ).bind(id, at, by));
   }
+  stmts.push(auditStmt(env, at, by, "discard", Object.keys(versions).join(",")));
   stmts.push(env.DB.prepare("DELETE FROM publish_guard"));
   try {
     await env.DB.batch(stmts);

@@ -4,6 +4,7 @@
 
 import { DOC_IDS, norm, canon, isPageDoc, VIEW_IDS, LIST_SIGNUP } from "../shared/model.js";
 import { SEED } from "./seed.js";
+import { signupsCsv as toCsv } from "../shared/csv.js";
 
 const KEY = "clip-demo-v1";
 const now = () => new Date().toISOString();
@@ -121,7 +122,7 @@ const LISTS = LIST_SIGNUP.options.map((o) => o.v);
 const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 export function signups() {
   load();
-  return { signups: state.signups.slice().sort((a, b) => a.list.localeCompare(b.list) || a.createdAt.localeCompare(b.createdAt)) };
+  return { signups: state.signups.slice().sort((a, b) => a.list.localeCompare(b.list) || a.createdAt.localeCompare(b.createdAt)), sheet: { connected: false, waiting: 0, demo: true } };
 }
 export function signup(email, list) {
   load();
@@ -133,6 +134,10 @@ export function signup(email, list) {
     save();
   }
   return { ok: true };
+}
+export function signupsCsv(list) {
+  load();
+  return toCsv(state.signups.filter((s) => s.list === list).sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
 }
 export function deleteSignup(id) {
   load();
