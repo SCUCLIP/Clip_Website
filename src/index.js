@@ -6,8 +6,14 @@ import { secure, text, redirect, apiError } from "./http.js";
 import { handleAdmin } from "./admin.js";
 import { handlePublic } from "./public.js";
 import { turnstileSiteKey } from "./turnstile.js";
+import { syncSignups } from "./sheets.js";
 
 export default {
+  /* Every 15 minutes (wrangler.jsonc, triggers): send any sign-ups the Google Sheet doesn't have yet. */
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(syncSignups(env));
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const site = siteFor(url, env);

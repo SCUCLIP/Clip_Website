@@ -1,7 +1,7 @@
 // Cloudflare Worker for the CLIP website (public site + editor).
 // Security rules live in CLAUDE.md and docs/THREAT-MODEL.md. In short:
 // - Never add a variable here that turns on local mode. `npm run dev` passes it on the command line.
-// - Secrets (TURNSTILE_SECRET, SHEETS_SECRET) go in with `wrangler secret put`, never in this file.
+// - Secrets (TURNSTILE_SECRET, SHEETS_URL, SHEETS_SECRET) go in with `wrangler secret put`, never in this file.
 // - Before going live, follow docs/SETUP.md and docs/GO-LIVE.md (real D1 id, Access, Turnstile).
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
@@ -51,6 +51,9 @@
   ],
 
   "observability": { "enabled": true },
+
+  // Every 15 minutes: send newsletter sign-ups the Google Sheet doesn't have yet (src/sheets.js).
+  "triggers": { "crons": ["*/15 * * * *"] },
 
   "vars": {
     "PUBLIC_HOST": "scuclip.com",

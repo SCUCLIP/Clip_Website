@@ -42,8 +42,11 @@ export const publish = (versions) => call("POST", "/api/admin/publish", { versio
 export const discard = (versions) => call("POST", "/api/admin/discard", { versions });
 /** { id, src, ... } */
 export const uploadPhoto = (blob) => call("POST", "/api/admin/photos", blob, blob.type || "application/octet-stream");
-/** { signups: [{ id, email, list, createdAt }] } */
+/** { signups: [{ id, email, list, createdAt, inSheet }], sheet: { connected, waiting } } */
 export const signups = () => call("GET", "/api/admin/signups");
 /** One list as CSV text. The server records the download in the audit log. */
 export const signupsCsv = (list) => call("GET", "/api/admin/signups/" + encodeURIComponent(list) + "/csv", undefined, undefined, true);
+/** Sends the sign-ups the Google Sheet doesn't have yet. { sent, waiting } */
+export const syncSignups = () => call("POST", "/api/admin/signups/sync", {});
+/** { ok, sheet: "removed" | "failed" | "off" | "not there" } */
 export const deleteSignup = (id) => call("DELETE", "/api/admin/signups/" + encodeURIComponent(id));

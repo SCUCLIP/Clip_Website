@@ -223,10 +223,11 @@ async function loadDocs() {
 }
 async function loadSignups() {
   try {
-    const { signups } = await api.signups();
+    const { signups, sheet } = await api.signups();
     const rows = { weekly: [], biohackathon: [] };
-    signups.forEach((r) => { if (rows[r.list]) rows[r.list].push({ id: r.id, email: r.email, at: str(r.createdAt) }); });
+    signups.forEach((r) => { if (rows[r.list]) rows[r.list].push({ id: r.id, email: r.email, at: str(r.createdAt), inSheet: !!r.inSheet }); });
     A.signups = rows;
+    A.sheet = sheet || { connected: false, waiting: 0 };
   } catch (_) { A.signups = "error"; }
   if (A.tab === "site") renderLeft();
 }
@@ -1326,7 +1327,22 @@ function signupsHTML() {
   if (rows === "error") return '<p class="adm-help err">The sign-up list couldn\'t load. Reload the page to try again.</p>';
   const del = (r) => `<button class="adm-icon-btn danger${A.armed === "su:" + r.id ? " armed" : ""}" type="button" id="su-del-${r.id}" data-act="su-del" data-id="${r.id}" aria-label="${A.armed === "su:" + r.id ? "Press again to delete" : "Delete"} ${esc(r.email)}">${A.armed === "su:" + r.id ? "Delete?" : ICON.trash}</button>`;
   const card = (k, label) => `<section class="adm-card" style="margin-bottom:10px"><div class="adm-card-head"><h3 class="adm-card-title">${label} · ${rows[k].length}</h3><button class="copy-btn" type="button" data-copy="${esc(rows[k].map((r) => r.email).join("\n"))}" data-copy-target="adm-list-${k}">Copy all</button>${rows[k].length ? `<button class="copy-btn" type="button" data-act="su-csv" data-list="${k}">CSV</button>` : ""}</div>${rows[k].length ? `<ol class="ce-signups" id="adm-list-${k}">${rows[k].map((r) => `<li><span>${esc(r.email)}</span>${del(r)}</li>`).join("")}</ol>` : '<p class="adm-help">No sign-ups yet.</p>'}</section>`;
-  return card("weekly", "Weekly email") + card("biohackathon", "Biohackathon") + '<p class="ce-note">Only board editors can see these. Delete takes someone off a list when they ask.</p>';
+  return sheetHTML() + card("weekly", "Weekly email") + card("biohackathon", "Biohackathon") + '<p class="ce-note">Only board editors can see these. Delete takes someone off a list (and off the Google Sheet) when they ask.</p>';
+}
+/* Where sign-ups go: the board's Google Sheet, through the Worker (docs/NEWSLETTER.md). */
+function sheetHTML() {
+  const sh = A.sheet || { connected: false, waiting: 0 };
+  if (sh.demo) return '<p class="ce-note">In the real site, sign-ups also go to the board\'s Google Sheet. The demo keeps them in this browser.</p>';
+  if (!sh.connected) return '<p class="adm-help">The Google Sheet isn\'t connected yet, so sign-ups are kept here only. docs/NEWSLETTER.md says how to connect it.</p>';
+  if (!sh.waiting) return '<p class="ce-note">Every sign-up is in the Google Sheet.</p>';
+  return `<p class="adm-help">${sh.waiting} ${sh.waiting === 1 ? "sign-up isn't" : "sign-ups aren't"} in the Google Sheet yet. They're sent again every 15 minutes.</p><button class="adm-btn adm-btn-line small" type="button" data-act="su-sync" style="margin-bottom:10px">Send to the Sheet now</button>`;
+}
+async function syncSheet() {
+  try {
+    const out = await api.syncSignups();
+    toast(out.sent ? `Sent ${out.sent} to the Google Sheet.` : "Nothing was waiting.");
+  } catch (e) { setFlash((e && e.message) || "The Google Sheet didn't take the sign-ups. Try again in a few minutes.", true); }
+  await loadSignups();
 }
 /* A spreadsheet of one list, made by the server (which records the download in the audit log). */
 async function downloadCsv(list) {
@@ -1353,7 +1369,11 @@ async function deleteSignup(id) {
   }
   A.armed = null;
   clearTimeout(A.armTimer);
-  try { await api.deleteSignup(id); toast("Deleted the sign-up."); } catch (_) { setFlash("That sign-up couldn't be deleted. Try again.", true); }
+  try {
+    const out = await api.deleteSignup(id);
+    if (out.sheet === "failed") setFlash("Deleted here, but it couldn't be taken off the Google Sheet. Delete that row in the Sheet by hand.", true);
+    else toast(out.sheet === "removed" ? "Deleted the sign-up, here and in the Google Sheet." : "Deleted the sign-up.");
+  } catch (_) { setFlash("That sign-up couldn't be deleted. Try again.", true); }
   await loadSignups();
 }
 function renderLeft() {
@@ -1819,6 +1839,7 @@ function onAdminClick(ev) {
   else if (act === "ins-add") { const list = listAt(ref), def = listDef(ref); if (!list || !def || list.length >= (def.max || 40)) return; stopEditing(); beginChange(); list.push(newItem(ref)); const nr = `${ref}.${list.length - 1}`; A.open.add(nr); A.item = nr; listChanged(ref); const first = $(`#${CSS.escape(fid(nr))}__b input, #${CSS.escape(fid(nr))}__b textarea`, admEl); if (first) first.focus(); }
   else if (act === "su-csv") downloadCsv(btn.dataset.list);
   else if (act === "su-del") deleteSignup(btn.dataset.id);
+  else if (act === "su-sync") syncSheet();
   else if (act === "photo") pickPhoto(ref);
   else if (act === "photo-clear" || act === "photo-logo") { stopEditing(); beginChange(); const doc = setRef(ref, act === "photo-logo" ? "logo" : ""); if (doc) markChanged(doc, docKey(doc, ref)); renderCanvas({ bake: true }); renderInsp(); }
 }

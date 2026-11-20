@@ -28,7 +28,7 @@ async function publishedDocs(env, ids) {
 
 export async function handlePublic(request, env, ctx, site, url) {
   const path = url.pathname;
-  if (path === "/api/signup") return handleSignup(request, env, site, url);
+  if (path === "/api/signup") return handleSignup(request, env, ctx, site, url);
   if (path.startsWith("/api/")) return apiError(404, "Not found");
   if (request.method !== "GET" && request.method !== "HEAD") return methodNotAllowed("GET, HEAD");
 

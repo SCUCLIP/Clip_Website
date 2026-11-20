@@ -17,6 +17,7 @@ export const uploadPhoto = store.uploadPhoto;
 export const signups = later(store.signups);
 export const deleteSignup = later(store.deleteSignup);
 export const signupsCsv = later(store.signupsCsv);
+export const syncSignups = later(() => ({ sent: 0, waiting: 0 }));
 
 /* ---------- Demo chrome: say where edits go, and offer a reset ---------- */
 function addDemoChrome(bar) {

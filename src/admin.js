@@ -14,6 +14,7 @@ import { getAllDocs, getDoc, saveDraft, publishDrafts, discardDrafts, audit } fr
 import { storePhoto, listPhotos, servePhoto, MAX_PHOTO_BYTES } from "./photos.js";
 import { norm, isPageDoc, DOC_IDS, VIEW_IDS, LIST_SIGNUP } from "../public/shared/model.js";
 import { signupsCsv } from "../public/shared/csv.js";
+import { sheetsConfigured, syncSignups, removeFromSheet, waitingCount } from "./sheets.js";
 
 const SAFE = new Set(["GET", "HEAD"]);
 /* A draft request, and the doc stored from it, are at most 256 KB. */
@@ -143,12 +144,24 @@ route("POST", "/api/admin/photos", async (c) => {
 
 const signupRows = async (env, list) => {
   const { results } = list
-    ? await env.DB.prepare("SELECT id, email, list, created_at FROM signups WHERE list = ? ORDER BY created_at, id").bind(list).all()
-    : await env.DB.prepare("SELECT id, email, list, created_at FROM signups ORDER BY list, created_at, id").all();
-  return results.map((r) => ({ id: r.id, email: r.email, list: r.list, createdAt: r.created_at }));
+    ? await env.DB.prepare("SELECT id, email, list, created_at, sheet_synced_at FROM signups WHERE list = ? ORDER BY created_at, id").bind(list).all()
+    : await env.DB.prepare("SELECT id, email, list, created_at, sheet_synced_at FROM signups ORDER BY list, created_at, id").all();
+  return results.map((r) => ({ id: r.id, email: r.email, list: r.list, createdAt: r.created_at, inSheet: !!r.sheet_synced_at }));
 };
 
-route("GET", "/api/admin/signups", async (c) => json({ signups: await signupRows(c.env) }));
+/* The sign-ups, and whether the Google Sheet is connected (src/sheets.js). */
+route("GET", "/api/admin/signups", async (c) => json({
+  signups: await signupRows(c.env),
+  sheet: { connected: sheetsConfigured(c.env), waiting: await waitingCount(c.env) },
+}));
+
+/* Send the sign-ups the Google Sheet doesn't have yet, now (the cron trigger also does it every 15 minutes). */
+route("POST", "/api/admin/signups/sync", async (c) => {
+  if (!sheetsConfigured(c.env)) return apiError(503, "The Google Sheet isn't connected yet (docs/NEWSLETTER.md).");
+  const out = await syncSignups(c.env);
+  if (out.error) return apiError(502, "The Google Sheet didn't take the sign-ups. Try again in a few minutes.", { waiting: await waitingCount(c.env) });
+  return json({ sent: out.sent, waiting: await waitingCount(c.env) });
+});
 
 /* One list as a spreadsheet file. Every download goes in the audit log. */
 route("GET", "/api/admin/signups/:list/csv", async (c) => {
@@ -165,10 +178,12 @@ route("GET", "/api/admin/signups/:list/csv", async (c) => {
 route("DELETE", "/api/admin/signups/:id", async (c) => {
   const id = Number(c.params.id);
   if (!Number.isSafeInteger(id) || id < 1) return apiError(404, "There's no such sign-up.");
-  const res = await c.env.DB.prepare("DELETE FROM signups WHERE id = ?").bind(id).run();
-  if (!res.meta.changes) return apiError(404, "There's no such sign-up.");
+  const row = await c.env.DB.prepare("DELETE FROM signups WHERE id = ? RETURNING email, list, sheet_synced_at").bind(id).first();
+  if (!row) return apiError(404, "There's no such sign-up.");
   await audit(c.env, c.editor.email, "signup.delete", "signup:" + id);
-  return json({ ok: true });
+  /* Take it off the Google Sheet too, if it got there. */
+  const sheet = row.sheet_synced_at ? await removeFromSheet(c.env, row.list, row.email) : "not there";
+  return json({ ok: true, sheet });
 });
 
 export async function handleAdmin(request, env, ctx, site, url) {

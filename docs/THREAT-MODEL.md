@@ -35,7 +35,8 @@ What the CLIP website protects, from whom, and how. The rules themselves are in 
 | Someone takes over the domain or the accounts | Auto-renew and domain lock, 2FA on GoDaddy, Cloudflare and GitHub, DNSSEC, personal member accounts, quarterly access review (`docs/SETUP.md`). |
 | A malicious or careless code change ships | Pull requests only, CI (`npm run check`) and CodeQL on every pull request, owner review, an approval step before the deploy job can read the Cloudflare token. |
 | A compromised dependency or GitHub Action | Few dependencies (`jose` at run time), exact versions with a lockfile, install scripts off (`.npmrc`), actions pinned to commit SHAs, Dependabot, `npm audit` in CI. |
-| Sign-up privacy | Emails visible only to the board; a privacy line under each form says what's collected, why and how to be taken off; no analytics. |
+| Sign-up privacy | Emails visible only to the board (the editor and the Sheet, shared with the board only); a privacy line under each form says what's collected, why and how to be taken off; no analytics. |
+| Someone else writes to the newsletter Sheet | The Apps Script refuses any request without the shared secret (compared in constant time), which only the Worker has (`SHEETS_SECRET`). The Worker only sends to a `script.google.com` web app address. Values that look like formulas are stored as text. |
 
 ## Accepted risks
 - **Draft photos are public by id.** A photo uploaded but used only in a draft can be fetched by anyone who knows its 128-bit random id. Ids aren't listed anywhere public.

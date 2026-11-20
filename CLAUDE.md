@@ -23,14 +23,15 @@ Content lives in D1 (`published` and `drafts`), photos in R2. Plain ES modules, 
 Never run `wrangler deploy`, `wrangler login`, `wrangler d1 execute` or anything with `--remote` from this repo during development (security rule 14).
 
 ## Layout
-- `src/`: the Worker. `index.js` picks the host; `admin.js` (editor + API, behind `gate()`), `public.js` (pages, photos), `signup.js` (sign-ups), `hosts.js` (local mode), `access.js` (Cloudflare Access, with `jose`), `turnstile.js`, `http.js` (security headers), `db.js` (docs and the audit log).
+- `src/`: the Worker. `index.js` picks the host; `admin.js` (editor + API, behind `gate()`), `public.js` (pages, photos), `signup.js` (sign-ups), `sheets.js` (sign-ups to the Google Sheet), `hosts.js` (local mode), `access.js` (Cloudflare Access, with `jose`), `turnstile.js`, `http.js` (security headers), `db.js` (docs and the audit log).
 - `public/shared/`: code used by both the Worker and the browser, ported from `prototype/clip-website.html` and kept as close to it as possible: `model.js` (the content model and `norm()`), `render.js` (the only copy of the page markup), `layout.js` (push-down and the phone layout). Plus `export.js` (a whole public page, as the static export wrote it, without Ask CLIP) and `sprite.js`.
 - `public/assets/`: the public site's CSS, `site.js` and logos. `public/fonts/`: Caveat, DM Sans, DM Mono (SIL OFL).
 - `public/editor/`: the editor, served only on the admin host, ported from the prototype's `#admin` view and kept as close to it as possible. `editor.js` (everything the prototype's editor does), `catalog.js` (what the Add panel offers), `api.js` (the Worker's API, in place of the prototype's `window.claude`), `editor.css`. In the browser console, `window.clipEditor` is the editor's state.
 - `content/seed/`: the starting content, one JSON file per doc. `migrations/`: D1 schema and the generated seed.
 - `prototype/clip-website.html`: the working prototype, the spec for the look, the editor and the content format. `prototype/static/`: the same pages exported as plain HTML. The render must match them apart from links and asset paths.
+- `apps-script/newsletter.gs`: the Apps Script the board pastes into the newsletter Google Sheet (`docs/NEWSLETTER.md`).
 - `demo/`: the GitHub Pages demo's own files (see Demo). `scripts/build-demo.mjs` builds it into `dist/demo/`.
-- `docs/CONTENT-FORMAT.md`, `docs/THREAT-MODEL.md`, `docs/SETUP.md` (accounts, click by click), `docs/GO-LIVE.md`.
+- `docs/CONTENT-FORMAT.md`, `docs/THREAT-MODEL.md`, `docs/SETUP.md` (accounts, click by click), `docs/NEWSLETTER.md` (the sign-up Sheet), `docs/GO-LIVE.md`.
 - `.github/`: CI (`npm run check`), CodeQL, the deploy workflow (waits for an owner's approval, and does nothing until the Cloudflare token exists), the Pages demo, Dependabot and the pull request template.
 
 ## Local mode
@@ -58,9 +59,9 @@ Local mode is on only when `LOCAL_MODE` is `"on"` **and** the hostname is `local
 7. Content is untrusted when rendering. Text is plain: escape everything (the prototype's `esc()` and `fmt()`), never put content into `innerHTML` unescaped. Links go through `safeHref()`: `https://…` or `#page`/`#anchor` only.
 8. Every draft save goes through `norm()` (`public/shared/model.js`), and what it returns is stored. A page that isn't `v: 5` is refused.
 9. Photos: PNG, JPEG, WebP or GIF, checked by their first bytes, at most 10 MB. No SVG. The editor re-encodes photos in the browser before uploading (JPEGs always), which drops location data. Random 128-bit ids. Served with `nosniff`.
-10. Sign-ups: before anything touches D1, the Origin, the request and the rate limit (`SIGNUP_LIMITER`, 5 a minute per IP; no binding means refuse) are checked, then Turnstile off localhost. They store the email, list and time only: no IP address, no name, and emails are never logged. The list is `weekly` or `biohackathon`. Signing up twice looks like success. Each sign-up form has a privacy line (what we collect, why, how to be taken off).
+10. Sign-ups: before anything touches D1, the Origin, the request and the rate limit (`SIGNUP_LIMITER`, 5 a minute per IP; no binding means refuse) are checked, then Turnstile off localhost. They store the email, list and time only: no IP address, no name, and emails are never logged. The list is `weekly` or `biohackathon`. Signing up twice looks like success. Each sign-up form has a privacy line (what we collect, why, how to be taken off). New sign-ups go on to the board's Google Sheet (`src/sheets.js`), only to an Apps Script address and only with `SHEETS_SECRET`; the Sheet is shared with the board only.
 11. The audit log (`audit_log`) records publish, discard, photo uploads, and sign-up deletes and downloads: who and when. Never visitor data: a sign-up is recorded by its row id. Write it in the same batch as the change when there is one.
-12. No secrets in the repo. `TURNSTILE_SECRET` goes in with `wrangler secret put` at go-live. Local mode needs no secrets at all.
+12. No secrets in the repo. `TURNSTILE_SECRET`, `SHEETS_URL` and `SHEETS_SECRET` go in with `wrangler secret put` at go-live. Local mode needs no secrets at all.
 13. The API refuses, and the Worker tests prove each refusal:
     - wrong host (admin route on the public host, unknown hostname): 404
     - no or invalid sign-in off local mode: 401 or 403; sign-in not configured: 503
@@ -85,12 +86,18 @@ Admin host only, behind `gate()`. JSON in and out unless noted.
 - `POST /api/admin/publish` `{ versions: { [id]: version } }`: copies those drafts to published in one transaction. 409 if any version is stale, and then nothing is published.
 - `POST /api/admin/discard` `{ versions: { [id]: version } }`: resets those drafts to their published docs in one transaction. 409 if any version is stale, and then nothing changes.
 - `GET /api/admin/photos`, `POST /api/admin/photos` (body is the image, `Content-Type: image/…`): returns `{ id, src }`.
-- `GET /api/admin/signups`, `DELETE /api/admin/signups/:id`, `GET /api/admin/signups/:list/csv` (a download; formulas are kept as text). Deletes and downloads go in the audit log.
+- `GET /api/admin/signups`: `{ signups: [{ id, email, list, createdAt, inSheet }], sheet: { connected, waiting } }`.
+- `DELETE /api/admin/signups/:id`: also takes it off the Google Sheet; `{ ok, sheet: "removed" | "failed" | "off" | "not there" }`.
+- `POST /api/admin/signups/sync`: sends what the Sheet doesn't have yet, now. 503 if the Sheet isn't connected, 502 if it refuses.
+- `GET /api/admin/signups/:list/csv`: a download; formulas are kept as text. Deletes and downloads go in the audit log.
 
 Public host:
 - `GET /`, `/about`, `/events`, `/biohackathon`, `/speakers`, `/board`, `/resources`, `/faq`: rendered pages. Anything else is the 404 page. `/<page>.html` and trailing slashes redirect.
 - `GET /photos/:id`: a photo from R2 (also served on the admin host).
 - `POST /api/signup` `{ email, list, token }`.
+
+## Newsletter sign-ups (Google Sheet)
+Sign-ups stay in D1 (`signups`), and each one goes on to the board's Google Sheet through `apps-script/newsletter.gs`, a web app that only accepts requests carrying the shared secret. `sheet_synced_at` is empty until the Sheet has a sign-up: the Worker sends waiting sign-ups in the background after each new one (`ctx.waitUntil`), every 15 minutes (the cron trigger, `scheduled()` in `src/index.js`), and when the editor presses "Send to the Sheet now". Without both `SHEETS_URL` and `SHEETS_SECRET`, nothing is sent. Local mode needs neither. The demo never sends anything. Setup: `docs/NEWSLETTER.md`. Never log emails.
 
 ## Drafts and versions
 Each draft row has a `version` that goes up by one on every save. The editor sends the version it loaded; if the row has moved on, the save is refused with 409 and the editor reloads that page and says someone else changed it. So two tabs saving the same page can't silently overwrite each other.

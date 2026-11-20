@@ -22,9 +22,12 @@ Until the steps below are done, a deployed copy stays locked: the editor refuses
 - [ ] The deploy token, and the `production` environment with required reviewers, the ruleset on `main` (SETUP.md steps 6 and 7).
 - [ ] Merge a pull request. `.github/workflows/deploy.yml` runs `npm run check`, applies the D1 migrations (schema and seed; the seed never overwrites edits) and deploys, after an owner approves. Until the token exists it stops without deploying.
 
-## 5. Check it
+## 5. The newsletter Sheet
+- [ ] The Google Sheet and its Apps Script in the club's Google account, and the Worker secrets `SHEETS_URL` and `SHEETS_SECRET` (`docs/NEWSLETTER.md`).
+
+## 6. Check it
 - [ ] In a private window, admin.scuclip.com asks for the Access sign-in, and the editor shows your email. A request without Access (for example with `curl`) gets 401.
-- [ ] A test sign-up shows up in the editor's Site tab. A sign-up without a Turnstile token gets 403; a sixth one in a minute gets 429.
+- [ ] A test sign-up shows up in the editor's Site tab and on the Sheet's Weekly email tab. A sign-up without a Turnstile token gets 403; a sixth one in a minute gets 429.
 - [ ] `https://scuclip.com` and every page, the 404 page, http to https, www.scuclip.com to scuclip.com, and the response headers (CSP, HSTS).
 - [ ] Every page on a real phone.
 - [ ] The Access check and Turnstile have only been tested with keys and answers the tests make up. These checks are the first real ones.

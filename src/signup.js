@@ -8,12 +8,13 @@ import { apiError, json, methodNotAllowed, readText } from "./http.js";
 import { LIST_SIGNUP } from "../public/shared/model.js";
 import { turnstileRequired, verifyTurnstile } from "./turnstile.js";
 import { nowIso } from "./db.js";
+import { syncSignups } from "./sheets.js";
 
 const MAX_BYTES = 4096;
 export const LISTS = LIST_SIGNUP.options.map((o) => o.v);
 export const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 
-export async function handleSignup(request, env, site, url) {
+export async function handleSignup(request, env, ctx, site, url) {
   if (request.method !== "POST") return methodNotAllowed("POST");
   if (request.headers.get("Origin") !== url.origin) return apiError(403, "Sign up from the CLIP website.");
   if (!/^application\/json\b/i.test(request.headers.get("Content-Type") || "")) return apiError(415, "Send the sign-up as JSON.");
@@ -39,6 +40,8 @@ export async function handleSignup(request, env, site, url) {
     if (!check.ok) return apiError(check.status, check.message);
   }
 
-  await env.DB.prepare("INSERT OR IGNORE INTO signups (email, list, created_at) VALUES (?, ?, ?)").bind(email, list, nowIso()).run();
+  const res = await env.DB.prepare("INSERT OR IGNORE INTO signups (email, list, created_at) VALUES (?, ?, ?)").bind(email, list, nowIso()).run();
+  /* A new sign-up goes to the Google Sheet in the background, so the answer doesn't wait (and is the same either way). */
+  if (res.meta.changes) ctx.waitUntil(syncSignups(env));
   return json({ ok: true });
 }

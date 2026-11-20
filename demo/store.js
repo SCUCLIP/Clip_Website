@@ -122,7 +122,7 @@ const LISTS = LIST_SIGNUP.options.map((o) => o.v);
 const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 export function signups() {
   load();
-  return { signups: state.signups.slice().sort((a, b) => a.list.localeCompare(b.list) || a.createdAt.localeCompare(b.createdAt)) };
+  return { signups: state.signups.slice().sort((a, b) => a.list.localeCompare(b.list) || a.createdAt.localeCompare(b.createdAt)), sheet: { connected: false, waiting: 0, demo: true } };
 }
 export function signup(email, list) {
   load();
